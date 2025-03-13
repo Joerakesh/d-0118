@@ -1,3 +1,4 @@
+
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import AboutMe from "@/components/AboutMe";
@@ -6,6 +7,7 @@ import Education from "@/components/Education";
 import Projects from "@/components/Projects";
 import Achievements from "@/components/Achievements";
 import Footer from "@/components/Footer";
+import ContactForm from "@/components/ContactForm";
 
 const Index = () => {
   return (
@@ -18,6 +20,7 @@ const Index = () => {
       <Projects />
       <Achievements />
       <Footer />
+      <ContactForm />
     </main>
   );
 };

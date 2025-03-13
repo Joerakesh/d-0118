@@ -3,6 +3,13 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Code } from "lucide-react";
 
 const Hero = () => {
+  const scrollToSection = (sectionId: string) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section id="home" className="pt-32 pb-20 px-4 bg-dark">
       <div className="container mx-auto grid lg:grid-cols-2 gap-12 items-center">
@@ -20,10 +27,19 @@ const Hero = () => {
             I build modern, responsive web applications with cutting-edge technologies. Let's create something amazing together.
           </p>
           <div className="flex items-center gap-4">
-            <Button className="bg-primary hover:bg-primary/90 text-dark font-medium px-8 py-6 text-lg">
+            <Button 
+              className="bg-primary hover:bg-primary/90 text-dark font-medium px-8 py-6 text-lg"
+              onClick={() => scrollToSection("projects")}
+            >
               My Projects <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            <Button variant="outline" className="border-primary/20 text-primary hover:bg-primary/10">
+            <Button 
+              variant="outline" 
+              className="border-primary/20 text-primary hover:bg-primary/10"
+              onClick={() => {
+                document.getElementById("open-contact-dialog")?.click();
+              }}
+            >
               Contact Me
             </Button>
           </div>

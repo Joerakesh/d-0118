@@ -1,11 +1,12 @@
 
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Moon, Sun } from "lucide-react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [theme, setTheme] = useState("dark");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,6 +26,17 @@ const Navbar = () => {
     if (section) {
       section.scrollIntoView({ behavior: "smooth" });
     }
+    setIsMenuOpen(false);
+  };
+
+  const toggleTheme = () => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+    document.documentElement.classList.toggle("dark");
+  };
+
+  const openContactDialog = () => {
+    document.getElementById("open-contact-dialog")?.click();
     setIsMenuOpen(false);
   };
 
@@ -67,19 +79,42 @@ const Navbar = () => {
           >
             Achievements
           </span>
+          
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={toggleTheme} 
+            className="text-white hover:bg-primary/10"
+          >
+            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </Button>
         </div>
         
-        <Button className="hidden md:flex bg-primary hover:bg-primary/90 text-white font-medium">
+        <Button 
+          className="hidden md:flex bg-primary hover:bg-primary/90 text-white font-medium"
+          onClick={openContactDialog}
+        >
           Contact Me
         </Button>
         
         {/* Mobile Menu Button */}
-        <button 
-          className="md:hidden text-white p-2" 
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <div className="md:hidden flex items-center gap-2">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={toggleTheme} 
+            className="text-white hover:bg-primary/10"
+          >
+            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </Button>
+          
+          <button 
+            className="text-white p-2" 
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
       
       {/* Mobile Navigation */}
@@ -116,7 +151,10 @@ const Navbar = () => {
             >
               Achievements
             </span>
-            <Button className="bg-primary hover:bg-primary/90 text-white font-medium w-full">
+            <Button 
+              className="bg-primary hover:bg-primary/90 text-white font-medium w-full"
+              onClick={openContactDialog}
+            >
               Contact Me
             </Button>
           </div>
