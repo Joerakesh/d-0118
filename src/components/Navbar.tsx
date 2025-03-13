@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { Menu, X, Moon, Sun } from "lucide-react";
+import { Menu, X, Moon, Sun, Sparkles } from "lucide-react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -9,6 +9,16 @@ const Navbar = () => {
   const [theme, setTheme] = useState("dark");
 
   useEffect(() => {
+    // Get theme from localStorage if it exists
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    setTheme(savedTheme);
+    
+    if (savedTheme === "light") {
+      document.documentElement.classList.add("light");
+    } else {
+      document.documentElement.classList.remove("light");
+    }
+
     const handleScroll = () => {
       if (window.scrollY > 20) {
         setScrolled(true);
@@ -32,7 +42,13 @@ const Navbar = () => {
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
-    document.documentElement.classList.toggle("dark");
+    localStorage.setItem("theme", newTheme);
+    
+    if (newTheme === "light") {
+      document.documentElement.classList.add("light");
+    } else {
+      document.documentElement.classList.remove("light");
+    }
   };
 
   const openContactDialog = () => {
@@ -43,39 +59,40 @@ const Navbar = () => {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all ${scrolled ? "glass-nav py-3" : "py-5"}`}>
       <div className="container mx-auto px-4 flex items-center justify-between">
-        <div className="text-2xl font-bold text-white cursor-pointer" onClick={() => scrollToSection("home")}>
+        <div className="text-2xl font-bold cursor-pointer neon-text" onClick={() => scrollToSection("home")}>
           Joe<span className="text-primary">Rakesh</span>
+          <Sparkles className="inline-block ml-1 h-4 w-4 text-primary animate-pulse" />
         </div>
         
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
           <span 
             onClick={() => scrollToSection("about")} 
-            className="text-white/90 hover:text-primary transition-colors cursor-pointer"
+            className="text-foreground hover:text-primary transition-colors cursor-pointer"
           >
             About
           </span>
           <span 
             onClick={() => scrollToSection("skills")} 
-            className="text-white/90 hover:text-primary transition-colors cursor-pointer"
+            className="text-foreground hover:text-primary transition-colors cursor-pointer"
           >
             Skills
           </span>
           <span 
             onClick={() => scrollToSection("education")} 
-            className="text-white/90 hover:text-primary transition-colors cursor-pointer"
+            className="text-foreground hover:text-primary transition-colors cursor-pointer"
           >
             Education
           </span>
           <span 
             onClick={() => scrollToSection("projects")} 
-            className="text-white/90 hover:text-primary transition-colors cursor-pointer"
+            className="text-foreground hover:text-primary transition-colors cursor-pointer"
           >
             Projects
           </span>
           <span 
             onClick={() => scrollToSection("achievements")} 
-            className="text-white/90 hover:text-primary transition-colors cursor-pointer"
+            className="text-foreground hover:text-primary transition-colors cursor-pointer"
           >
             Achievements
           </span>
@@ -84,14 +101,14 @@ const Navbar = () => {
             variant="ghost" 
             size="icon" 
             onClick={toggleTheme} 
-            className="text-white hover:bg-primary/10"
+            className="text-foreground hover:bg-primary/10 relative neon-border overflow-hidden"
           >
             {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
         </div>
         
         <Button 
-          className="hidden md:flex bg-primary hover:bg-primary/90 text-white font-medium"
+          className="hidden md:flex bg-primary hover:bg-primary/90 text-white font-medium button-glow"
           onClick={openContactDialog}
         >
           Contact Me
@@ -103,13 +120,13 @@ const Navbar = () => {
             variant="ghost" 
             size="icon" 
             onClick={toggleTheme} 
-            className="text-white hover:bg-primary/10"
+            className="text-foreground hover:bg-primary/10"
           >
             {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
           
           <button 
-            className="text-white p-2" 
+            className="text-foreground p-2" 
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -119,40 +136,40 @@ const Navbar = () => {
       
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden bg-dark-light shadow-lg py-4 px-4">
+        <div className="md:hidden bg-dark-light dark:bg-dark-light shadow-lg py-4 px-4 light:bg-slate-100">
           <div className="flex flex-col space-y-4">
             <span 
               onClick={() => scrollToSection("about")} 
-              className="text-white/90 hover:text-primary transition-colors cursor-pointer py-2"
+              className="text-foreground hover:text-primary transition-colors cursor-pointer py-2"
             >
               About
             </span>
             <span 
               onClick={() => scrollToSection("skills")} 
-              className="text-white/90 hover:text-primary transition-colors cursor-pointer py-2"
+              className="text-foreground hover:text-primary transition-colors cursor-pointer py-2"
             >
               Skills
             </span>
             <span 
               onClick={() => scrollToSection("education")} 
-              className="text-white/90 hover:text-primary transition-colors cursor-pointer py-2"
+              className="text-foreground hover:text-primary transition-colors cursor-pointer py-2"
             >
               Education
             </span>
             <span 
               onClick={() => scrollToSection("projects")} 
-              className="text-white/90 hover:text-primary transition-colors cursor-pointer py-2"
+              className="text-foreground hover:text-primary transition-colors cursor-pointer py-2"
             >
               Projects
             </span>
             <span 
               onClick={() => scrollToSection("achievements")} 
-              className="text-white/90 hover:text-primary transition-colors cursor-pointer py-2"
+              className="text-foreground hover:text-primary transition-colors cursor-pointer py-2"
             >
               Achievements
             </span>
             <Button 
-              className="bg-primary hover:bg-primary/90 text-white font-medium w-full"
+              className="bg-primary hover:bg-primary/90 text-white font-medium w-full button-glow"
               onClick={openContactDialog}
             >
               Contact Me

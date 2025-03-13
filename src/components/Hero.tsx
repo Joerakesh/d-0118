@@ -1,8 +1,19 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Code } from "lucide-react";
+import { ArrowRight, Code, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const Hero = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Add animation delay for entrance effect
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
+
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -11,24 +22,27 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" className="pt-32 pb-20 px-4 bg-dark">
+    <section id="home" className="pt-32 pb-20 px-4 transition-colors duration-300">
       <div className="container mx-auto grid lg:grid-cols-2 gap-12 items-center">
-        <div className="space-y-8">
-          <div className="flex items-center gap-2 bg-primary/10 w-fit px-4 py-2 rounded-full border border-primary/20">
+        <div className={`space-y-8 transition-all duration-700 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-10'}`}>
+          <div className="flex items-center gap-2 bg-primary/10 w-fit px-4 py-2 rounded-full border border-primary/20 animate-pulse">
             <Code className="w-4 h-4 text-primary" />
             <span className="text-primary text-sm font-medium">Full Stack Developer</span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold leading-tight text-white">
+          <h1 className="text-5xl md:text-7xl font-bold leading-tight text-foreground neon-text">
             Hi, I'm
             <br />
-            <span className="text-primary">Joe Rakesh A</span>
+            <span className="text-primary relative">
+              Joe Rakesh A
+              <Sparkles className="absolute -right-8 top-0 w-6 h-6 text-primary animate-pulse" />
+            </span>
           </h1>
-          <p className="text-lg text-white/80 max-w-md">
+          <p className="text-lg text-foreground/80 max-w-md">
             I build modern, responsive web applications with cutting-edge technologies. Let's create something amazing together.
           </p>
           <div className="flex items-center gap-4">
             <Button 
-              className="bg-primary hover:bg-primary/90 text-dark font-medium px-8 py-6 text-lg"
+              className="bg-primary hover:bg-primary/90 text-white font-medium px-8 py-6 text-lg neon-border button-glow"
               onClick={() => scrollToSection("projects")}
             >
               My Projects <ArrowRight className="ml-2 h-5 w-5" />
@@ -44,8 +58,8 @@ const Hero = () => {
             </Button>
           </div>
         </div>
-        <div className="relative">
-          <div className="absolute -inset-0.5 bg-primary/20 rounded-2xl blur opacity-30" />
+        <div className={`relative float-animation transition-all duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0 translate-x-10'}`}>
+          <div className="absolute -inset-0.5 bg-primary/20 rounded-2xl blur-lg opacity-50 animate-pulse" />
           <img
             src="https://images.unsplash.com/photo-1537432376769-00f5c2f4c8d2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1050&q=80"
             alt="Joe Rakesh A"
