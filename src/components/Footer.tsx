@@ -1,43 +1,97 @@
+
 import { Link } from "react-router-dom";
+import { Github, Linkedin, Mail, ExternalLink } from "lucide-react";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+  
   return (
-    <footer className="py-20 px-4 border-t border-mint/10">
+    <footer className="py-16 px-4 border-t border-primary/10 bg-dark">
       <div className="container mx-auto">
-        <div className="grid md:grid-cols-4 gap-12">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="space-y-4">
-            <h3 className="text-2xl font-bold">ByteHire</h3>
-            <p className="text-white/60 max-w-xs">
-              Revolutionizing tech recruitment with AI-powered matching and seamless hiring processes.
+            <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
+              Joe Rakesh A
+            </h3>
+            <p className="text-neutral-light max-w-xs">
+              Building digital experiences with modern web technologies.
             </p>
           </div>
-          <div>
-            <h4 className="font-medium mb-4">Product</h4>
-            <ul className="space-y-2">
-              <li><Link to="/features" className="text-white/60 hover:text-mint transition-colors">Features</Link></li>
-              <li><Link to="/pricing" className="text-white/60 hover:text-mint transition-colors">Pricing</Link></li>
-              <li><Link to="/enterprise" className="text-white/60 hover:text-mint transition-colors">Enterprise</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-medium mb-4">Company</h4>
-            <ul className="space-y-2">
-              <li><Link to="/about" className="text-white/60 hover:text-mint transition-colors">About Us</Link></li>
-              <li><Link to="/careers" className="text-white/60 hover:text-mint transition-colors">Careers</Link></li>
-              <li><Link to="/blog" className="text-white/60 hover:text-mint transition-colors">Blog</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-medium mb-4">Legal</h4>
-            <ul className="space-y-2">
-              <li><Link to="/privacy" className="text-white/60 hover:text-mint transition-colors">Privacy</Link></li>
-              <li><Link to="/terms" className="text-white/60 hover:text-mint transition-colors">Terms</Link></li>
-              <li><Link to="/security" className="text-white/60 hover:text-mint transition-colors">Security</Link></li>
-            </ul>
+          
+          <div className="flex flex-wrap justify-center gap-8">
+            <div>
+              <h4 className="font-medium mb-4 text-primary">Links</h4>
+              <ul className="space-y-2">
+                <li>
+                  <a href="#hero" className="text-neutral hover:text-primary transition-colors inline-flex items-center gap-1">
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a href="#about" className="text-neutral hover:text-primary transition-colors inline-flex items-center gap-1">
+                    About
+                  </a>
+                </li>
+                <li>
+                  <a href="#skills" className="text-neutral hover:text-primary transition-colors inline-flex items-center gap-1">
+                    Skills
+                  </a>
+                </li>
+                <li>
+                  <a href="#projects" className="text-neutral hover:text-primary transition-colors inline-flex items-center gap-1">
+                    Projects
+                  </a>
+                </li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-medium mb-4 text-primary">Contact</h4>
+              <ul className="space-y-2">
+                <li>
+                  <a 
+                    href="mailto:joe.rakesh@example.com" 
+                    className="text-neutral hover:text-primary transition-colors inline-flex items-center gap-2"
+                  >
+                    <Mail size={16} />
+                    <span>Email</span>
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="https://github.com/joerakesh" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-neutral hover:text-primary transition-colors inline-flex items-center gap-2"
+                  >
+                    <Github size={16} />
+                    <span>GitHub</span>
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="https://linkedin.com/in/joerakesh" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-neutral hover:text-primary transition-colors inline-flex items-center gap-2"
+                  >
+                    <Linkedin size={16} />
+                    <span>LinkedIn</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-        <div className="border-t border-mint/10 mt-16 pt-8 text-center text-white/60">
-          <p>&copy; {new Date().getFullYear()} ByteHire. All rights reserved.</p>
+        
+        <div className="border-t border-primary/10 mt-12 pt-8 text-center text-neutral">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4">
+            <p>&copy; {currentYear} Joe Rakesh A. All rights reserved.</p>
+            <div className="flex items-center gap-1">
+              <span className="hidden md:inline">•</span>
+              <p>Made with <span className="text-primary">♥</span> and React</p>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
