@@ -36,7 +36,7 @@ const Achievements = () => {
             </p>
           </div>
 
-          <div className="bg-dark-light p-8 rounded-xl border border-primary/10">
+          {/* <div className="bg-dark-light p-8 rounded-xl border border-primary/10">
             <div className="w-16 h-16 mb-6 rounded-full bg-primary/10 flex items-center justify-center">
               <Star className="w-8 h-8 text-primary" />
             </div>
@@ -86,7 +86,7 @@ const Achievements = () => {
               Maintained perfect 5-star rating across 50+ client projects on
               Upwork and Fiverr.
             </p>
-          </div>
+          </div>  */}
         </div>
       </div>
     </section>
