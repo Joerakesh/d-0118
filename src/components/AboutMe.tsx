@@ -67,28 +67,28 @@ const AboutMe = () => {
             </Button>
           </div>
           <div className={`grid grid-cols-2 gap-4 transition-all duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0 translate-x-10'}`}>
-            <div className="p-6 bg-dark-light rounded-lg border border-primary/10 transform transition-transform hover:scale-105 hover:border-primary/30 card-hover neon-box">
+            <div className="p-6 bg-card rounded-lg border border-primary/10 transform transition-transform hover:scale-105 hover:border-primary/30 card-hover neon-box">
               <h3 className="text-xl font-bold text-primary mb-2 flex items-center">
                 1+
                 <Sparkles className="ml-1 h-4 w-4 text-primary" />
               </h3>
               <p className="text-foreground/80">Years of Experience</p>
             </div>
-            <div className="p-6 bg-dark-light rounded-lg border border-primary/10 transform transition-transform hover:scale-105 hover:border-primary/30 card-hover neon-box">
+            <div className="p-6 bg-card rounded-lg border border-primary/10 transform transition-transform hover:scale-105 hover:border-primary/30 card-hover neon-box">
               <h3 className="text-xl font-bold text-primary mb-2 flex items-center">
                 5+
                 <Sparkles className="ml-1 h-4 w-4 text-primary" />
               </h3>
               <p className="text-foreground/80">Projects Completed</p>
             </div>
-            <div className="p-6 bg-dark-light rounded-lg border border-primary/10 transform transition-transform hover:scale-105 hover:border-primary/30 card-hover neon-box">
+            <div className="p-6 bg-card rounded-lg border border-primary/10 transform transition-transform hover:scale-105 hover:border-primary/30 card-hover neon-box">
               <h3 className="text-xl font-bold text-primary mb-2 flex items-center">
                 2+
                 <Sparkles className="ml-1 h-4 w-4 text-primary" />
               </h3>
               <p className="text-foreground/80">Happy Clients</p>
             </div>
-            <div className="p-6 bg-dark-light rounded-lg border border-primary/10 transform transition-transform hover:scale-105 hover:border-primary/30 card-hover neon-box">
+            <div className="p-6 bg-card rounded-lg border border-primary/10 transform transition-transform hover:scale-105 hover:border-primary/30 card-hover neon-box">
               <h3 className="text-xl font-bold text-primary mb-2 flex items-center">
                 100%
                 <Sparkles className="ml-1 h-4 w-4 text-primary" />

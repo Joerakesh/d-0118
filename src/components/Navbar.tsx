@@ -1,26 +1,28 @@
 
-import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { Menu, X, Moon, Sun, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import ContactForm from "./ContactForm";
+import { Menu, X, Sun, Moon } from "lucide-react";
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [theme, setTheme] = useState("dark");
+  const [isLightTheme, setIsLightTheme] = useState(false);
 
   useEffect(() => {
-    // Get theme from localStorage if it exists
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    setTheme(savedTheme);
-    
-    if (savedTheme === "light") {
-      document.documentElement.classList.add("light");
+    // Check if user has a theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      setIsLightTheme(true);
+      document.body.classList.add('light');
     } else {
-      document.documentElement.classList.remove("light");
+      document.body.classList.add('dark');
     }
 
     const handleScroll = () => {
-      if (window.scrollY > 20) {
+      if (window.scrollY > 50) {
         setScrolled(true);
       } else {
         setScrolled(false);
@@ -31,153 +33,119 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-    setIsMenuOpen(false);
-  };
-
   const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    
-    if (newTheme === "light") {
-      document.documentElement.classList.add("light");
+    if (isLightTheme) {
+      document.body.classList.remove('light');
+      document.body.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
     } else {
-      document.documentElement.classList.remove("light");
+      document.body.classList.remove('dark');
+      document.body.classList.add('light');
+      localStorage.setItem('theme', 'light');
     }
-  };
-
-  const openContactDialog = () => {
-    document.getElementById("open-contact-dialog")?.click();
-    setIsMenuOpen(false);
+    setIsLightTheme(!isLightTheme);
   };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all ${scrolled ? "glass-nav py-3" : "py-5"}`}>
-      <div className="container mx-auto px-4 flex items-center justify-between">
-        <div className="text-2xl font-bold cursor-pointer neon-text" onClick={() => scrollToSection("home")}>
-          Joe<span className="text-primary">Rakesh</span>
-          <Sparkles className="inline-block ml-1 h-4 w-4 text-primary animate-pulse" />
-        </div>
-        
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-8">
-          <span 
-            onClick={() => scrollToSection("about")} 
-            className="text-foreground hover:text-primary transition-colors cursor-pointer"
-          >
-            About
-          </span>
-          <span 
-            onClick={() => scrollToSection("skills")} 
-            className="text-foreground hover:text-primary transition-colors cursor-pointer"
-          >
-            Skills
-          </span>
-          <span 
-            onClick={() => scrollToSection("education")} 
-            className="text-foreground hover:text-primary transition-colors cursor-pointer"
-          >
-            Education
-          </span>
-          <span 
-            onClick={() => scrollToSection("projects")} 
-            className="text-foreground hover:text-primary transition-colors cursor-pointer"
-          >
-            Projects
-          </span>
-          <span 
-            onClick={() => scrollToSection("achievements")} 
-            className="text-foreground hover:text-primary transition-colors cursor-pointer"
-          >
-            Achievements
-          </span>
-          
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={toggleTheme} 
-            className="text-foreground hover:bg-primary/10 relative neon-border overflow-hidden"
-          >
-            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          </Button>
-        </div>
-        
-        <Button 
-          className="hidden md:flex bg-primary hover:bg-primary/90 text-white font-medium button-glow"
-          onClick={openContactDialog}
+    <header
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 px-4 ${
+        scrolled ? "py-3 glass-nav" : "py-5"
+      }`}
+    >
+      <div className="container mx-auto flex justify-between items-center">
+        <Link
+          to="/"
+          className="text-xl font-bold text-primary neon-text"
         >
-          Contact Me
-        </Button>
-        
-        {/* Mobile Menu Button */}
-        <div className="md:hidden flex items-center gap-2">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={toggleTheme} 
-            className="text-foreground hover:bg-primary/10"
+          Joe Rakesh A
+        </Link>
+
+        <nav className="hidden md:block">
+          <ul className="flex gap-8">
+            {["Home", "About", "Skills", "Projects", "Education"].map(
+              (item) => (
+                <li key={item}>
+                  <a
+                    href={`#${item.toLowerCase()}`}
+                    className="text-foreground/80 hover:text-primary transition-colors"
+                  >
+                    {item}
+                  </a>
+                </li>
+              )
+            )}
+          </ul>
+        </nav>
+
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-foreground hover:text-primary"
+            onClick={toggleTheme}
           >
-            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            {isLightTheme ? <Moon size={20} /> : <Sun size={20} />}
           </Button>
-          
-          <button 
-            className="text-foreground p-2" 
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                id="open-contact-dialog"
+                className="hidden md:inline-flex bg-primary hover:bg-primary/90"
+              >
+                Contact Me
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <ContactForm />
+            </DialogContent>
+          </Dialog>
+
+          <button
+            className="md:hidden text-foreground"
+            onClick={() => setIsOpen(!isOpen)}
           >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
-      
-      {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-dark-light dark:bg-dark-light shadow-lg py-4 px-4 light:bg-slate-100">
-          <div className="flex flex-col space-y-4">
-            <span 
-              onClick={() => scrollToSection("about")} 
-              className="text-foreground hover:text-primary transition-colors cursor-pointer py-2"
-            >
-              About
-            </span>
-            <span 
-              onClick={() => scrollToSection("skills")} 
-              className="text-foreground hover:text-primary transition-colors cursor-pointer py-2"
-            >
-              Skills
-            </span>
-            <span 
-              onClick={() => scrollToSection("education")} 
-              className="text-foreground hover:text-primary transition-colors cursor-pointer py-2"
-            >
-              Education
-            </span>
-            <span 
-              onClick={() => scrollToSection("projects")} 
-              className="text-foreground hover:text-primary transition-colors cursor-pointer py-2"
-            >
-              Projects
-            </span>
-            <span 
-              onClick={() => scrollToSection("achievements")} 
-              className="text-foreground hover:text-primary transition-colors cursor-pointer py-2"
-            >
-              Achievements
-            </span>
-            <Button 
-              className="bg-primary hover:bg-primary/90 text-white font-medium w-full button-glow"
-              onClick={openContactDialog}
-            >
-              Contact Me
-            </Button>
-          </div>
+
+      {/* Mobile menu */}
+      {isOpen && (
+        <div className="md:hidden absolute top-full left-0 w-full bg-card py-4 border-t border-primary/10">
+          <ul className="container mx-auto space-y-4 px-4">
+            {["Home", "About", "Skills", "Projects", "Education"].map(
+              (item) => (
+                <li key={item}>
+                  <a
+                    href={`#${item.toLowerCase()}`}
+                    className="text-foreground/80 hover:text-primary transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item}
+                  </a>
+                </li>
+              )
+            )}
+            <li>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button
+                    className="w-full bg-primary hover:bg-primary/90"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Contact Me
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <ContactForm />
+                </DialogContent>
+              </Dialog>
+            </li>
+          </ul>
         </div>
       )}
-    </nav>
+    </header>
   );
 };
 

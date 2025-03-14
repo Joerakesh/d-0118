@@ -28,29 +28,15 @@
     --radius: 0.5rem;
   }
 
-  .dark {
-    --background: 230 14% 10%;
-    --foreground: 0 0% 100%;
-    --card: 230 14% 12%;
-    --card-foreground: 0 0% 100%;
-    --popover: 230 14% 12%;
-    --popover-foreground: 0 0% 100%;
-    --primary: 260 85% 75%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 260 85% 55%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 230 14% 20%;
-    --muted-foreground: 0 0% 80%;
-    --accent: 260 85% 75%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 230 14% 18%;
-    --input: 230 14% 18%;
-    --ring: 260 85% 75%;
+  body.light {
+    @apply bg-white text-slate-800 antialiased transition-colors duration-300;
+    background-image: radial-gradient(circle at 50% 0%, rgba(155, 135, 245, 0.06), transparent 70%);
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
-  body {
+  body.dark {
     @apply bg-dark text-white antialiased transition-colors duration-300;
     background-image: radial-gradient(circle at 50% 0%, rgba(155, 135, 245, 0.08), transparent 70%);
     background-size: 100% 100%;
@@ -58,27 +44,60 @@
     background-repeat: no-repeat;
   }
 
-  /* Light theme styling */
-  .light body {
-    @apply bg-slate-50 text-slate-800;
-    background-image: radial-gradient(circle at 50% 0%, rgba(155, 135, 245, 0.06), transparent 70%);
-  }
-
   ::selection {
     @apply bg-primary text-white;
   }
 }
 
+/* Light and dark theme nav styles */
 .glass-nav {
   background: rgba(26, 31, 44, 0.8);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(155, 135, 245, 0.1);
 }
 
-.light .glass-nav {
+body.light .glass-nav {
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(155, 135, 245, 0.1);
+}
+
+/* Light theme overrides */
+body.light .bg-dark {
+  @apply bg-white;
+}
+
+body.light .bg-dark-light {
+  @apply bg-slate-50;
+}
+
+body.light .text-white {
+  @apply text-slate-800;
+}
+
+body.light .text-white\/80, 
+body.light .text-white\/70 {
+  @apply text-slate-600;
+}
+
+body.light .text-neutral {
+  @apply text-slate-500;
+}
+
+body.light .text-neutral-light {
+  @apply text-slate-600;
+}
+
+body.light .border-primary\/10 {
+  @apply border-primary/20;
+}
+
+body.light .neon-text {
+  text-shadow: 0 0 3px rgba(155, 135, 245, 0.3), 0 0 7px rgba(155, 135, 245, 0.2);
+}
+
+body.light .neon-box {
+  box-shadow: 0 0 3px rgba(155, 135, 245, 0.3), 0 0 10px rgba(155, 135, 245, 0.2);
 }
 
 /* Smooth scrolling */
@@ -93,6 +112,10 @@ html {
 
 .progress::-webkit-progress-bar {
   background-color: theme('colors.dark.light');
+}
+
+body.light .progress::-webkit-progress-bar {
+  background-color: theme('colors.slate.200');
 }
 
 /* Neon effects */

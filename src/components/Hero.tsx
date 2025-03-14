@@ -61,9 +61,9 @@ const Hero = () => {
         <div className={`relative float-animation transition-all duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0 translate-x-10'}`}>
           <div className="absolute -inset-0.5 bg-primary/20 rounded-2xl blur-lg opacity-50 animate-pulse" />
           <img
-            src="https://images.unsplash.com/photo-1537432376769-00f5c2f4c8d2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1050&q=80"
+            src="https://joerakesh-portfolio.netlify.app/assets/profile-pic2.png"
             alt="Joe Rakesh A"
-            className="relative rounded-2xl shadow-2xl"
+            className="relative rounded-2xl shadow-2xl object-cover w-full h-auto"
           />
         </div>
       </div>
