@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Code, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -80,7 +79,7 @@ const Hero = () => {
         >
           <div className="absolute -inset-0.5 bg-primary/20 rounded-2xl blur-lg opacity-50 animate-pulse" />
           <img
-            src="https://joerakesh-portfolio.netlify.app/assets/profile-pic2.png"
+            src="/Joe.jpg"
             alt="Joe Rakesh A"
             className="relative rounded-2xl shadow-2xl object-cover w-full h-auto"
           />
