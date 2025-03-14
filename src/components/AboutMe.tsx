@@ -1,3 +1,4 @@
+
 import { User, Download, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
@@ -24,6 +25,15 @@ const AboutMe = () => {
 
   const handleDownloadCV = () => {
     toast.success("CV Download", "Your CV is being downloaded...");
+    
+    // Create an anchor element and trigger the download
+    const link = document.createElement('a');
+    link.href = 'https://joerakesh-portfolio.netlify.app/assets/resume.pdf';
+    link.target = '_blank';
+    link.download = 'Joe_Rakesh_CV.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (

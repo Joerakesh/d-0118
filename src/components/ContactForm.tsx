@@ -51,18 +51,43 @@ const ContactForm = () => {
     setIsSubmitting(true);
     console.log("Form data:", data);
     
-    // Simulate network request
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // In a real application, you would send this data to your backend
-    toast({
-      title: "Message sent!",
-      description: "Thank you for contacting me. I'll get back to you soon.",
-    });
-    
-    form.reset();
-    setIsSubmitting(false);
-    setIsOpen(false);
+    try {
+      // Send form data to email using Email JS or a similar service
+      // For this implementation, we'll use a serverless function via FormSubmit
+      const response = await fetch("https://formsubmit.co/rakeshjoe52@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          message: data.message,
+          _subject: "New Contact Form Submission from Portfolio",
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error("Failed to send message");
+      }
+      
+      toast({
+        title: "Message sent!",
+        description: "Thank you for contacting me. I'll get back to you soon.",
+      });
+      
+      form.reset();
+      setIsOpen(false);
+    } catch (error) {
+      toast({
+        title: "Error sending message",
+        description: "Please try again later or contact me directly via email.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
