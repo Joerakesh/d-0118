@@ -20,7 +20,7 @@ const Projects = () => {
       tech: ["HTML", "CSS", "JS"],
       liveLink: "https://sjctni.edu/Department/Mergen",
       repoLink: "https://github.com/joerakesh/mergen",
-      image: "https://joerakesh-portfolio.netlify.app/assets/mergen.jpg",
+      image: "/Projects/mergen.jpg",
     },
     // {
     //   title: "Fitness Tracker",
