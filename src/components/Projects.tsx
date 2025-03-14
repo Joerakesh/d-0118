@@ -18,7 +18,7 @@ const Projects = () => {
       description:
         "e-Journnal Website for the Department of English, St. Joseph's College, Trichy.",
       tech: ["HTML", "CSS", "JS"],
-      liveLink: "https://sjctni.edu/Department/MERGEN",
+      liveLink: "https://sjctni.edu/Department/Mergen",
       repoLink: "https://github.com/joerakesh/mergen",
       image: "https://joerakesh-portfolio.netlify.app/assets/mergen.jpg",
     },
