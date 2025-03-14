@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import ContactForm from "./ContactForm";
 import { Menu, X, Sun, Moon } from "lucide-react";
 
@@ -10,6 +9,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isLightTheme, setIsLightTheme] = useState(false);
+  const [contactDialogOpen, setContactDialogOpen] = useState(false);
 
   useEffect(() => {
     // Check if user has a theme preference
@@ -44,6 +44,11 @@ const Navbar = () => {
       localStorage.setItem('theme', 'light');
     }
     setIsLightTheme(!isLightTheme);
+  };
+
+  const openContactForm = () => {
+    setContactDialogOpen(true);
+    setIsOpen(false);
   };
 
   return (
@@ -87,19 +92,12 @@ const Navbar = () => {
             {isLightTheme ? <Moon size={20} /> : <Sun size={20} />}
           </Button>
 
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button
-                id="open-contact-dialog"
-                className="hidden md:inline-flex bg-primary hover:bg-primary/90"
-              >
-                Contact Me
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <ContactForm />
-            </DialogContent>
-          </Dialog>
+          <Button
+            className="hidden md:inline-flex bg-primary hover:bg-primary/90"
+            onClick={openContactForm}
+          >
+            Contact Me
+          </Button>
 
           <button
             className="md:hidden text-foreground"
@@ -128,22 +126,29 @@ const Navbar = () => {
               )
             )}
             <li>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button
-                    className="w-full bg-primary hover:bg-primary/90"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Contact Me
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <ContactForm />
-                </DialogContent>
-              </Dialog>
+              <Button
+                className="w-full bg-primary hover:bg-primary/90"
+                onClick={openContactForm}
+              >
+                Contact Me
+              </Button>
             </li>
           </ul>
         </div>
+      )}
+
+      {/* Contact form dialog */}
+      <div className="hidden">
+        <ContactForm />
+      </div>
+      
+      {/* Trigger for contact form */}
+      {contactDialogOpen && (
+        <Button 
+          id="open-contact-dialog" 
+          className="hidden" 
+          onClick={() => setContactDialogOpen(false)}
+        />
       )}
     </header>
   );

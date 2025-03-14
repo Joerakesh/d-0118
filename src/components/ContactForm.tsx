@@ -52,25 +52,51 @@ const ContactForm = () => {
     console.log("Form data:", data);
     
     try {
-      // Send form data to email using Email JS or a similar service
-      // For this implementation, we'll use a serverless function via FormSubmit
-      const response = await fetch("https://formsubmit.co/rakeshjoe52@gmail.com", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          name: data.name,
-          email: data.email,
-          message: data.message,
-          _subject: "New Contact Form Submission from Portfolio",
-        }),
-      });
+      // Create a form element to submit directly
+      const formElement = document.createElement("form");
+      formElement.method = "POST";
+      formElement.action = "https://formsubmit.co/rakeshjoe52@gmail.com";
+      formElement.setAttribute("enctype", "multipart/form-data");
       
-      if (!response.ok) {
-        throw new Error("Failed to send message");
-      }
+      // Add form fields
+      const nameField = document.createElement("input");
+      nameField.name = "name";
+      nameField.value = data.name;
+      formElement.appendChild(nameField);
+      
+      const emailField = document.createElement("input");
+      emailField.name = "email";
+      emailField.value = data.email;
+      formElement.appendChild(emailField);
+      
+      const messageField = document.createElement("input");
+      messageField.name = "message";
+      messageField.value = data.message;
+      formElement.appendChild(messageField);
+      
+      // Add subject field
+      const subjectField = document.createElement("input");
+      subjectField.name = "_subject";
+      subjectField.value = "New Contact Form Submission from Portfolio";
+      formElement.appendChild(subjectField);
+      
+      // Add redirect field
+      const redirectField = document.createElement("input");
+      redirectField.type = "hidden";
+      redirectField.name = "_next";
+      redirectField.value = window.location.href;
+      formElement.appendChild(redirectField);
+      
+      // Add captcha field
+      const captchaField = document.createElement("input");
+      captchaField.type = "hidden";
+      captchaField.name = "_captcha";
+      captchaField.value = "true";
+      formElement.appendChild(captchaField);
+      
+      // Append to body, submit, then remove
+      document.body.appendChild(formElement);
+      formElement.submit();
       
       toast({
         title: "Message sent!",
@@ -80,6 +106,7 @@ const ContactForm = () => {
       form.reset();
       setIsOpen(false);
     } catch (error) {
+      console.error("Error submitting form:", error);
       toast({
         title: "Error sending message",
         description: "Please try again later or contact me directly via email.",

@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Code, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -17,6 +18,13 @@ const Hero = () => {
     const section = document.getElementById(sectionId);
     if (section) {
       section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const openContactDialog = () => {
+    const contactButton = document.getElementById("open-contact-dialog");
+    if (contactButton) {
+      contactButton.click();
     }
   };
 
@@ -59,9 +67,7 @@ const Hero = () => {
             <Button
               variant="outline"
               className="border-primary/20 text-primary hover:bg-primary/10"
-              onClick={() => {
-                document.getElementById("open-contact-dialog")?.click();
-              }}
+              onClick={openContactDialog}
             >
               Contact Me
             </Button>
@@ -74,7 +80,7 @@ const Hero = () => {
         >
           <div className="absolute -inset-0.5 bg-primary/20 rounded-2xl blur-lg opacity-50 animate-pulse" />
           <img
-            src="https://images.unsplash.com/photo-1537432376769-00f5c2f4c8d2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1050&q=80"
+            src="https://joerakesh-portfolio.netlify.app/assets/profile-pic2.png"
             alt="Joe Rakesh A"
             className="relative rounded-2xl shadow-2xl object-cover w-full h-auto"
           />
