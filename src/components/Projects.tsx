@@ -6,23 +6,22 @@ const Projects = () => {
     {
       title: "Engzine",
       description:
-        "A e-Magazine Website for the Department of English, St. Joseph's College, Trichy.",
+        "e-Magazine Website for the Department of English, St. Joseph's College, Trichy.",
       tech: ["HTML", "CSS", "JS"],
       liveLink: "https://sjctni.edu/Department/ENGZINE",
       repoLink: "https://github.com/joerakesh/ecommerce",
       image:
         "https://media.licdn.com/dms/image/v2/D5622AQFeb4sHUQcT8g/feedshare-shrink_2048_1536/B56ZRGdXSrH0Ao-/0/1736348894986?e=1744848000&v=beta&t=wNAjKb2mTJDKNebiu2sD6wZs21pkTjzWMcwfFqDETUk",
     },
-    // {
-    //   title: "Task Management App",
-    //   description:
-    //     "A Kanban-style task management application with real-time updates and team collaboration features.",
-    //   tech: ["React", "Firebase", "Tailwind CSS", "Redux"],
-    //   liveLink: "https://example.com/taskmanager",
-    //   repoLink: "https://github.com/joerakesh/taskmanager",
-    //   image:
-    //     "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-    // },
+    {
+      title: "Mergen",
+      description:
+        "e-Journnal Website for the Department of English, St. Joseph's College, Trichy.",
+      tech: ["HTML", "CSS", "JS"],
+      liveLink: "https://sjctni.edu/Department/MERGEN",
+      repoLink: "https://github.com/joerakesh/mergen",
+      image: "https://joerakesh-portfolio.netlify.app/assets/mergen.jpg",
+    },
     // {
     //   title: "Fitness Tracker",
     //   description:
