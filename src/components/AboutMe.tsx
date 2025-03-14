@@ -1,7 +1,7 @@
-
 import { User, Download, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import { toast } from "@/utils/toast-utils";
 
 const AboutMe = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -18,16 +18,12 @@ const AboutMe = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Check on initial load
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleDownloadCV = () => {
-    // In a real app, you would have an actual file to download
-    toast({
-      title: "CV Download",
-      description: "Your CV is being downloaded...",
-    });
+    toast.success("CV Download", "Your CV is being downloaded...");
   };
 
   return (
