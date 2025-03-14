@@ -47,8 +47,10 @@ const Navbar = () => {
   };
 
   const openContactForm = () => {
-    setContactDialogOpen(true);
-    setIsOpen(false);
+    const contactButton = document.getElementById("open-contact-dialog");
+    if (contactButton) {
+      contactButton.click();
+    }
   };
 
   return (
@@ -135,20 +137,6 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-      )}
-
-      {/* Contact form dialog */}
-      <div className="hidden">
-        <ContactForm />
-      </div>
-      
-      {/* Trigger for contact form */}
-      {contactDialogOpen && (
-        <Button 
-          id="open-contact-dialog" 
-          className="hidden" 
-          onClick={() => setContactDialogOpen(false)}
-        />
       )}
     </header>
   );

@@ -45,7 +45,7 @@ const Hero = () => {
               Full Stack Developer
             </span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold leading-tight text-foreground neon-text">
+          <h1 className="text-4xl md:text-7xl font-bold leading-tight text-foreground neon-text">
             Hi, I'm
             <br />
             <span className="text-primary relative">
@@ -57,16 +57,16 @@ const Hero = () => {
             I build modern, responsive web applications with cutting-edge
             technologies. Let's create something amazing together.
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center gap-4">
             <Button
-              className="bg-primary hover:bg-primary/90 text-white font-medium px-8 py-6 text-lg neon-border button-glow"
+              className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white font-medium px-8 py-6 text-lg neon-border button-glow"
               onClick={() => scrollToSection("projects")}
             >
               My Projects <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             <Button
               variant="outline"
-              className="border-primary/20 text-primary hover:bg-primary/10"
+              className="w-full sm:w-auto mt-2 sm:mt-0 border-primary/20 text-primary hover:bg-primary/10"
               onClick={openContactDialog}
             >
               Contact Me

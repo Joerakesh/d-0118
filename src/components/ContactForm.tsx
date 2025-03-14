@@ -34,7 +34,7 @@ const contactFormSchema = z.object({
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 const ContactForm = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   
@@ -104,7 +104,7 @@ const ContactForm = () => {
       });
       
       form.reset();
-      setIsOpen(false);
+      setOpen(false);
     } catch (error) {
       console.error("Error submitting form:", error);
       toast({
@@ -118,9 +118,9 @@ const ContactForm = () => {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button id="open-contact-dialog" variant="outline" className="hidden">
+        <Button id="open-contact-dialog" className="hidden">
           Contact Me
         </Button>
       </DialogTrigger>
