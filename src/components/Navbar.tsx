@@ -53,7 +53,7 @@ const Navbar = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 px-4 ${
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 px-0 ${
         scrolled ? "py-3 glass-nav" : "py-5"
       }`}
     >

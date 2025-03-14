@@ -31,7 +31,7 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="pt-32 pb-20 px-4 transition-colors duration-300"
+      className="pt-32 pb-20 px-0 transition-colors duration-300"
     >
       <div className="container mx-auto grid lg:grid-cols-2 gap-12 items-center">
         <div
