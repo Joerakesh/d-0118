@@ -116,10 +116,10 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu with improved animation and backdrop blur */}
+      {/* Mobile menu with improved blur background and animations */}
       <div 
         className={cn(
-          "md:hidden fixed inset-0 bg-background/80 backdrop-blur-md z-40 transition-all duration-300",
+          "md:hidden fixed inset-0 bg-background/60 backdrop-blur-xl z-40 transition-all duration-300",
           isOpen 
             ? "opacity-100 pointer-events-auto" 
             : "opacity-0 pointer-events-none"
@@ -128,7 +128,7 @@ const Navbar = () => {
       >
         <div 
           className={cn(
-            "absolute top-[4.5rem] left-0 w-full bg-card/50 backdrop-blur-lg border-t border-primary/10 transition-all duration-500 overflow-hidden",
+            "absolute top-[4.5rem] left-0 w-full bg-card/60 backdrop-blur-xl border-t border-primary/10 transition-all duration-500 overflow-hidden",
             isOpen ? "max-h-[calc(100vh-4.5rem)]" : "max-h-0"
           )}
         >

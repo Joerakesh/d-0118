@@ -1,25 +1,35 @@
+
 import { User, Download, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { toast } from "@/utils/toast-utils";
+import { cn } from "@/lib/utils";
 
 const AboutMe = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const statRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const element = document.getElementById("about");
-      if (element) {
-        const position = element.getBoundingClientRect();
-        if (position.top < window.innerHeight - 200) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting) {
           setIsVisible(true);
         }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
       }
     };
-
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleDownloadCV = () => {
@@ -36,9 +46,18 @@ const AboutMe = () => {
   };
 
   return (
-    <section id="about" className="py-20 px-4 transition-colors duration-300">
+    <section 
+      id="about" 
+      ref={sectionRef}
+      className="py-20 px-4 transition-colors duration-300"
+    >
       <div className="container mx-auto">
-        <div className="flex items-center gap-2 mb-8">
+        <div 
+          className={cn(
+            "flex items-center gap-2 mb-8 transition-all duration-700",
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          )}
+        >
           <User className="w-5 h-5 text-primary" />
           <h2 className="text-3xl font-bold text-foreground neon-text">
             About Me
@@ -46,9 +65,11 @@ const AboutMe = () => {
         </div>
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div
-            className={`space-y-6 transition-all duration-700 ${
-              isVisible ? "opacity-100" : "opacity-0 translate-y-10"
-            }`}
+            className={cn(
+              "space-y-6 transition-all duration-700 scroll-reveal",
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            )}
+            style={{ transitionDelay: "150ms" }}
           >
             <p className="text-foreground/80 text-lg leading-relaxed">
               Hello! I'm Joe Rakesh A, a passionate full-stack developer with a
@@ -72,34 +93,33 @@ const AboutMe = () => {
             </Button>
           </div>
           <div
-            className={`grid grid-cols-2 gap-4 transition-all duration-1000 ${
-              isVisible ? "opacity-100" : "opacity-0 translate-x-10"
-            }`}
+            className={cn(
+              "grid grid-cols-2 gap-4 transition-all duration-1000",
+              isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
+            )}
+            style={{ transitionDelay: "300ms" }}
           >
-            <div className="p-6 bg-card rounded-lg border border-primary/10 transform transition-transform hover:scale-105 hover:border-primary/30 card-hover neon-box">
-              <h3 className="text-xl font-bold text-primary mb-2 flex items-center">
-                1+
-              </h3>
-              <p className="text-foreground/80">Years of Experience</p>
-            </div>
-            <div className="p-6 bg-card rounded-lg border border-primary/10 transform transition-transform hover:scale-105 hover:border-primary/30 card-hover neon-box">
-              <h3 className="text-xl font-bold text-primary mb-2 flex items-center">
-                5+
-              </h3>
-              <p className="text-foreground/80">Projects Completed</p>
-            </div>
-            <div className="p-6 bg-card rounded-lg border border-primary/10 transform transition-transform hover:scale-105 hover:border-primary/30 card-hover neon-box">
-              <h3 className="text-xl font-bold text-primary mb-2 flex items-center">
-                2+
-              </h3>
-              <p className="text-foreground/80">Happy Clients</p>
-            </div>
-            <div className="p-6 bg-card rounded-lg border border-primary/10 transform transition-transform hover:scale-105 hover:border-primary/30 card-hover neon-box">
-              <h3 className="text-xl font-bold text-primary mb-2 flex items-center">
-                100%
-              </h3>
-              <p className="text-foreground/80">Client Satisfaction</p>
-            </div>
+            {[
+              { title: "1+", desc: "Years of Experience" },
+              { title: "5+", desc: "Projects Completed" },
+              { title: "2+", desc: "Happy Clients" },
+              { title: "100%", desc: "Client Satisfaction" },
+            ].map((stat, index) => (
+              <div
+                key={index}
+                ref={(el) => (statRefs.current[index] = el)}
+                className={cn(
+                  "p-6 bg-card rounded-lg border border-primary/10 transform transition-transform hover:scale-105 hover:border-primary/30 card-hover neon-box",
+                  isVisible ? "animate-scale-in" : "opacity-0"
+                )}
+                style={{ animationDelay: `${index * 150 + 450}ms` }}
+              >
+                <h3 className="text-xl font-bold text-primary mb-2 flex items-center">
+                  {stat.title}
+                </h3>
+                <p className="text-foreground/80">{stat.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
