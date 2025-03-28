@@ -69,6 +69,105 @@ body.light .glass-nav {
   border-bottom: 1px solid rgba(155, 135, 245, 0.1);
 }
 
+/* Animation utilities for the mobile menu and scroll animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scale-in {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease forwards;
+}
+
+.animate-slide-in {
+  animation: slide-in 0.5s ease forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.5s ease-out forwards;
+}
+
+/* Transition delay classes for staggered animations */
+.transition-delay-0 {
+  transition-delay: 0ms;
+}
+
+.transition-delay-75 {
+  transition-delay: 75ms;
+}
+
+.transition-delay-150 {
+  transition-delay: 150ms;
+}
+
+.transition-delay-225 {
+  transition-delay: 225ms;
+}
+
+.transition-delay-300 {
+  transition-delay: 300ms;
+}
+
+.transition-delay-375 {
+  transition-delay: 375ms;
+}
+
+/* Scroll animation classes */
+.scroll-reveal {
+  transition: opacity 0.6s ease-out, transform 0.8s ease-out;
+}
+
+.scroll-reveal-right {
+  transition: opacity 0.6s ease-out, transform 0.8s ease-out;
+  transform: translateX(30px);
+}
+
+.scroll-reveal-left {
+  transition: opacity 0.6s ease-out, transform 0.8s ease-out;
+  transform: translateX(-30px);
+}
+
+.scroll-reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.8s ease-out;
+}
+
 /* Light theme overrides */
 body.light .bg-dark {
   @apply bg-white;
@@ -224,3 +323,4 @@ body.light .progress::-webkit-progress-bar {
     opacity: 0;
   }
 }
+

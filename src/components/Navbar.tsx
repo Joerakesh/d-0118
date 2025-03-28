@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import ContactForm from "./ContactForm";
 import { Menu, X, Sun, Moon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -102,24 +103,67 @@ const Navbar = () => {
           </Button>
 
           <button
-            className="md:hidden text-foreground"
+            className="md:hidden text-foreground relative z-50 transition-all duration-300"
             onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
           >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+            {isOpen ? (
+              <X size={24} className="animate-fade-in" />
+            ) : (
+              <Menu size={24} className="animate-fade-in" />
+            )}
           </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
-      {isOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-card py-4 border-t border-primary/10">
-          <ul className="container mx-auto space-y-4 px-4">
+      {/* Mobile menu with improved blur background and animations */}
+      <div 
+        className={cn(
+          "md:hidden fixed inset-0 z-40 transition-all duration-300",
+          isOpen 
+            ? "opacity-100 pointer-events-auto" 
+            : "opacity-0 pointer-events-none"
+        )}
+        aria-hidden={!isOpen}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100vh"
+        }}
+      >
+        <div 
+          className={cn(
+            "absolute inset-0 bg-background/60 backdrop-blur-xl transition-opacity duration-300",
+            isOpen ? "opacity-100" : "opacity-0"
+          )}
+        />
+        
+        <div 
+          className={cn(
+            "absolute top-[4.5rem] left-0 w-full bg-card/60 backdrop-blur-xl border-t border-primary/10 transition-all duration-500 overflow-hidden",
+            isOpen ? "max-h-[calc(100vh-4.5rem)]" : "max-h-0"
+          )}
+        >
+          <ul className="container mx-auto space-y-4 px-4 py-4">
             {["Home", "About", "Skills", "Projects", "Education"].map(
-              (item) => (
-                <li key={item}>
+              (item, index) => (
+                <li 
+                  key={item}
+                  className={cn(
+                    "transform transition-all duration-300",
+                    isOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0",
+                    // Staggered animation delay
+                    isOpen && `transition-delay-${index * 75}`
+                  )}
+                  style={{ 
+                    transitionDelay: isOpen ? `${index * 75}ms` : '0ms' 
+                  }}
+                >
                   <a
                     href={`#${item.toLowerCase()}`}
-                    className="text-foreground/80 hover:text-primary transition-colors"
+                    className="text-foreground/80 hover:text-primary transition-colors block py-2"
                     onClick={() => setIsOpen(false)}
                   >
                     {item}
@@ -127,17 +171,27 @@ const Navbar = () => {
                 </li>
               )
             )}
-            <li>
+            <li 
+              className={cn(
+                "transform transition-all duration-300",
+                isOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0",
+                isOpen && "transition-delay-[375ms]"
+              )}
+              style={{ transitionDelay: isOpen ? '375ms' : '0ms' }}
+            >
               <Button
-                className="w-full bg-primary hover:bg-primary/90"
-                onClick={openContactForm}
+                className="w-full bg-primary hover:bg-primary/90 mt-2"
+                onClick={() => {
+                  setIsOpen(false);
+                  openContactForm();
+                }}
               >
                 Contact Me
               </Button>
             </li>
           </ul>
         </div>
-      )}
+      </div>
     </header>
   );
 };
