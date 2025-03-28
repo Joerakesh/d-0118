@@ -27,7 +27,7 @@ const AboutMe = () => {
 
     // Create an anchor element and trigger the download
     const link = document.createElement("a");
-    link.href = "https://joerakesh-portfolio.netlify.app/assets/resume.pdf";
+    link.href = "/resume.pdf";
     link.target = "_blank";
     link.download = "Joe_Rakesh_CV.pdf";
     document.body.appendChild(link);

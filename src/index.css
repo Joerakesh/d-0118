@@ -1,5 +1,4 @@
-
-@import url('https://rsms.me/inter/inter.css');
+@import url("https://rsms.me/inter/inter.css");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -30,7 +29,11 @@
 
   body.light {
     @apply bg-white text-slate-800 antialiased transition-colors duration-300;
-    background-image: radial-gradient(circle at 50% 0%, rgba(155, 135, 245, 0.06), transparent 70%);
+    background-image: radial-gradient(
+      circle at 50% 0%,
+      rgba(155, 135, 245, 0.06),
+      transparent 70%
+    );
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
@@ -38,7 +41,11 @@
 
   body.dark {
     @apply bg-dark text-white antialiased transition-colors duration-300;
-    background-image: radial-gradient(circle at 50% 0%, rgba(155, 135, 245, 0.08), transparent 70%);
+    background-image: radial-gradient(
+      circle at 50% 0%,
+      rgba(155, 135, 245, 0.08),
+      transparent 70%
+    );
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
@@ -75,7 +82,7 @@ body.light .text-white {
   @apply text-slate-800;
 }
 
-body.light .text-white\/80, 
+body.light .text-white\/80,
 body.light .text-white\/70 {
   @apply text-slate-600;
 }
@@ -93,11 +100,13 @@ body.light .border-primary\/10 {
 }
 
 body.light .neon-text {
-  text-shadow: 0 0 3px rgba(155, 135, 245, 0.3), 0 0 7px rgba(155, 135, 245, 0.2);
+  text-shadow: 0 0 3px rgba(155, 135, 245, 0.3),
+    0 0 7px rgba(155, 135, 245, 0.2);
 }
 
 body.light .neon-box {
-  box-shadow: 0 0 3px rgba(155, 135, 245, 0.3), 0 0 10px rgba(155, 135, 245, 0.2);
+  box-shadow: 0 0 3px rgba(155, 135, 245, 0.3),
+    0 0 10px rgba(155, 135, 245, 0.2);
 }
 
 /* Smooth scrolling */
@@ -107,24 +116,26 @@ html {
 
 /* Progress bar styling for skills section */
 .progress::-webkit-progress-value {
-  background-color: theme('colors.primary.DEFAULT');
+  background-color: theme("colors.primary.DEFAULT");
 }
 
 .progress::-webkit-progress-bar {
-  background-color: theme('colors.dark.light');
+  background-color: theme("colors.dark.light");
 }
 
 body.light .progress::-webkit-progress-bar {
-  background-color: theme('colors.slate.200');
+  background-color: theme("colors.slate.200");
 }
 
 /* Neon effects */
 .neon-text {
-  text-shadow: 0 0 5px rgba(155, 135, 245, 0.5), 0 0 10px rgba(155, 135, 245, 0.3);
+  text-shadow: 0 0 5px rgba(155, 135, 245, 0.5),
+    0 0 10px rgba(155, 135, 245, 0.3);
 }
 
 .neon-box {
-  box-shadow: 0 0 5px rgba(155, 135, 245, 0.5), 0 0 15px rgba(155, 135, 245, 0.3);
+  box-shadow: 0 0 5px rgba(155, 135, 245, 0.5),
+    0 0 15px rgba(155, 135, 245, 0.3);
 }
 
 .neon-border {
@@ -132,12 +143,12 @@ body.light .progress::-webkit-progress-bar {
 }
 
 .neon-border::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: -2px;
   border-radius: inherit;
   z-index: -1;
-  background: linear-gradient(120deg, #9b87f5, #D6BCFA, #7E69AB);
+  background: linear-gradient(120deg, #9b87f5, #d6bcfa, #7e69ab);
   opacity: 0.5;
   filter: blur(5px);
 }
@@ -177,13 +188,18 @@ body.light .progress::-webkit-progress-bar {
 }
 
 .button-glow::after {
-  content: '';
+  content: "";
   position: absolute;
   top: -50%;
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(120deg, transparent, rgba(155, 135, 245, 0.4), transparent);
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(155, 135, 245, 0.4),
+    transparent
+  );
   transform: rotate(45deg);
   opacity: 0;
   transition: opacity 0.3s;

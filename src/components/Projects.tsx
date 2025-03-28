@@ -10,8 +10,7 @@ const Projects = () => {
       tech: ["HTML", "CSS", "JS"],
       liveLink: "https://sjctni.edu/Department/ENGZINE",
       repoLink: "https://github.com/joerakesh/ecommerce",
-      image:
-        "https://media.licdn.com/dms/image/v2/D5622AQFeb4sHUQcT8g/feedshare-shrink_2048_1536/B56ZRGdXSrH0Ao-/0/1736348894986?e=1744848000&v=beta&t=wNAjKb2mTJDKNebiu2sD6wZs21pkTjzWMcwfFqDETUk",
+      image: "/Projects/engzine.jpeg",
     },
     {
       title: "Mergen",
@@ -22,16 +21,14 @@ const Projects = () => {
       repoLink: "https://github.com/joerakesh/mergen",
       image: "/Projects/mergen.jpg",
     },
-    // {
-    //   title: "Fitness Tracker",
-    //   description:
-    //     "A mobile-responsive fitness tracking application with workout plans, progress charts, and meal tracking.",
-    //   tech: ["React Native", "Express", "MongoDB", "Chart.js"],
-    //   liveLink: "https://example.com/fitnesstracker",
-    //   repoLink: "https://github.com/joerakesh/fitnesstracker",
-    //   image:
-    //     "https://images.unsplash.com/photo-1434682881908-b43d0467b798?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1174&q=80",
-    // },
+    {
+      title: "AI Interview",
+      description: "An AI Platform for preparing Mock Interview.",
+      tech: ["Next.js", "Firebase", "Gemini AI", "Vapi AI"],
+      liveLink: "https://interview-ai-sooty.vercel.app/",
+      repoLink: "https://github.com/Joerakesh/interview_ai",
+      image: "/Projects/ai_interview.png",
+    },
   ];
 
   return (
