@@ -29,6 +29,15 @@ const Projects = () => {
       repoLink: "https://github.com/Joerakesh/interview_ai",
       image: "/Projects/ai_interview.png",
     },
+    {
+      title: "Movie App",
+      description: "A Movie App shows movie details.",
+      tech: ["React Native", "TailwindCSS", "TMDB", "AppWrite"],
+      liveLink:
+        "https://expo.dev/accounts/joerakesh/projects/movie-app/builds/6b6333f0-5de2-45c0-925f-af2059f187b1",
+      repoLink: "https://github.com/Joerakesh/movie-app",
+      image: "/Projects/movie-app.jpg",
+    },
   ];
 
   return (
