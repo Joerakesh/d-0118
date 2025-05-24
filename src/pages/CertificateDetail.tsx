@@ -1,9 +1,9 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { ArrowLeft, Award, Calendar, CheckCircle, ExternalLink, Download, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
 
 const certificationsData = [
   {
@@ -75,6 +75,7 @@ const certificationsData = [
 const CertificateDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const certificate = certificationsData.find(cert => cert.id === id);
 
   useEffect(() => {
@@ -99,6 +100,86 @@ const CertificateDetail = () => {
         // Clean up stored position
         sessionStorage.removeItem('portfolioScrollPosition');
       }, 100);
+    }
+  };
+
+  const handleDownload = () => {
+    // Create a simple certificate download
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    canvas.width = 800;
+    canvas.height = 600;
+    
+    // Fill background
+    ctx.fillStyle = '#1A1F2C';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Add certificate content
+    ctx.fillStyle = '#9b87f5';
+    ctx.font = 'bold 32px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('Certificate of Completion', canvas.width / 2, 150);
+    
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '24px Arial';
+    ctx.fillText(certificate.title, canvas.width / 2, 250);
+    
+    ctx.font = '18px Arial';
+    ctx.fillText(`Issued by: ${certificate.issuer}`, canvas.width / 2, 300);
+    ctx.fillText(`Date: ${certificate.completionDate}`, canvas.width / 2, 350);
+    ctx.fillText(`Credential ID: ${certificate.credentialId}`, canvas.width / 2, 400);
+    
+    // Download the canvas as image
+    const link = document.createElement('a');
+    link.download = `${certificate.title.replace(/\s+/g, '_')}_Certificate.png`;
+    link.href = canvas.toDataURL();
+    link.click();
+    
+    toast({
+      title: "Certificate Downloaded",
+      description: "Your certificate has been downloaded successfully.",
+    });
+  };
+
+  const handleShare = async () => {
+    const shareUrl = window.location.href;
+    const shareText = `Check out my ${certificate.title} certificate from ${certificate.issuer}!`;
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: certificate.title,
+          text: shareText,
+          url: shareUrl,
+        });
+        toast({
+          title: "Shared Successfully",
+          description: "Certificate link has been shared.",
+        });
+      } catch (error) {
+        // If sharing fails, fall back to copying to clipboard
+        handleCopyToClipboard(shareUrl);
+      }
+    } else {
+      // Fallback to copying to clipboard
+      handleCopyToClipboard(shareUrl);
+    }
+  };
+
+  const handleCopyToClipboard = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast({
+        title: "Link Copied",
+        description: "Certificate link has been copied to your clipboard.",
+      });
+    } catch (error) {
+      toast({
+        title: "Copy Failed",
+        description: "Please copy the link manually from the address bar.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -155,11 +236,18 @@ const CertificateDetail = () => {
             </Card>
             
             <div className="flex gap-3">
-              <Button className="flex-1 bg-primary hover:bg-primary/90">
+              <Button 
+                onClick={handleDownload}
+                className="flex-1 bg-primary hover:bg-primary/90"
+              >
                 <Download className="w-4 h-4 mr-2" />
                 Download Certificate
               </Button>
-              <Button variant="outline" className="border-primary/20 text-primary hover:bg-primary/10">
+              <Button 
+                onClick={handleShare}
+                variant="outline" 
+                className="border-primary/20 text-primary hover:bg-primary/10"
+              >
                 <Share2 className="w-4 h-4 mr-2" />
                 Share
               </Button>

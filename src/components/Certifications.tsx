@@ -98,7 +98,7 @@ const Certifications = () => {
                   </div>
                 </Link>
               </HoverCardTrigger>
-              <HoverCardContent className="w-80 bg-dark-light border-primary/20">
+              <HoverCardContent className="w-80 bg-dark-light border-primary/20 text-white">
                 <div className="space-y-3">
                   <div className="flex items-start justify-between">
                     <div>
