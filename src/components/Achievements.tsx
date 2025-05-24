@@ -1,8 +1,6 @@
 import { Trophy, Award, Star } from "lucide-react";
-
 const Achievements = () => {
-  return (
-    <section id="achievements" className="py-20 px-4 bg-dark">
+  return <section id="achievements" className="py-20 px-4 bg-dark-light">
       <div className="container mx-auto">
         <div className="flex items-center gap-2 mb-12">
           <Trophy className="w-5 h-5 text-primary" />
@@ -10,7 +8,7 @@ const Achievements = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div className="bg-dark-light p-8 rounded-xl border border-primary/10">
+          <div className="bg-dark p-8 rounded-xl border border-primary/10">
             <div className="w-16 h-16 mb-6 rounded-full bg-primary/10 flex items-center justify-center">
               <Trophy className="w-8 h-8 text-primary" />
             </div>
@@ -23,7 +21,7 @@ const Achievements = () => {
             </p>
           </div>
 
-          <div className="bg-dark-light p-8 rounded-xl border border-primary/10">
+          <div className="bg-dark p-8 rounded-xl border border-primary/10">
             <div className="w-16 h-16 mb-6 rounded-full bg-primary/10 flex items-center justify-center">
               <Award className="w-8 h-8 text-primary" />
             </div>
@@ -47,9 +45,8 @@ const Achievements = () => {
               Recognized among top 100 contributors to React.js ecosystem with
               multiple accepted PRs.
             </p>
-          </div>
-
-          <div className="bg-dark-light p-8 rounded-xl border border-primary/10">
+           </div>
+           <div className="bg-dark-light p-8 rounded-xl border border-primary/10">
             <div className="w-16 h-16 mb-6 rounded-full bg-primary/10 flex items-center justify-center">
               <Award className="w-8 h-8 text-primary" />
             </div>
@@ -60,9 +57,8 @@ const Achievements = () => {
               Awarded for outstanding technical content creation and education
               in web development.
             </p>
-          </div>
-
-          <div className="bg-dark-light p-8 rounded-xl border border-primary/10">
+           </div>
+           <div className="bg-dark-light p-8 rounded-xl border border-primary/10">
             <div className="w-16 h-16 mb-6 rounded-full bg-primary/10 flex items-center justify-center">
               <Trophy className="w-8 h-8 text-primary" />
             </div>
@@ -73,9 +69,8 @@ const Achievements = () => {
               Featured as an exemplary developer by GitHub in their annual
               developer spotlight.
             </p>
-          </div>
-
-          <div className="bg-dark-light p-8 rounded-xl border border-primary/10">
+           </div>
+           <div className="bg-dark-light p-8 rounded-xl border border-primary/10">
             <div className="w-16 h-16 mb-6 rounded-full bg-primary/10 flex items-center justify-center">
               <Star className="w-8 h-8 text-primary" />
             </div>
@@ -86,11 +81,9 @@ const Achievements = () => {
               Maintained perfect 5-star rating across 50+ client projects on
               Upwork and Fiverr.
             </p>
-          </div>  */}
+           </div>  */}
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Achievements;
