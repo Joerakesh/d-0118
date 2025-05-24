@@ -1,4 +1,5 @@
-import { useParams, Link } from "react-router-dom";
+
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { ArrowLeft, Award, Calendar, CheckCircle, ExternalLink, Download, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -73,6 +74,7 @@ const certificationsData = [
 
 const CertificateDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const certificate = certificationsData.find(cert => cert.id === id);
 
   useEffect(() => {
@@ -84,8 +86,8 @@ const CertificateDetail = () => {
     // Get stored scroll position
     const savedPosition = sessionStorage.getItem('portfolioScrollPosition');
     
-    // Navigate back to home
-    window.location.href = '/';
+    // Navigate back to home using React Router
+    navigate('/');
     
     // After navigation, restore scroll position
     if (savedPosition) {
