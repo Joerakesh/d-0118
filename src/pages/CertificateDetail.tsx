@@ -1,5 +1,5 @@
-
 import { useParams, Link } from "react-router-dom";
+import { useEffect } from "react";
 import { ArrowLeft, Award, Calendar, CheckCircle, ExternalLink, Download, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -75,14 +75,42 @@ const CertificateDetail = () => {
   const { id } = useParams();
   const certificate = certificationsData.find(cert => cert.id === id);
 
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  const handleBackClick = () => {
+    // Get stored scroll position
+    const savedPosition = sessionStorage.getItem('portfolioScrollPosition');
+    
+    // Navigate back to home
+    window.location.href = '/';
+    
+    // After navigation, restore scroll position
+    if (savedPosition) {
+      setTimeout(() => {
+        window.scrollTo({
+          top: parseInt(savedPosition, 10),
+          behavior: 'smooth'
+        });
+        // Clean up stored position
+        sessionStorage.removeItem('portfolioScrollPosition');
+      }, 100);
+    }
+  };
+
   if (!certificate) {
     return (
       <div className="min-h-screen bg-dark flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-white mb-4">Certificate Not Found</h1>
-          <Link to="/" className="text-primary hover:underline">
+          <button 
+            onClick={handleBackClick}
+            className="text-primary hover:underline"
+          >
             Return to Home
-          </Link>
+          </button>
         </div>
       </div>
     );
@@ -93,13 +121,13 @@ const CertificateDetail = () => {
       {/* Header */}
       <div className="bg-dark-light border-b border-primary/10">
         <div className="container mx-auto px-4 py-6">
-          <Link 
-            to="/" 
+          <button 
+            onClick={handleBackClick}
             className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors mb-4"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Portfolio
-          </Link>
+          </button>
           <div className="flex items-center gap-3">
             <Award className="w-8 h-8 text-primary" />
             <div>

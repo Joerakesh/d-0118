@@ -55,6 +55,13 @@ const certificationsData = [
 ];
 
 const Certifications = () => {
+  const handleCertificateClick = () => {
+    // Store current scroll position before navigating
+    sessionStorage.setItem('portfolioScrollPosition', window.scrollY.toString());
+    // Scroll to top for the new page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <section id="certifications" className="py-20 px-4 bg-dark">
       <div className="container mx-auto">
@@ -69,6 +76,7 @@ const Certifications = () => {
               <HoverCardTrigger asChild>
                 <Link
                   to={`/certificate/${cert.id}`}
+                  onClick={handleCertificateClick}
                   className="group block bg-dark-light rounded-xl overflow-hidden border border-primary/10 hover:border-primary/30 transition-all duration-300 card-hover"
                 >
                   <div className="relative overflow-hidden">
