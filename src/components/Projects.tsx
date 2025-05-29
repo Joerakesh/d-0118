@@ -1,4 +1,3 @@
-
 import { Folder, ExternalLink, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -23,38 +22,42 @@ const Projects = () => {
         "e-Journnal Website for the Department of English, St. Joseph's College, Trichy.",
       tech: ["HTML", "CSS", "JS"],
       liveLink: "https://sjctni.edu/Department/Mergen",
-      repoLink: "https://github.com/joerakesh/mergen",
+      repoLink: null,
       image: "/Projects/mergen.jpg",
       featured: true,
     },
     {
       id: "ai-interview",
       title: "AI Interview",
-      description: "An AI Platform for preparing Mock Interview.",
+      description:
+        "AI Interview is a comprehensive platform that uses artificial intelligence to conduct mock interviews, providing real-time feedback and personalized improvement suggestions to help users prepare for job interviews.",
       tech: ["Next.js", "Firebase", "Gemini AI", "Vapi AI"],
       liveLink: "https://interview-ai-sooty.vercel.app/",
       repoLink: "https://github.com/Joerakesh/interview_ai",
       image: "/Projects/ai_interview.png",
       featured: true,
     },
-    {
-      id: "movie-app",
-      title: "Movie App",
-      description: "A Movie App shows movie details.",
-      tech: ["React Native", "TailwindCSS", "TMDB", "AppWrite"],
-      liveLink:
-        "https://expo.dev/accounts/joerakesh/projects/movie-app/builds/6b6333f0-5de2-45c0-925f-af2059f187b1",
-      repoLink: "https://github.com/Joerakesh/movie-app",
-      image: "/Projects/movie-app.jpg",
-      featured: true,
-    },
+    // {
+    //   id: "movie-app",
+    //   title: "Movie App",
+    //   description: "A Movie App shows movie details.",
+    //   tech: ["React Native", "TailwindCSS", "TMDB", "AppWrite"],
+    //   liveLink:
+    //     "https://expo.dev/accounts/joerakesh/projects/movie-app/builds/6b6333f0-5de2-45c0-925f-af2059f187b1",
+    //   repoLink: "https://github.com/Joerakesh/movie-app",
+    //   image: "/Projects/movie-app.jpg",
+    //   featured: true,
+    // },
   ];
 
   const handleProjectClick = () => {
     // Store current scroll position before navigating
-    sessionStorage.setItem('portfolioScrollPosition', window.scrollY.toString());
+    sessionStorage.setItem(
+      "portfolioScrollPosition",
+      window.scrollY.toString()
+    );
     // Scroll to top for the new page
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -82,7 +85,9 @@ const Projects = () => {
                 <h3 className="text-xl font-bold text-white mb-2">
                   {project.title}
                 </h3>
-                <p className="text-white/70 mb-4 line-clamp-2">{project.description}</p>
+                <p className="text-white/70 mb-4 line-clamp-2">
+                  {project.description}
+                </p>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {project.tech.map((tech, idx) => (
                     <span

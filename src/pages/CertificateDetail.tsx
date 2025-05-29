@@ -1,152 +1,150 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { ArrowLeft, Award, Calendar, CheckCircle, ExternalLink, Download, Share2 } from "lucide-react";
+import {
+  ArrowLeft,
+  Award,
+  Calendar,
+  CheckCircle,
+  ExternalLink,
+  Download,
+  Share2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 
 const certificationsData = [
   {
-    id: "microsoft-career-essentials",
-    title: "Career Essentials in Software Development",
-    issuer: "Microsoft & LinkedIn",
-    date: "March 2024",
-    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=600&h=400&fit=crop",
-    skills: ["Software Development", "Programming Fundamentals", "Problem Solving", "Code Review", "Testing"],
-    description: "Comprehensive program covering essential software development skills and industry best practices.",
-    credentialId: "MS-2024-001",
-    status: "Completed",
-    personalNote: "This certification significantly enhanced my understanding of software development lifecycle and best practices. The hands-on projects helped me apply theoretical knowledge to real-world scenarios.",
-    completionDate: "March 15, 2024",
-    validUntil: "March 15, 2027",
-    courseHours: "40 hours",
-    certUrl: "#"
-  },
-  {
-    id: "web-development-bootcamp",
-    title: "Full Stack Web Development",
-    issuer: "Tech Academy",
-    date: "December 2023",
-    image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop",
-    skills: ["React", "Node.js", "Database Management", "API Development", "MongoDB", "Express.js"],
-    description: "Intensive bootcamp covering modern web development technologies and frameworks.",
-    credentialId: "TA-2023-456",
-    status: "Completed",
-    personalNote: "An intensive journey that transformed me from a beginner to a confident full-stack developer. The practical projects and mentorship were invaluable.",
-    completionDate: "December 20, 2023",
-    validUntil: "Lifetime",
-    courseHours: "600 hours",
-    certUrl: "#"
-  },
-  {
-    id: "javascript-advanced",
-    title: "Advanced JavaScript Programming",
-    issuer: "Code Institute",
-    date: "October 2023",
-    image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&h=400&fit=crop",
-    skills: ["JavaScript ES6+", "Async Programming", "Performance Optimization", "Design Patterns", "Testing"],
-    description: "Deep dive into advanced JavaScript concepts and modern programming techniques.",
-    credentialId: "CI-2023-789",
-    status: "Completed",
-    personalNote: "This course elevated my JavaScript skills to an advanced level. Learning about design patterns and performance optimization was particularly valuable.",
-    completionDate: "October 5, 2023",
-    validUntil: "Lifetime",
-    courseHours: "80 hours",
-    certUrl: "#"
-  },
-  {
-    id: "cloud-computing",
-    title: "Cloud Computing Fundamentals",
-    issuer: "AWS Academy",
+    id: "chatgpt-web-developers",
+    title: "ChatGPT for Web Developers",
+    issuer: "LinkedIn",
     date: "2024",
-    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop",
-    skills: ["AWS Services", "Cloud Architecture", "DevOps", "EC2", "S3", "Lambda"],
-    description: "Foundation course in cloud computing concepts and AWS services implementation.",
-    credentialId: "AWS-2024-321",
-    status: "In Progress",
-    personalNote: "Currently exploring the vast world of cloud computing. The hands-on labs with AWS services are providing excellent practical experience.",
-    completionDate: "Expected: June 2024",
-    validUntil: "3 years from completion",
-    courseHours: "120 hours",
-    certUrl: "#"
-  }
+    image: "/Certifications/chatgpt-web-developers.jpeg",
+    skills: ["Web Development", "ChatGPT"],
+    description:
+      "Learned to use ChatGPT to generate and optimize web code, enhance UI with CSS, and build AI-powered apps using JavaScript and React.",
+    credentialId:
+      "c5c454abec61af420b66faa15bf7230a4bf1113fe8b994f6891314d5918385a4",
+    status: "Completed",
+    personalNote:
+      "Really interesting course—I took notes on how to use ChatGPT to streamline front-end development tasks, write cleaner JavaScript, and even prototype full components in React. The sections on AI-assisted debugging and CSS styling shortcuts were especially practical.",
+    completionDate: "July 11, 2024",
+    validUntil: "Lifetime",
+    courseHours: "2 hours 29 minutes",
+    certUrl:
+      "https://www.linkedin.com/learning/certificates/c5c454abec61af420b66faa15bf7230a4bf1113fe8b994f6891314d5918385a4?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_certifications_details%3BNicBxWcmRmyyBP%2FNsJBkEQ%3D%3D",
+  },
+  {
+    id: "microsoft-career-essentials",
+    title:
+      "Career Essentials in Software Development by Microsoft and LinkedIn",
+    issuer: "Microsoft & LinkedIn",
+    date: "2024",
+    image: "/Certifications/microsoft-career-essentials.jpeg",
+    skills: ["Software Development", "Programming"],
+    description:
+      "Comprehensive program covering essential software development skills and industry best practices.",
+    credentialId:
+      "fffd0e8209c878c0ef3d38081d5c1ce4fb48ef5037303bc242ab57ebfec41e2a",
+    status: "Completed",
+    personalNote:
+      "Took detailed notes on software development fundamentals, debugging techniques, and programming best practices. The practical projects helped reinforce key concepts like modular coding and clean architecture. The real value came from seeing how these skills apply across both front-end and back-end development.",
+    completionDate: "July 17, 2024",
+    validUntil: "Lifetime",
+    courseHours: "8 hours 20 minutes",
+    certUrl:
+      "https://www.linkedin.com/learning/certificates/fffd0e8209c878c0ef3d38081d5c1ce4fb48ef5037303bc242ab57ebfec41e2a",
+  },
+  {
+    id: "github-professional-certificate",
+    title: "Career Essentials in GitHub Professional Certificate",
+    issuer: "GitHub & LinkedIn",
+    date: "2025",
+    image: "/Certifications/github-professional-certificate.jpeg",
+    skills: ["GitHub", "Version Control"],
+    description:
+      "Hands-on program covering GitHub fundamentals, version control concepts, collaborative workflows, and industry best practices for modern software development.",
+    credentialId:
+      "8c93ad5893f125dfb7cc8876bd43e6f710b47226d791afddccd06ac0b8655728",
+    status: "Completed",
+    personalNote:
+      "Really insightful course—took a lot of notes on branching strategies, pull request workflows, and how teams manage collaboration on GitHub. The section on handling merge conflicts and reviewing code effectively stood out the most to me.",
+    completionDate: "May 26, 2025",
+    validUntil: "Lifetime",
+    courseHours: "4 hours 18 minutes",
+    certUrl:
+      "https://www.linkedin.com/learning/certificates/8c93ad5893f125dfb7cc8876bd43e6f710b47226d791afddccd06ac0b8655728",
+  },
 ];
 
 const CertificateDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const certificate = certificationsData.find(cert => cert.id === id);
+  const certificate = certificationsData.find((cert) => cert.id === id);
 
   useEffect(() => {
     // Scroll to top when component mounts
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   const handleBackClick = () => {
     // Get stored scroll position
-    const savedPosition = sessionStorage.getItem('portfolioScrollPosition');
-    
+    const savedPosition = sessionStorage.getItem("portfolioScrollPosition");
+
     // Navigate back to home using React Router
-    navigate('/');
-    
+    navigate("/");
+
     // After navigation, restore scroll position
     if (savedPosition) {
       setTimeout(() => {
         window.scrollTo({
           top: parseInt(savedPosition, 10),
-          behavior: 'smooth'
+          behavior: "smooth",
         });
         // Clean up stored position
-        sessionStorage.removeItem('portfolioScrollPosition');
+        sessionStorage.removeItem("portfolioScrollPosition");
       }, 100);
     }
   };
 
   const handleDownload = () => {
-    // Create a simple certificate download
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    
-    canvas.width = 800;
-    canvas.height = 600;
-    
-    // Fill background
-    ctx.fillStyle = '#1A1F2C';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    // Add certificate content
-    ctx.fillStyle = '#9b87f5';
-    ctx.font = 'bold 32px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText('Certificate of Completion', canvas.width / 2, 150);
-    
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '24px Arial';
-    ctx.fillText(certificate.title, canvas.width / 2, 250);
-    
-    ctx.font = '18px Arial';
-    ctx.fillText(`Issued by: ${certificate.issuer}`, canvas.width / 2, 300);
-    ctx.fillText(`Date: ${certificate.completionDate}`, canvas.width / 2, 350);
-    ctx.fillText(`Credential ID: ${certificate.credentialId}`, canvas.width / 2, 400);
-    
-    // Download the canvas as image
-    const link = document.createElement('a');
-    link.download = `${certificate.title.replace(/\s+/g, '_')}_Certificate.png`;
-    link.href = canvas.toDataURL();
-    link.click();
-    
-    toast({
-      title: "Certificate Downloaded",
-      description: "Your certificate has been downloaded successfully.",
-    });
+    const imageUrl = certificate.image;
+    const fileName = `${certificate.title.replace(
+      /\s+/g,
+      "_"
+    )}_Certificate.jpg`;
+
+    fetch(imageUrl, { mode: "cors" })
+      .then((response) => response.blob())
+      .then((blob) => {
+        const blobUrl = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = blobUrl;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(blobUrl);
+
+        toast({
+          title: "Certificate Downloaded",
+          description: "Your certificate has been downloaded successfully.",
+        });
+      })
+      .catch(() => {
+        toast({
+          title: "Download Failed",
+          description: "Unable to download the certificate image.",
+          variant: "destructive",
+        });
+      });
   };
 
   const handleShare = async () => {
     const shareUrl = window.location.href;
     const shareText = `Check out my ${certificate.title} certificate from ${certificate.issuer}!`;
-    
+
     if (navigator.share) {
       try {
         await navigator.share({
@@ -188,8 +186,10 @@ const CertificateDetail = () => {
     return (
       <div className="min-h-screen bg-dark flex items-center justify-center px-4">
         <div className="text-center">
-          <h1 className="text-xl md:text-2xl font-bold text-white mb-4">Certificate Not Found</h1>
-          <button 
+          <h1 className="text-xl md:text-2xl font-bold text-white mb-4">
+            Certificate Not Found
+          </h1>
+          <button
             onClick={handleBackClick}
             className="text-primary hover:underline"
           >
@@ -205,7 +205,7 @@ const CertificateDetail = () => {
       {/* Header */}
       <div className="bg-dark-light border-b border-primary/10">
         <div className="container mx-auto px-4 py-4 md:py-6">
-          <button 
+          <button
             onClick={handleBackClick}
             className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors mb-4"
           >
@@ -215,8 +215,12 @@ const CertificateDetail = () => {
           <div className="flex items-start md:items-center gap-3">
             <Award className="w-6 h-6 md:w-8 md:h-8 text-primary flex-shrink-0 mt-1 md:mt-0" />
             <div>
-              <h1 className="text-xl md:text-3xl font-bold text-white leading-tight">{certificate.title}</h1>
-              <p className="text-primary text-sm md:text-base">{certificate.issuer}</p>
+              <h1 className="text-xl md:text-3xl font-bold text-white leading-tight">
+                {certificate.title}
+              </h1>
+              <p className="text-primary text-sm md:text-base">
+                {certificate.issuer}
+              </p>
             </div>
           </div>
         </div>
@@ -231,22 +235,22 @@ const CertificateDetail = () => {
                 <img
                   src={certificate.image}
                   alt={certificate.title}
-                  className="w-full h-48 md:h-80 object-cover"
+                  className="w-full h-85 "
                 />
               </CardContent>
             </Card>
-            
+
             <div className="flex flex-col sm:flex-row gap-3">
-              <Button 
+              <Button
                 onClick={handleDownload}
                 className="flex-1 bg-primary hover:bg-primary/90"
               >
                 <Download className="w-4 h-4 mr-2" />
                 Download Certificate
               </Button>
-              <Button 
+              <Button
                 onClick={handleShare}
-                variant="outline" 
+                variant="outline"
                 className="flex-1 sm:flex-none border-primary/20 text-primary hover:bg-primary/10"
               >
                 <Share2 className="w-4 h-4 mr-2" />
@@ -268,26 +272,39 @@ const CertificateDetail = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                   <div>
                     <p className="text-white/60 text-sm">Status</p>
-                    <p className="text-white font-medium text-sm md:text-base">{certificate.status}</p>
+                    <p className="text-white font-medium text-sm md:text-base">
+                      {certificate.status}
+                    </p>
                   </div>
                   <div>
                     <p className="text-white/60 text-sm">Completion Date</p>
-                    <p className="text-white font-medium text-sm md:text-base">{certificate.completionDate}</p>
+                    <p className="text-white font-medium text-sm md:text-base">
+                      {certificate.completionDate}
+                    </p>
                   </div>
                   <div>
                     <p className="text-white/60 text-sm">Valid Until</p>
-                    <p className="text-white font-medium text-sm md:text-base">{certificate.validUntil}</p>
+                    <p className="text-white font-medium text-sm md:text-base">
+                      {certificate.validUntil}
+                    </p>
                   </div>
                   <div>
                     <p className="text-white/60 text-sm">Course Hours</p>
-                    <p className="text-white font-medium text-sm md:text-base">{certificate.courseHours}</p>
+                    <p className="text-white font-medium text-sm md:text-base">
+                      {certificate.courseHours}
+                    </p>
                   </div>
                 </div>
                 <div>
                   <p className="text-white/60 text-sm">Credential ID</p>
-                  <p className="text-white font-medium text-sm md:text-base break-all">{certificate.credentialId}</p>
+                  <p className="text-white font-medium text-sm md:text-base break-all">
+                    {certificate.credentialId}
+                  </p>
                 </div>
-                <Button variant="outline" className="w-full border-primary/20 text-primary hover:bg-primary/10">
+                <Button
+                  variant="outline"
+                  className="w-full border-primary/20 text-primary hover:bg-primary/10"
+                >
                   <ExternalLink className="w-4 h-4 mr-2" />
                   Verify Certificate
                 </Button>
@@ -296,16 +313,22 @@ const CertificateDetail = () => {
 
             <Card className="bg-dark-light border-primary/20">
               <CardHeader className="pb-3 md:pb-6">
-                <CardTitle className="text-white text-lg md:text-xl">Description</CardTitle>
+                <CardTitle className="text-white text-lg md:text-xl">
+                  Description
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-white/80 text-sm md:text-base leading-relaxed">{certificate.description}</p>
+                <p className="text-white/80 text-sm md:text-base leading-relaxed">
+                  {certificate.description}
+                </p>
               </CardContent>
             </Card>
 
             <Card className="bg-dark-light border-primary/20">
               <CardHeader className="pb-3 md:pb-6">
-                <CardTitle className="text-white text-lg md:text-xl">Skills Learned</CardTitle>
+                <CardTitle className="text-white text-lg md:text-xl">
+                  Skills Learned
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
@@ -323,10 +346,14 @@ const CertificateDetail = () => {
 
             <Card className="bg-dark-light border-primary/20">
               <CardHeader className="pb-3 md:pb-6">
-                <CardTitle className="text-white text-lg md:text-xl">Personal Note</CardTitle>
+                <CardTitle className="text-white text-lg md:text-xl">
+                  Personal Note
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-white/80 italic text-sm md:text-base leading-relaxed">"{certificate.personalNote}"</p>
+                <p className="text-white/80 italic text-sm md:text-base leading-relaxed">
+                  "{certificate.personalNote}"
+                </p>
               </CardContent>
             </Card>
           </div>
