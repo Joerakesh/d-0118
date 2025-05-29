@@ -1,3 +1,4 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { ArrowLeft, Award, Calendar, CheckCircle, ExternalLink, Download, Share2 } from "lucide-react";
@@ -185,9 +186,9 @@ const CertificateDetail = () => {
 
   if (!certificate) {
     return (
-      <div className="min-h-screen bg-dark flex items-center justify-center">
+      <div className="min-h-screen bg-dark flex items-center justify-center px-4">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-4">Certificate Not Found</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-white mb-4">Certificate Not Found</h1>
           <button 
             onClick={handleBackClick}
             className="text-primary hover:underline"
@@ -203,7 +204,7 @@ const CertificateDetail = () => {
     <div className="min-h-screen bg-dark">
       {/* Header */}
       <div className="bg-dark-light border-b border-primary/10">
-        <div className="container mx-auto px-4 py-6">
+        <div className="container mx-auto px-4 py-4 md:py-6">
           <button 
             onClick={handleBackClick}
             className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors mb-4"
@@ -211,31 +212,31 @@ const CertificateDetail = () => {
             <ArrowLeft className="w-4 h-4" />
             Back to Portfolio
           </button>
-          <div className="flex items-center gap-3">
-            <Award className="w-8 h-8 text-primary" />
+          <div className="flex items-start md:items-center gap-3">
+            <Award className="w-6 h-6 md:w-8 md:h-8 text-primary flex-shrink-0 mt-1 md:mt-0" />
             <div>
-              <h1 className="text-3xl font-bold text-white">{certificate.title}</h1>
-              <p className="text-primary">{certificate.issuer}</p>
+              <h1 className="text-xl md:text-3xl font-bold text-white leading-tight">{certificate.title}</h1>
+              <p className="text-primary text-sm md:text-base">{certificate.issuer}</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid lg:grid-cols-2 gap-12">
+      <div className="container mx-auto px-4 py-6 md:py-12">
+        <div className="grid lg:grid-cols-2 gap-6 md:gap-12">
           {/* Certificate Image */}
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6">
             <Card className="bg-dark-light border-primary/20 overflow-hidden">
               <CardContent className="p-0">
                 <img
                   src={certificate.image}
                   alt={certificate.title}
-                  className="w-full h-80 object-cover"
+                  className="w-full h-48 md:h-80 object-cover"
                 />
               </CardContent>
             </Card>
             
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Button 
                 onClick={handleDownload}
                 className="flex-1 bg-primary hover:bg-primary/90"
@@ -246,7 +247,7 @@ const CertificateDetail = () => {
               <Button 
                 onClick={handleShare}
                 variant="outline" 
-                className="border-primary/20 text-primary hover:bg-primary/10"
+                className="flex-1 sm:flex-none border-primary/20 text-primary hover:bg-primary/10"
               >
                 <Share2 className="w-4 h-4 mr-2" />
                 Share
@@ -255,36 +256,36 @@ const CertificateDetail = () => {
           </div>
 
           {/* Certificate Details */}
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6">
             <Card className="bg-dark-light border-primary/20">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
+              <CardHeader className="pb-3 md:pb-6">
+                <CardTitle className="text-white flex items-center gap-2 text-lg md:text-xl">
                   <CheckCircle className="w-5 h-5 text-green-400" />
                   Certificate Details
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                   <div>
                     <p className="text-white/60 text-sm">Status</p>
-                    <p className="text-white font-medium">{certificate.status}</p>
+                    <p className="text-white font-medium text-sm md:text-base">{certificate.status}</p>
                   </div>
                   <div>
                     <p className="text-white/60 text-sm">Completion Date</p>
-                    <p className="text-white font-medium">{certificate.completionDate}</p>
+                    <p className="text-white font-medium text-sm md:text-base">{certificate.completionDate}</p>
                   </div>
                   <div>
                     <p className="text-white/60 text-sm">Valid Until</p>
-                    <p className="text-white font-medium">{certificate.validUntil}</p>
+                    <p className="text-white font-medium text-sm md:text-base">{certificate.validUntil}</p>
                   </div>
                   <div>
                     <p className="text-white/60 text-sm">Course Hours</p>
-                    <p className="text-white font-medium">{certificate.courseHours}</p>
+                    <p className="text-white font-medium text-sm md:text-base">{certificate.courseHours}</p>
                   </div>
                 </div>
                 <div>
                   <p className="text-white/60 text-sm">Credential ID</p>
-                  <p className="text-white font-medium">{certificate.credentialId}</p>
+                  <p className="text-white font-medium text-sm md:text-base break-all">{certificate.credentialId}</p>
                 </div>
                 <Button variant="outline" className="w-full border-primary/20 text-primary hover:bg-primary/10">
                   <ExternalLink className="w-4 h-4 mr-2" />
@@ -294,24 +295,24 @@ const CertificateDetail = () => {
             </Card>
 
             <Card className="bg-dark-light border-primary/20">
-              <CardHeader>
-                <CardTitle className="text-white">Description</CardTitle>
+              <CardHeader className="pb-3 md:pb-6">
+                <CardTitle className="text-white text-lg md:text-xl">Description</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-white/80">{certificate.description}</p>
+                <p className="text-white/80 text-sm md:text-base leading-relaxed">{certificate.description}</p>
               </CardContent>
             </Card>
 
             <Card className="bg-dark-light border-primary/20">
-              <CardHeader>
-                <CardTitle className="text-white">Skills Learned</CardTitle>
+              <CardHeader className="pb-3 md:pb-6">
+                <CardTitle className="text-white text-lg md:text-xl">Skills Learned</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
                   {certificate.skills.map((skill) => (
                     <span
                       key={skill}
-                      className="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm"
+                      className="bg-primary/20 text-primary px-2 md:px-3 py-1 rounded-full text-xs md:text-sm"
                     >
                       {skill}
                     </span>
@@ -321,11 +322,11 @@ const CertificateDetail = () => {
             </Card>
 
             <Card className="bg-dark-light border-primary/20">
-              <CardHeader>
-                <CardTitle className="text-white">Personal Note</CardTitle>
+              <CardHeader className="pb-3 md:pb-6">
+                <CardTitle className="text-white text-lg md:text-xl">Personal Note</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-white/80 italic">"{certificate.personalNote}"</p>
+                <p className="text-white/80 italic text-sm md:text-base leading-relaxed">"{certificate.personalNote}"</p>
               </CardContent>
             </Card>
           </div>
