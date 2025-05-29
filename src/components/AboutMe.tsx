@@ -1,9 +1,10 @@
 
-import { User, Download, Sparkles } from "lucide-react";
+import { User, Download, Sparkles, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState, useRef } from "react";
 import { toast } from "@/utils/toast-utils";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 const AboutMe = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -84,13 +85,22 @@ const AboutMe = () => {
               constantly learning new technologies and methodologies to stay at
               the forefront of web development.
             </p>
-            <Button
-              variant="outline"
-              className="mt-4 border-primary/20 text-primary hover:bg-primary/10 transition-all duration-300 button-glow"
-              onClick={handleDownloadCV}
-            >
-              <Download className="w-4 h-4 mr-2" /> Download CV
-            </Button>
+            <div className="flex flex-wrap gap-4">
+              <Button
+                variant="outline"
+                className="border-primary/20 text-primary hover:bg-primary/10 transition-all duration-300 button-glow"
+                onClick={handleDownloadCV}
+              >
+                <Download className="w-4 h-4 mr-2" /> Download CV
+              </Button>
+              <Link to="/about">
+                <Button
+                  className="bg-primary hover:bg-primary/90 transition-all duration-300"
+                >
+                  <ArrowRight className="w-4 h-4 mr-2" /> View Details
+                </Button>
+              </Link>
+            </div>
           </div>
           <div
             className={cn(
