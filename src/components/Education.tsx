@@ -1,3 +1,4 @@
+
 import { BookOpen } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
@@ -30,20 +31,24 @@ const Education = () => {
             </div>
           </div>
 
-          {/* <div className="relative pl-8">
+          <div className="relative pl-8">
             <div className="absolute left-0 top-0 bottom-0 w-px bg-primary/20"></div>
             <div className="absolute left-0 top-1 w-2 h-2 rounded-full bg-primary"></div>
 
             <div className="bg-dark-light p-6 rounded-lg border border-primary/10">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xl font-bold text-white">
-                  Bachelor of Computer Science
+                  Higher Secondary (XII) - Computer Science
                 </h3>
-                <span className="text-primary-light text-sm">2012 - 2016</span>
+                <span className="text-primary-light text-sm">2021 - 2023</span>
               </div>
-              <p className="text-primary mb-2">MIT</p>
+              <p className="text-primary mb-2">St. Mary's Higher Secondary School, Dindigul</p>
+              <div className="flex items-center gap-4 mb-2">
+                <span className="text-white/80">Grade: 78%</span>
+                <span className="px-2 py-1 bg-primary/20 text-primary text-xs rounded">Computer Science</span>
+              </div>
               <p className="text-white/80">
-                Focus on Software Development and Database Management
+                Focused on Computer Science fundamentals, programming basics, and mathematics
               </p>
             </div>
           </div>
@@ -55,17 +60,20 @@ const Education = () => {
             <div className="bg-dark-light p-6 rounded-lg border border-primary/10">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xl font-bold text-white">
-                  Advanced Web Development Certification
+                  Secondary (X) - SSLC
                 </h3>
-                <span className="text-primary-light text-sm">2015</span>
+                <span className="text-primary-light text-sm">2020 - 2021</span>
               </div>
-              <p className="text-primary mb-2">Udacity</p>
+              <p className="text-primary mb-2">St. Mary's Higher Secondary School, Dindigul</p>
+              <div className="flex items-center gap-4 mb-2">
+                <span className="text-white/80">Grade: 82%</span>
+                <span className="px-2 py-1 bg-primary/20 text-primary text-xs rounded">Science & Mathematics</span>
+              </div>
               <p className="text-white/80">
-                Specialized training in modern frontend frameworks and
-                responsive design
+                Strong foundation in Science, Mathematics, and English
               </p>
-            </div> 
-          </div>*/}
+            </div>
+          </div>
         </div>
       </div>
     </section>
