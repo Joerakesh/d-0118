@@ -1,10 +1,15 @@
 
-import { ArrowLeft, User, Code, Briefcase, GraduationCap, Award, Target, Heart } from "lucide-react";
+import { ArrowLeft, User, Code, Briefcase, GraduationCap, Award, Target, Heart, Laptop, CheckCircle, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect } from "react";
 
 const About = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   const skills = [
     "JavaScript", "TypeScript", "React", "Node.js", "MongoDB", "Express", 
     "HTML/CSS", "Git/GitHub", "Docker", "AWS", "Next.js", "Firebase"
@@ -12,34 +17,62 @@ const About = () => {
 
   const journey = [
     {
-      year: "Aug 2024",
+      year: "Feb 2025",
       title: "Software Developer",
-      company: "Started my journey as a software developer",
-      description: "Began my professional journey in software development, focusing on full-stack web applications."
+      badge: "Present",
+      subtitle: "Currently working as a Full Stack Engineer @Catalyst by Zoho",
+      description: "Working on scalable frontend banking services with multiple framework support.",
+      icon: "💻",
+      completed: false
     },
     {
       year: "Apr 2024", 
       title: "Completed my college degree",
-      company: "St. Joseph's College",
-      description: "Graduated with a Bachelor's degree in Computer Science and Engineering."
+      subtitle: "",
+      description: "Graduated with a Bachelor's degree in Computer Science and Engineering from St. Joseph's College.",
+      icon: "🎓",
+      completed: true
     },
     {
-      year: "Jan 2024",
-      title: "Project Tubeez",
-      company: "Completed a major project during college",
-      description: "Developed a comprehensive web application as part of my final year project."
+      year: "Mar 2022",
+      title: "Project Trainee",
+      subtitle: "I joined as a project trainee @Zoho Corporation",
+      description: "Gained hands-on experience working on real-world projects and learning industry best practices.",
+      icon: "📋",
+      completed: true
     },
     {
-      year: "Aug 2023",
+      year: "Jul 2021",
+      title: "Worked as an Intern",
+      subtitle: "I worked as a intern @Grids and Guides",
+      description: "Started my professional journey by working on web development projects and learning the fundamentals.",
+      icon: "💼",
+      completed: true
+    },
+    {
+      year: "Jan 2020",
       title: "Started Freelancing",
-      company: "Independent Contractor",
-      description: "Began taking on freelance projects to gain real-world experience while studying."
+      subtitle: "I used my freelancing earnings to upgrade my laptop.",
+      description: "Began taking on freelance projects to gain experience and fund my education.",
+      icon: "💻",
+      device: "Honor MagicBook, AMD Ryzen 5, 8GB, 256 GB SSD",
+      completed: true
     },
     {
-      year: "2021",
+      year: "Aug 2018",
       title: "Started my college studies in Computer Science and Engineering",
-      company: "St. Joseph's College",
-      description: "Began my formal education in computer science, laying the foundation for my career."
+      subtitle: "",
+      description: "Began formal education in computer science at St. Joseph's College, laying the foundation for my career.",
+      icon: "📚",
+      completed: true
+    },
+    {
+      year: "~ 2016",
+      title: "Wrote my first code",
+      subtitle: "I wrote my first line of code during my higher secondary school years.",
+      description: "My journey into programming began during high school, sparking my passion for technology.",
+      icon: "👨‍💻",
+      completed: true
     }
   ];
 
@@ -165,20 +198,68 @@ const About = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-foreground/80 mb-8">Following my tech journey, I strive to assist entrepreneurs and leave an outstanding track every day.</p>
-            <div className="space-y-6">
-              {journey.map((item, index) => (
-                <div key={index} className="flex gap-4 p-4 rounded-lg border border-primary/10 hover:border-primary/20 transition-colors">
-                  <div className="text-primary font-bold text-sm whitespace-nowrap">
-                    {item.year}
+            <p className="text-foreground/80 mb-8">
+              Embracing my own journey, I strive to avoid comparisons and focus on taking small, meaningful steps every day.
+            </p>
+            
+            {/* Timeline */}
+            <div className="relative">
+              {/* Vertical line */}
+              <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-border"></div>
+              
+              <div className="space-y-8">
+                {journey.map((item, index) => (
+                  <div key={index} className="relative flex items-start gap-6">
+                    {/* Timeline dot */}
+                    <div className="relative z-10 flex items-center justify-center w-12 h-12 rounded-full bg-background border-2 border-primary/20">
+                      {item.completed ? (
+                        <CheckCircle className="w-6 h-6 text-primary" />
+                      ) : (
+                        <div className="w-3 h-3 rounded-full bg-primary animate-pulse"></div>
+                      )}
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <div className="bg-card border border-primary/10 rounded-lg p-6 hover:border-primary/20 transition-colors">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <h3 className="text-lg font-semibold text-foreground">
+                              {item.title}
+                            </h3>
+                            {item.badge && (
+                              <span className="px-2 py-1 text-xs font-medium bg-primary text-white rounded">
+                                {item.badge}
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-sm text-primary font-medium">
+                            {item.year}
+                          </span>
+                        </div>
+                        
+                        {item.subtitle && (
+                          <p className="text-sm text-foreground/70 mb-2 flex items-center gap-1">
+                            <span className="text-lg">{item.icon}</span>
+                            {item.subtitle}
+                          </p>
+                        )}
+                        
+                        <p className="text-sm text-foreground/80 mb-3">
+                          {item.description}
+                        </p>
+                        
+                        {item.device && (
+                          <div className="flex items-center gap-2 text-xs text-foreground/60">
+                            <Laptop className="w-3 h-3" />
+                            {item.device}
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-foreground mb-1">{item.title}</h3>
-                    <p className="text-sm text-primary mb-2">{item.company}</p>
-                    <p className="text-sm text-foreground/70">{item.description}</p>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </CardContent>
         </Card>
