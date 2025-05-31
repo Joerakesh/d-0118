@@ -3,14 +3,17 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import ContactForm from "./ContactForm";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { Menu, X, Sun, Moon, Download, Github, Linkedin, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isLightTheme, setIsLightTheme] = useState(false);
   const [contactDialogOpen, setContactDialogOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     // Check if user has a theme preference
@@ -54,14 +57,43 @@ const Navbar = () => {
     }
   };
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      const searchLower = searchTerm.toLowerCase();
+      const sections = ["home", "about", "skills", "education", "projects", "certifications", "achievements"];
+      const matchedSection = sections.find(section => 
+        section.includes(searchLower) || searchLower.includes(section)
+      );
+      
+      if (matchedSection) {
+        const element = document.getElementById(matchedSection);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+          setSearchOpen(false);
+          setSearchTerm("");
+        }
+      }
+    }
+  };
+
+  const downloadResume = () => {
+    const link = document.createElement('a');
+    link.href = '/resume.pdf';
+    link.download = 'Joe_Rakesh_A_Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <header
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 px-0 ${
-        scrolled ? "py-3 glass-nav" : "py-5"
+        scrolled ? "py-3 glass-nav backdrop-blur-md" : "py-5"
       }`}
     >
       <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="text-xl font-bold text-primary neon-text">
+        <Link to="/" className="text-xl font-bold text-primary neon-text hover:scale-105 transition-transform">
           Joe Rakesh A
         </Link>
 
@@ -69,7 +101,7 @@ const Navbar = () => {
           <ul className="flex gap-8">
             {[
               "Home",
-              "About",
+              "About", 
               "Skills",
               "Education",
               "Projects",
@@ -79,47 +111,118 @@ const Navbar = () => {
               <li key={item}>
                 <a
                   href={`#${item.toLowerCase()}`}
-                  className="text-foreground/80 hover:text-primary transition-colors"
+                  className="text-foreground/80 hover:text-primary transition-all duration-300 hover:scale-105 relative group"
                 >
                   {item}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
                 </a>
               </li>
             ))}
           </ul>
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          {/* Search */}
+          <div className="relative hidden md:block">
+            {searchOpen ? (
+              <form onSubmit={handleSearch} className="flex items-center gap-2">
+                <Input
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search sections..."
+                  className="w-40 h-8 text-sm"
+                  autoFocus
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={() => {
+                    setSearchOpen(false);
+                    setSearchTerm("");
+                  }}
+                >
+                  <X size={16} />
+                </Button>
+              </form>
+            ) : (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-foreground hover:text-primary"
+                onClick={() => setSearchOpen(true)}
+              >
+                <Search size={16} />
+              </Button>
+            )}
+          </div>
+
+          {/* Social Links */}
+          <div className="hidden md:flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-foreground hover:text-primary"
+              onClick={() => window.open('https://github.com/joerakeshdeveloper', '_blank')}
+            >
+              <Github size={16} />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-foreground hover:text-primary"
+              onClick={() => window.open('https://linkedin.com/in/joe-rakesh-a', '_blank')}
+            >
+              <Linkedin size={16} />
+            </Button>
+          </div>
+
+          {/* Download Resume */}
           <Button
             variant="ghost"
             size="icon"
-            className="text-foreground hover:text-primary"
-            onClick={toggleTheme}
+            className="hidden md:flex h-8 w-8 text-foreground hover:text-primary"
+            onClick={downloadResume}
+            title="Download Resume"
           >
-            {isLightTheme ? <Moon size={20} /> : <Sun size={20} />}
+            <Download size={16} />
           </Button>
 
+          {/* Theme Toggle */}
           <Button
-            className="hidden md:inline-flex bg-primary hover:bg-primary/90"
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-foreground hover:text-primary"
+            onClick={toggleTheme}
+          >
+            {isLightTheme ? <Moon size={16} /> : <Sun size={16} />}
+          </Button>
+
+          {/* Contact Button */}
+          <Button
+            className="hidden md:inline-flex bg-primary hover:bg-primary/90 h-8 px-4 text-sm"
             onClick={openContactForm}
           >
             Contact Me
           </Button>
 
+          {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden text-foreground relative z-50 transition-all duration-300"
+            className="md:hidden text-foreground relative z-50 transition-all duration-300 p-1"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
             {isOpen ? (
-              <X size={24} className="animate-fade-in" />
+              <X size={20} className="animate-fade-in" />
             ) : (
-              <Menu size={24} className="animate-fade-in" />
+              <Menu size={20} className="animate-fade-in" />
             )}
           </button>
         </div>
       </div>
 
-      {/* Mobile menu with improved blur background and animations */}
+      {/* Mobile menu */}
       <div
         className={cn(
           "md:hidden fixed inset-0 z-40 transition-all duration-300",
@@ -128,36 +231,36 @@ const Navbar = () => {
             : "opacity-0 pointer-events-none"
         )}
         aria-hidden={!isOpen}
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100vh",
-        }}
       >
         <div
           className={cn(
-            "absolute inset-0 bg-background/60 backdrop-blur-xl transition-opacity duration-300",
+            "absolute inset-0 bg-background/90 backdrop-blur-xl transition-opacity duration-300",
             isOpen ? "opacity-100" : "opacity-0"
           )}
-          style={{
-            backdropFilter: "blur(20px)",
-            background: "rgba(26, 31, 44, 0.9)"
-          }}
         />
 
         <div
           className={cn(
-            "absolute top-[4.5rem] left-0 w-full bg-card/60 backdrop-blur-xl border-t border-primary/10 transition-all duration-500 overflow-hidden",
+            "absolute top-[4.5rem] left-0 w-full bg-card/95 backdrop-blur-xl border-t border-primary/10 transition-all duration-500 overflow-hidden",
             isOpen ? "max-h-[calc(100vh-4.5rem)]" : "max-h-0"
           )}
-          style={{
-            backdropFilter: "blur(20px)",
-            background: "rgba(26, 31, 44, 0.95)"
-          }}
         >
-          <ul className="container mx-auto space-y-4 px-4 py-4">
+          <ul className="container mx-auto space-y-4 px-4 py-6">
+            {/* Search in mobile */}
+            <li>
+              <form onSubmit={handleSearch} className="flex gap-2">
+                <Input
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search sections..."
+                  className="flex-1"
+                />
+                <Button type="submit" size="sm">
+                  <Search size={16} />
+                </Button>
+              </form>
+            </li>
+
             {["Home", "About", "Skills", "Projects", "Education", "Certifications"].map(
               (item, index) => (
                 <li
@@ -166,9 +269,7 @@ const Navbar = () => {
                     "transform transition-all duration-300",
                     isOpen
                       ? "translate-y-0 opacity-100"
-                      : "translate-y-4 opacity-0",
-                    // Staggered animation delay
-                    isOpen && `transition-delay-${index * 75}`
+                      : "translate-y-4 opacity-0"
                   )}
                   style={{
                     transitionDelay: isOpen ? `${index * 75}ms` : "0ms",
@@ -176,7 +277,7 @@ const Navbar = () => {
                 >
                   <a
                     href={`#${item.toLowerCase()}`}
-                    className="text-foreground/80 hover:text-primary transition-colors block py-2"
+                    className="text-foreground/80 hover:text-primary transition-colors block py-2 text-lg"
                     onClick={() => setIsOpen(false)}
                   >
                     {item}
@@ -184,18 +285,34 @@ const Navbar = () => {
                 </li>
               )
             )}
-            <li
-              className={cn(
-                "transform transition-all duration-300",
-                isOpen
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-4 opacity-0",
-                isOpen && "transition-delay-[450ms]"
-              )}
-              style={{ transitionDelay: isOpen ? "450ms" : "0ms" }}
-            >
+            
+            {/* Mobile Actions */}
+            <li className="pt-4 border-t border-primary/10">
+              <div className="flex gap-2 mb-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    downloadResume();
+                    setIsOpen(false);
+                  }}
+                  className="flex-1"
+                >
+                  <Download size={16} className="mr-2" />
+                  Resume
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => window.open('https://github.com/joerakeshdeveloper', '_blank')}
+                  className="flex-1"
+                >
+                  <Github size={16} className="mr-2" />
+                  GitHub
+                </Button>
+              </div>
               <Button
-                className="w-full bg-primary hover:bg-primary/90 mt-2"
+                className="w-full bg-primary hover:bg-primary/90"
                 onClick={() => {
                   setIsOpen(false);
                   openContactForm();
