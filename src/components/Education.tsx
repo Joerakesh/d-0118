@@ -1,4 +1,3 @@
-
 import { BookOpen } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
@@ -25,8 +24,8 @@ const Education = () => {
               </div>
               <p className="text-primary mb-2">St. Joseph's College, Trichy</p>
               <p className="text-white/80">
-                Specialized in Advanced Web Technologies and Artificial
-                Intelligence
+                Specialized in Advanced Web Technologies and Programming
+                Languages
               </p>
             </div>
           </div>
@@ -42,13 +41,18 @@ const Education = () => {
                 </h3>
                 <span className="text-primary-light text-sm">2021 - 2023</span>
               </div>
-              <p className="text-primary mb-2">St. Mary's Higher Secondary School, Dindigul</p>
+              <p className="text-primary mb-2">
+                Adaikala Annai Higher Secondary School, Viriyur{" "}
+              </p>
               <div className="flex items-center gap-4 mb-2">
-                <span className="text-white/80">Grade: 78%</span>
-                <span className="px-2 py-1 bg-primary/20 text-primary text-xs rounded">Computer Science</span>
+                <span className="text-white/80">Grade: 75%</span>
+                <span className="px-2 py-1 bg-primary/20 text-primary text-xs rounded">
+                  Computer Science
+                </span>
               </div>
               <p className="text-white/80">
-                Focused on Computer Science fundamentals, programming basics, and mathematics
+                Focused on Computer Science fundamentals, programming basics,
+                and mathematics
               </p>
             </div>
           </div>
@@ -64,10 +68,14 @@ const Education = () => {
                 </h3>
                 <span className="text-primary-light text-sm">2020 - 2021</span>
               </div>
-              <p className="text-primary mb-2">St. Mary's Higher Secondary School, Dindigul</p>
+              <p className="text-primary mb-2">
+                Government High School, Palayanur
+              </p>
               <div className="flex items-center gap-4 mb-2">
-                <span className="text-white/80">Grade: 82%</span>
-                <span className="px-2 py-1 bg-primary/20 text-primary text-xs rounded">Science & Mathematics</span>
+                <span className="text-white/80">All Pass</span>
+                <span className="px-2 py-1 bg-primary/20 text-primary text-xs rounded">
+                  Mathematics, Science & Social Science
+                </span>
               </div>
               <p className="text-white/80">
                 Strong foundation in Science, Mathematics, and English
