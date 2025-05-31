@@ -72,6 +72,7 @@ const Navbar = () => {
           element.scrollIntoView({ behavior: "smooth" });
           setSearchOpen(false);
           setSearchTerm("");
+          setIsOpen(false); // Close mobile menu
         }
       }
     }
@@ -86,19 +87,30 @@ const Navbar = () => {
     document.body.removeChild(link);
   };
 
+  const handleNavClick = () => {
+    setIsOpen(false);
+  };
+
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 px-0 ${
-        scrolled ? "py-3 glass-nav backdrop-blur-md" : "py-5"
-      }`}
+      className={cn(
+        "fixed top-0 left-0 w-full z-50 transition-all duration-300",
+        scrolled 
+          ? "py-2 md:py-3 glass-nav backdrop-blur-md bg-background/80 border-b border-border/50" 
+          : "py-3 md:py-5 bg-transparent"
+      )}
     >
-      <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="text-xl font-bold text-primary neon-text hover:scale-105 transition-transform">
+      <div className="container mx-auto px-4 flex justify-between items-center">
+        <Link 
+          to="/" 
+          className="text-lg md:text-xl font-bold text-primary neon-text hover:scale-105 transition-transform"
+        >
           Joe Rakesh A
         </Link>
 
-        <nav className="hidden md:block">
-          <ul className="flex gap-8">
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:block">
+          <ul className="flex gap-6 xl:gap-8">
             {[
               "Home",
               "About", 
@@ -111,7 +123,7 @@ const Navbar = () => {
               <li key={item}>
                 <a
                   href={`#${item.toLowerCase()}`}
-                  className="text-foreground/80 hover:text-primary transition-all duration-300 hover:scale-105 relative group"
+                  className="text-foreground/80 hover:text-primary transition-all duration-300 hover:scale-105 relative group text-sm xl:text-base"
                 >
                   {item}
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
@@ -121,16 +133,17 @@ const Navbar = () => {
           </ul>
         </nav>
 
-        <div className="flex items-center gap-2">
+        {/* Desktop Actions */}
+        <div className="hidden md:flex items-center gap-1 lg:gap-2">
           {/* Search */}
-          <div className="relative hidden md:block">
+          <div className="relative">
             {searchOpen ? (
               <form onSubmit={handleSearch} className="flex items-center gap-2">
                 <Input
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search sections..."
-                  className="w-40 h-8 text-sm"
+                  className="w-32 lg:w-40 h-8 text-sm"
                   autoFocus
                 />
                 <Button
@@ -159,7 +172,7 @@ const Navbar = () => {
           </div>
 
           {/* Social Links */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="flex items-center gap-1">
             <Button
               variant="ghost"
               size="icon"
@@ -182,7 +195,7 @@ const Navbar = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="hidden md:flex h-8 w-8 text-foreground hover:text-primary"
+            className="h-8 w-8 text-foreground hover:text-primary"
             onClick={downloadResume}
             title="Download Resume"
           >
@@ -201,28 +214,28 @@ const Navbar = () => {
 
           {/* Contact Button */}
           <Button
-            className="hidden md:inline-flex bg-primary hover:bg-primary/90 h-8 px-4 text-sm"
+            className="bg-primary hover:bg-primary/90 h-8 px-3 lg:px-4 text-sm"
             onClick={openContactForm}
           >
             Contact Me
           </Button>
-
-          {/* Mobile Menu Toggle */}
-          <button
-            className="md:hidden text-foreground relative z-50 transition-all duration-300 p-1"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
-          >
-            {isOpen ? (
-              <X size={20} className="animate-fade-in" />
-            ) : (
-              <Menu size={20} className="animate-fade-in" />
-            )}
-          </button>
         </div>
+
+        {/* Mobile Menu Toggle */}
+        <button
+          className="md:hidden text-foreground relative z-50 transition-all duration-300 p-2"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle menu"
+        >
+          {isOpen ? (
+            <X size={20} className="animate-fade-in" />
+          ) : (
+            <Menu size={20} className="animate-fade-in" />
+          )}
+        </button>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile/Tablet menu overlay */}
       <div
         className={cn(
           "md:hidden fixed inset-0 z-40 transition-all duration-300",
@@ -232,22 +245,25 @@ const Navbar = () => {
         )}
         aria-hidden={!isOpen}
       >
+        {/* Backdrop */}
         <div
           className={cn(
-            "absolute inset-0 bg-background/90 backdrop-blur-xl transition-opacity duration-300",
+            "absolute inset-0 bg-background/95 backdrop-blur-xl transition-opacity duration-300",
             isOpen ? "opacity-100" : "opacity-0"
           )}
+          onClick={() => setIsOpen(false)}
         />
 
+        {/* Menu content */}
         <div
           className={cn(
-            "absolute top-[4.5rem] left-0 w-full bg-card/95 backdrop-blur-xl border-t border-primary/10 transition-all duration-500 overflow-hidden",
-            isOpen ? "max-h-[calc(100vh-4.5rem)]" : "max-h-0"
+            "absolute top-[4rem] left-0 w-full bg-card/95 backdrop-blur-xl border-t border-primary/10 transition-all duration-500 overflow-hidden shadow-lg",
+            isOpen ? "max-h-[calc(100vh-4rem)]" : "max-h-0"
           )}
         >
-          <ul className="container mx-auto space-y-4 px-4 py-6">
+          <div className="container mx-auto px-4 py-6 space-y-6">
             {/* Search in mobile */}
-            <li>
+            <div>
               <form onSubmit={handleSearch} className="flex gap-2">
                 <Input
                   value={searchTerm}
@@ -259,36 +275,42 @@ const Navbar = () => {
                   <Search size={16} />
                 </Button>
               </form>
-            </li>
+            </div>
 
-            {["Home", "About", "Skills", "Projects", "Education", "Certifications"].map(
-              (item, index) => (
-                <li
-                  key={item}
-                  className={cn(
-                    "transform transition-all duration-300",
-                    isOpen
-                      ? "translate-y-0 opacity-100"
-                      : "translate-y-4 opacity-0"
-                  )}
-                  style={{
-                    transitionDelay: isOpen ? `${index * 75}ms` : "0ms",
-                  }}
-                >
-                  <a
-                    href={`#${item.toLowerCase()}`}
-                    className="text-foreground/80 hover:text-primary transition-colors block py-2 text-lg"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {item}
-                  </a>
-                </li>
-              )
-            )}
+            {/* Navigation Links */}
+            <nav>
+              <ul className="space-y-4">
+                {["Home", "About", "Skills", "Projects", "Education", "Certifications", "Achievements"].map(
+                  (item, index) => (
+                    <li
+                      key={item}
+                      className={cn(
+                        "transform transition-all duration-300",
+                        isOpen
+                          ? "translate-y-0 opacity-100"
+                          : "translate-y-4 opacity-0"
+                      )}
+                      style={{
+                        transitionDelay: isOpen ? `${index * 75}ms` : "0ms",
+                      }}
+                    >
+                      <a
+                        href={`#${item.toLowerCase()}`}
+                        className="text-foreground/80 hover:text-primary transition-colors block py-2 text-lg font-medium"
+                        onClick={handleNavClick}
+                      >
+                        {item}
+                      </a>
+                    </li>
+                  )
+                )}
+              </ul>
+            </nav>
             
             {/* Mobile Actions */}
-            <li className="pt-4 border-t border-primary/10">
-              <div className="flex gap-2 mb-4">
+            <div className="pt-4 border-t border-primary/10 space-y-4">
+              {/* Action buttons */}
+              <div className="flex gap-2">
                 <Button
                   variant="outline"
                   size="sm"
@@ -304,13 +326,46 @@ const Navbar = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => window.open('https://github.com/joerakeshdeveloper', '_blank')}
+                  onClick={() => {
+                    toggleTheme();
+                    setIsOpen(false);
+                  }}
+                  className="flex-1"
+                >
+                  {isLightTheme ? <Moon size={16} className="mr-2" /> : <Sun size={16} className="mr-2" />}
+                  Theme
+                </Button>
+              </div>
+
+              {/* Social links */}
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    window.open('https://github.com/joerakeshdeveloper', '_blank');
+                    setIsOpen(false);
+                  }}
                   className="flex-1"
                 >
                   <Github size={16} className="mr-2" />
                   GitHub
                 </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    window.open('https://linkedin.com/in/joe-rakesh-a', '_blank');
+                    setIsOpen(false);
+                  }}
+                  className="flex-1"
+                >
+                  <Linkedin size={16} className="mr-2" />
+                  LinkedIn
+                </Button>
               </div>
+
+              {/* Contact button */}
               <Button
                 className="w-full bg-primary hover:bg-primary/90"
                 onClick={() => {
@@ -320,8 +375,8 @@ const Navbar = () => {
               >
                 Contact Me
               </Button>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
       </div>
     </header>

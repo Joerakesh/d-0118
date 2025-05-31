@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -186,10 +185,10 @@ const Chatbot = () => {
       {!isOpen && (
         <Button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-50 h-16 w-16 rounded-full bg-blue-600 hover:bg-blue-700 shadow-lg transition-all duration-300 hover:scale-105"
+          className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 h-12 w-12 md:h-16 md:w-16 rounded-full bg-blue-600 hover:bg-blue-700 shadow-lg transition-all duration-300 hover:scale-105"
           size="icon"
         >
-          <Bot className="h-8 w-8 text-white" />
+          <Bot className="h-6 w-6 md:h-8 md:w-8 text-white" />
         </Button>
       )}
 
@@ -197,53 +196,53 @@ const Chatbot = () => {
       {isOpen && (
         <div
           className={cn(
-            "fixed bottom-6 right-6 z-50 w-96 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl transition-all duration-300 overflow-hidden",
-            isMinimized ? "h-16" : "h-[500px]"
+            "fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 w-[calc(100vw-2rem)] max-w-sm md:w-96 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl transition-all duration-300 overflow-hidden",
+            isMinimized ? "h-16" : "h-[70vh] max-h-[500px] md:h-[500px]"
           )}
         >
           {/* Header */}
-          <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-            <div className="flex items-center gap-3">
-              <Avatar className="h-8 w-8">
+          <div className="flex items-center justify-between p-3 md:p-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+            <div className="flex items-center gap-2 md:gap-3 min-w-0">
+              <Avatar className="h-6 w-6 md:h-8 md:w-8 flex-shrink-0">
                 <AvatarFallback className="bg-white text-blue-600">
-                  <Bot className="h-4 w-4" />
+                  <Bot className="h-3 w-3 md:h-4 md:w-4" />
                 </AvatarFallback>
               </Avatar>
-              <div>
-                <span className="font-semibold">Joe's AI Assistant</span>
+              <div className="min-w-0">
+                <span className="font-semibold text-sm md:text-base truncate">Joe's AI Assistant</span>
                 <div className="text-xs opacity-90 flex items-center gap-1">
-                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  Online • {messageCount} messages
+                  <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-green-400 rounded-full"></div>
+                  <span className="truncate">Online • {messageCount} messages</span>
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-0.5 md:gap-1 flex-shrink-0">
               <Button
                 onClick={clearChat}
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 text-white hover:bg-white/20 transition-colors"
+                className="h-6 w-6 md:h-8 md:w-8 text-white hover:bg-white/20 transition-colors"
                 title="Clear chat"
               >
-                <RefreshCw className="h-4 w-4" />
+                <RefreshCw className="h-3 w-3 md:h-4 md:w-4" />
               </Button>
               <Button
                 onClick={() => setIsMinimized(!isMinimized)}
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 text-white hover:bg-white/20 transition-colors"
+                className="h-6 w-6 md:h-8 md:w-8 text-white hover:bg-white/20 transition-colors"
                 title={isMinimized ? "Maximize" : "Minimize"}
               >
-                {isMinimized ? <Maximize2 className="h-4 w-4" /> : <Minimize2 className="h-4 w-4" />}
+                {isMinimized ? <Maximize2 className="h-3 w-3 md:h-4 md:w-4" /> : <Minimize2 className="h-3 w-3 md:h-4 md:w-4" />}
               </Button>
               <Button
                 onClick={handleCloseChat}
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 text-white hover:bg-red-500/20 transition-colors"
+                className="h-6 w-6 md:h-8 md:w-8 text-white hover:bg-red-500/20 transition-colors"
                 title="Close chat"
               >
-                <X className="h-4 w-4" />
+                <X className="h-3 w-3 md:h-4 md:w-4" />
               </Button>
             </div>
           </div>
@@ -251,27 +250,28 @@ const Chatbot = () => {
           {!isMinimized && (
             <>
               {/* Messages */}
-              <div className="flex-1 p-4 overflow-y-auto h-80 space-y-4 bg-gray-50 dark:bg-gray-800">
+              <div className="flex-1 p-3 md:p-4 overflow-y-auto space-y-3 md:space-y-4 bg-gray-50 dark:bg-gray-800" 
+                   style={{ height: 'calc(100% - 180px)' }}>
                 {messages.map((message) => (
                   <div
                     key={message.id}
                     className={cn(
-                      "flex items-start gap-3 group",
+                      "flex items-start gap-2 md:gap-3 group",
                       message.sender === "user" ? "justify-end" : "justify-start"
                     )}
                   >
                     {message.sender === "bot" && (
-                      <Avatar className="h-8 w-8 flex-shrink-0">
+                      <Avatar className="h-6 w-6 md:h-8 md:w-8 flex-shrink-0">
                         <AvatarFallback className="bg-blue-600 text-white">
-                          <Bot className="h-4 w-4" />
+                          <Bot className="h-3 w-3 md:h-4 md:w-4" />
                         </AvatarFallback>
                       </Avatar>
                     )}
                     
-                    <div className="flex flex-col">
+                    <div className="flex flex-col max-w-[85%] md:max-w-[80%]">
                       <div
                         className={cn(
-                          "max-w-[80%] p-3 rounded-lg text-sm whitespace-pre-line relative",
+                          "p-2 md:p-3 rounded-lg text-xs md:text-sm whitespace-pre-line relative",
                           message.sender === "user"
                             ? "bg-blue-600 text-white rounded-br-none"
                             : "bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-bl-none shadow-sm text-gray-900 dark:text-gray-100"
@@ -286,35 +286,35 @@ const Chatbot = () => {
                               onClick={() => copyMessage(message.text)}
                               variant="ghost"
                               size="icon"
-                              className="h-6 w-6 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                              className="h-5 w-5 md:h-6 md:w-6 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                             >
-                              <Copy className="h-3 w-3" />
+                              <Copy className="h-2 w-2 md:h-3 md:w-3" />
                             </Button>
                             <Button
                               onClick={() => rateMessage(message.id, "up")}
                               variant="ghost"
                               size="icon"
                               className={cn(
-                                "h-6 w-6",
+                                "h-5 w-5 md:h-6 md:w-6",
                                 message.rating === "up" 
                                   ? "text-green-600 dark:text-green-400" 
                                   : "text-gray-500 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-400"
                               )}
                             >
-                              <ThumbsUp className="h-3 w-3" />
+                              <ThumbsUp className="h-2 w-2 md:h-3 md:w-3" />
                             </Button>
                             <Button
                               onClick={() => rateMessage(message.id, "down")}
                               variant="ghost"
                               size="icon"
                               className={cn(
-                                "h-6 w-6",
+                                "h-5 w-5 md:h-6 md:w-6",
                                 message.rating === "down" 
                                   ? "text-red-600 dark:text-red-400" 
                                   : "text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400"
                               )}
                             >
-                              <ThumbsDown className="h-3 w-3" />
+                              <ThumbsDown className="h-2 w-2 md:h-3 md:w-3" />
                             </Button>
                           </div>
                         )}
@@ -328,9 +328,9 @@ const Chatbot = () => {
                     </div>
 
                     {message.sender === "user" && (
-                      <Avatar className="h-8 w-8 flex-shrink-0">
+                      <Avatar className="h-6 w-6 md:h-8 md:w-8 flex-shrink-0">
                         <AvatarFallback className="bg-gray-600 text-white">
-                          <User className="h-4 w-4" />
+                          <User className="h-3 w-3 md:h-4 md:w-4" />
                         </AvatarFallback>
                       </Avatar>
                     )}
@@ -338,17 +338,17 @@ const Chatbot = () => {
                 ))}
                 
                 {isTyping && (
-                  <div className="flex items-start gap-3">
-                    <Avatar className="h-8 w-8 flex-shrink-0">
+                  <div className="flex items-start gap-2 md:gap-3">
+                    <Avatar className="h-6 w-6 md:h-8 md:w-8 flex-shrink-0">
                       <AvatarFallback className="bg-blue-600 text-white">
-                        <Bot className="h-4 w-4" />
+                        <Bot className="h-3 w-3 md:h-4 md:w-4" />
                       </AvatarFallback>
                     </Avatar>
-                    <div className="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 p-3 rounded-lg rounded-bl-none shadow-sm">
+                    <div className="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 p-2 md:p-3 rounded-lg rounded-bl-none shadow-sm">
                       <div className="flex gap-1">
-                        <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" />
-                        <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce delay-100" />
-                        <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce delay-200" />
+                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-600 rounded-full animate-bounce" />
+                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-600 rounded-full animate-bounce delay-100" />
+                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-600 rounded-full animate-bounce delay-200" />
                       </div>
                     </div>
                   </div>
@@ -358,9 +358,9 @@ const Chatbot = () => {
 
               {/* Quick Questions */}
               {messages.length === 1 && (
-                <div className="p-3 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-700">
+                <div className="p-2 md:p-3 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-700">
                   <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">Quick questions:</div>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2">
                     {quickQuestions.map((question, index) => (
                       <button
                         key={index}
@@ -375,22 +375,22 @@ const Chatbot = () => {
               )}
 
               {/* Input */}
-              <div className="p-4 border-t border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-900">
+              <div className="p-2 md:p-4 border-t border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-900">
                 <div className="flex gap-2">
                   <Input
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
                     placeholder="Ask me anything about Joe..."
-                    className="flex-1 border-gray-200 dark:border-gray-600 focus:border-blue-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                    className="flex-1 border-gray-200 dark:border-gray-600 focus:border-blue-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm"
                   />
                   <Button
                     onClick={handleSendMessage}
                     size="icon"
-                    className="bg-blue-600 hover:bg-blue-700 shrink-0"
+                    className="bg-blue-600 hover:bg-blue-700 shrink-0 h-9 w-9 md:h-10 md:w-10"
                     disabled={!inputMessage.trim()}
                   >
-                    <Send className="h-4 w-4" />
+                    <Send className="h-3 w-3 md:h-4 md:w-4" />
                   </Button>
                 </div>
               </div>
