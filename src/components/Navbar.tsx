@@ -70,16 +70,67 @@ const Navbar = () => {
     e.preventDefault();
     if (searchTerm.trim()) {
       const searchLower = searchTerm.toLowerCase();
-      
+
       // Define sections with multiple keywords
       const sectionKeywords = {
         home: ["home", "main", "top", "start", "intro", "landing"],
-        about: ["about", "bio", "profile", "me", "myself", "person", "info", "information"],
-        skills: ["skill", "skills", "tech", "technology", "programming", "coding", "development", "abilities", "expertise"],
-        education: ["education", "study", "school", "college", "university", "degree", "academic", "learning"],
-        projects: ["project", "projects", "work", "portfolio", "apps", "applications", "websites"],
-        certifications: ["certificate", "certification", "certifications", "credential", "credentials", "award", "awards"],
-        achievements: ["achievement", "achievements", "accomplish", "accomplishments", "success", "milestone"]
+        about: [
+          "about",
+          "bio",
+          "profile",
+          "me",
+          "myself",
+          "person",
+          "info",
+          "information",
+        ],
+        skills: [
+          "skill",
+          "skills",
+          "tech",
+          "technology",
+          "programming",
+          "coding",
+          "development",
+          "abilities",
+          "expertise",
+        ],
+        education: [
+          "education",
+          "study",
+          "school",
+          "college",
+          "university",
+          "degree",
+          "academic",
+          "learning",
+        ],
+        projects: [
+          "project",
+          "projects",
+          "work",
+          "portfolio",
+          "apps",
+          "applications",
+          "websites",
+        ],
+        certifications: [
+          "certificate",
+          "certification",
+          "certifications",
+          "credential",
+          "credentials",
+          "award",
+          "awards",
+        ],
+        achievements: [
+          "achievement",
+          "achievements",
+          "accomplish",
+          "accomplishments",
+          "success",
+          "milestone",
+        ],
       };
 
       // Find matching section
@@ -87,14 +138,17 @@ const Navbar = () => {
       let maxMatches = 0;
 
       for (const [section, keywords] of Object.entries(sectionKeywords)) {
-        const matches = keywords.filter(keyword => 
-          keyword.includes(searchLower) || 
-          searchLower.includes(keyword) ||
-          // Check for partial matches (at least 3 characters)
-          (searchLower.length >= 3 && keyword.includes(searchLower.substring(0, 3))) ||
-          (keyword.length >= 3 && searchLower.includes(keyword.substring(0, 3)))
+        const matches = keywords.filter(
+          (keyword) =>
+            keyword.includes(searchLower) ||
+            searchLower.includes(keyword) ||
+            // Check for partial matches (at least 3 characters)
+            (searchLower.length >= 3 &&
+              keyword.includes(searchLower.substring(0, 3))) ||
+            (keyword.length >= 3 &&
+              searchLower.includes(keyword.substring(0, 3)))
         ).length;
-        
+
         if (matches > maxMatches) {
           maxMatches = matches;
           matchedSection = section;
@@ -217,7 +271,7 @@ const Navbar = () => {
               size="icon"
               className="h-8 w-8 text-foreground hover:text-primary"
               onClick={() =>
-                window.open("https://github.com/joerakeshdeveloper", "_blank")
+                window.open("https://github.com/joerakesh", "_blank")
               }
             >
               <Github size={16} />
