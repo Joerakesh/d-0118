@@ -65,25 +65,44 @@ const Navbar = () => {
     }
   };
 
+  // Enhanced search with fuzzy matching
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchTerm.trim()) {
       const searchLower = searchTerm.toLowerCase();
-      const sections = [
-        "home",
-        "about",
-        "skills",
-        "education",
-        "projects",
-        "certifications",
-        "achievements",
-      ];
-      const matchedSection = sections.find(
-        (section) =>
-          section.includes(searchLower) || searchLower.includes(section)
-      );
+      
+      // Define sections with multiple keywords
+      const sectionKeywords = {
+        home: ["home", "main", "top", "start", "intro", "landing"],
+        about: ["about", "bio", "profile", "me", "myself", "person", "info", "information"],
+        skills: ["skill", "skills", "tech", "technology", "programming", "coding", "development", "abilities", "expertise"],
+        education: ["education", "study", "school", "college", "university", "degree", "academic", "learning"],
+        projects: ["project", "projects", "work", "portfolio", "apps", "applications", "websites"],
+        certifications: ["certificate", "certification", "certifications", "credential", "credentials", "award", "awards"],
+        achievements: ["achievement", "achievements", "accomplish", "accomplishments", "success", "milestone"]
+      };
 
-      if (matchedSection) {
+      // Find matching section
+      let matchedSection = null;
+      let maxMatches = 0;
+
+      for (const [section, keywords] of Object.entries(sectionKeywords)) {
+        const matches = keywords.filter(keyword => 
+          keyword.includes(searchLower) || 
+          searchLower.includes(keyword) ||
+          // Check for partial matches (at least 3 characters)
+          (searchLower.length >= 3 && keyword.includes(searchLower.substring(0, 3))) ||
+          (keyword.length >= 3 && searchLower.includes(keyword.substring(0, 3)))
+        ).length;
+        
+        if (matches > maxMatches) {
+          maxMatches = matches;
+          matchedSection = section;
+        }
+      }
+
+      // If we found a match, scroll to it
+      if (matchedSection && maxMatches > 0) {
         const element = document.getElementById(matchedSection);
         if (element) {
           element.scrollIntoView({ behavior: "smooth" });
@@ -91,6 +110,9 @@ const Navbar = () => {
           setSearchTerm("");
           setIsOpen(false); // Close mobile menu
         }
+      } else {
+        // If no match found, show a brief feedback
+        console.log("No matching section found for:", searchTerm);
       }
     }
   };
@@ -285,7 +307,7 @@ const Navbar = () => {
             isOpen ? "max-h-[calc(100vh-4rem)]" : "max-h-0"
           )}
         >
-          <div className="container mx-auto px-4 py-6 space-y-6">
+          <div className="container mx-auto px-4 py-6 space-y-6 overflow-y-auto max-h-[calc(100vh-8rem)]">
             {/* Search in mobile */}
             <div>
               <form onSubmit={handleSearch} className="flex gap-2">
