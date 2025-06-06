@@ -1,64 +1,69 @@
+
+import { useState, useEffect } from "react";
 import { Folder, ExternalLink, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  tech: string[];
+  live_link?: string;
+  repo_link?: string;
+  image: string;
+  featured: boolean;
+}
 
 const Projects = () => {
-  const projectsList = [
-    {
-      id: "engzine",
-      title: "Engzine",
-      description:
-        "e-Magazine Website for the Department of English, St. Joseph's College, Trichy.",
-      tech: ["HTML", "CSS", "JS"],
-      liveLink: "https://sjctni.edu/Department/ENGZINE",
-      repoLink: null, // No code button for this project
-      image: "/Projects/engzine.jpeg",
-      featured: true,
-    },
-    {
-      id: "mergen",
-      title: "Mergen",
-      description:
-        "e-Journnal Website for the Department of English, St. Joseph's College, Trichy.",
-      tech: ["HTML", "CSS", "JS"],
-      liveLink: "https://sjctni.edu/Department/Mergen",
-      repoLink: null,
-      image: "/Projects/mergen.jpg",
-      featured: true,
-    },
-    {
-      id: "ai-interview",
-      title: "AI Interview",
-      description:
-        "AI Interview is a comprehensive platform that uses artificial intelligence to conduct mock interviews, providing real-time feedback and personalized improvement suggestions to help users prepare for job interviews.",
-      tech: ["Next.js", "Firebase", "Gemini AI", "Vapi AI"],
-      liveLink: "https://interview-ai-sooty.vercel.app/",
-      repoLink: "https://github.com/Joerakesh/interview_ai",
-      image: "/Projects/ai_interview.png",
-      featured: true,
-    },
-    // {
-    //   id: "movie-app",
-    //   title: "Movie App",
-    //   description: "A Movie App shows movie details.",
-    //   tech: ["React Native", "TailwindCSS", "TMDB", "AppWrite"],
-    //   liveLink:
-    //     "https://expo.dev/accounts/joerakesh/projects/movie-app/builds/6b6333f0-5de2-45c0-925f-af2059f187b1",
-    //   repoLink: "https://github.com/Joerakesh/movie-app",
-    //   image: "/Projects/movie-app.jpg",
-    //   featured: true,
-    // },
-  ];
+  const [projectsList, setProjectsList] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  const fetchProjects = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .eq("featured", true)
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      setProjectsList(data || []);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleProjectClick = () => {
-    // Store current scroll position before navigating
     sessionStorage.setItem(
       "portfolioScrollPosition",
       window.scrollY.toString()
     );
-    // Scroll to top for the new page
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  if (isLoading) {
+    return (
+      <section id="projects" className="py-20 px-4 bg-dark-light">
+        <div className="container mx-auto">
+          <div className="flex items-center gap-2 mb-12">
+            <Folder className="w-5 h-5 text-primary" />
+            <h2 className="text-3xl font-bold text-white">Projects</h2>
+          </div>
+          <div className="flex justify-center">
+            <div className="text-white">Loading projects...</div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="projects" className="py-20 px-4 bg-dark-light">
@@ -71,7 +76,7 @@ const Projects = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projectsList.map((project, index) => (
             <div
-              key={index}
+              key={project.id}
               className="bg-dark rounded-xl overflow-hidden border border-primary/10 transition-all hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1"
             >
               <div className="h-48 overflow-hidden">
@@ -100,7 +105,7 @@ const Projects = () => {
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <a
-                    href={project.liveLink}
+                    href={project.live_link}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1"
@@ -112,9 +117,9 @@ const Projects = () => {
                       <ExternalLink className="w-4 h-4 mr-2" /> Live Demo
                     </Button>
                   </a>
-                  {project.repoLink && (
+                  {project.repo_link && (
                     <a
-                      href={project.repoLink}
+                      href={project.repo_link}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

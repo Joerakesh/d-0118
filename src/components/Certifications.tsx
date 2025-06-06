@@ -1,3 +1,5 @@
+
+import { useState, useEffect } from "react";
 import { Award, ExternalLink, Calendar, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
@@ -5,60 +7,67 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { supabase } from "@/integrations/supabase/client";
 
-const certificationsData = [
-  {
-    id: "chatgpt-web-developers",
-    title: "ChatGPT for Web Developers",
-    issuer: "LinkedIn",
-    date: "2024",
-    image: "/Certifications/chatgpt-web-developers.jpeg",
-    skills: ["Web Development", "ChatGPT"],
-    description:
-      "Learned to use ChatGPT to generate and optimize web code, enhance UI with CSS, and build AI-powered apps using JavaScript and React.",
-    credentialId:
-      "c5c454abec61af420b66faa15bf7230a4bf1113fe8b994f6891314d5918385a4",
-    status: "Completed",
-  },
-  {
-    id: "microsoft-career-essentials",
-    title:
-      "Career Essentials in Software Development by Microsoft and LinkedIn",
-    issuer: "Microsoft & LinkedIn",
-    date: "2024",
-    image: "/Certifications/microsoft-career-essentials.jpeg",
-    skills: ["Software Development", "Programming"],
-    description:
-      "Comprehensive program covering essential software development skills and industry best practices.",
-    credentialId:
-      "fffd0e8209c878c0ef3d38081d5c1ce4fb48ef5037303bc242ab57ebfec41e2a",
-    status: "Completed",
-  },
-  {
-    id: "github-professional-certificate",
-    title: "Career Essentials in GitHub Professional Certificate",
-    issuer: "GitHub & LinkedIn",
-    date: "2025",
-    image: "/Certifications/github-professional-certificate.jpeg",
-    skills: ["GitHub", "Version Control"],
-    description:
-      "Hands-on program covering GitHub fundamentals, version control concepts, collaborative workflows, and industry best practices for modern software development.",
-    credentialId:
-      "8c93ad5893f125dfb7cc8876bd43e6f710b47226d791afddccd06ac0b8655728",
-    status: "Completed",
-  },
-];
+interface Certificate {
+  id: string;
+  title: string;
+  issuer: string;
+  date: string;
+  image: string;
+  skills: string[];
+  description: string;
+  credential_id: string;
+  status: string;
+}
 
 const Certifications = () => {
+  const [certificationsData, setCertificationsData] = useState<Certificate[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchCertifications();
+  }, []);
+
+  const fetchCertifications = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("certificates")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      setCertificationsData(data || []);
+    } catch (error) {
+      console.error("Error fetching certificates:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleCertificateClick = () => {
-    // Store current scroll position before navigating
     sessionStorage.setItem(
       "portfolioScrollPosition",
       window.scrollY.toString()
     );
-    // Scroll to top for the new page
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  if (isLoading) {
+    return (
+      <section id="certifications" className="py-20 px-4 bg-dark">
+        <div className="container mx-auto">
+          <div className="flex items-center gap-2 mb-12">
+            <Award className="w-5 h-5 text-primary" />
+            <h2 className="text-3xl font-bold text-white">Certifications</h2>
+          </div>
+          <div className="flex justify-center">
+            <div className="text-white">Loading certifications...</div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="certifications" className="py-20 px-4 bg-dark">
@@ -131,7 +140,7 @@ const Certifications = () => {
 
                   <div className="flex items-center justify-between pt-2 border-t border-primary/10">
                     <span className="text-xs text-white/60">
-                      ID: {cert.credentialId}
+                      ID: {cert.credential_id}
                     </span>
                     <ExternalLink className="w-4 h-4 text-primary" />
                   </div>

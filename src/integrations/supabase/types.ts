@@ -9,7 +9,108 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      admin_users: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      certificates: {
+        Row: {
+          created_at: string
+          credential_id: string
+          date: string
+          description: string
+          id: string
+          image: string
+          issuer: string
+          skills: string[]
+          status: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          credential_id: string
+          date: string
+          description: string
+          id?: string
+          image: string
+          issuer: string
+          skills: string[]
+          status?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          credential_id?: string
+          date?: string
+          description?: string
+          id?: string
+          image?: string
+          issuer?: string
+          skills?: string[]
+          status?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      projects: {
+        Row: {
+          created_at: string
+          description: string
+          featured: boolean | null
+          id: string
+          image: string
+          live_link: string | null
+          repo_link: string | null
+          tech: string[]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          featured?: boolean | null
+          id?: string
+          image: string
+          live_link?: string | null
+          repo_link?: string | null
+          tech: string[]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          featured?: boolean | null
+          id?: string
+          image?: string
+          live_link?: string | null
+          repo_link?: string | null
+          tech?: string[]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

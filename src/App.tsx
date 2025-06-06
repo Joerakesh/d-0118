@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import About from "./pages/About";
 import CertificateDetail from "./pages/CertificateDetail";
 import ProjectDetail from "./pages/ProjectDetail";
+import AdminAuth from "./pages/AdminAuth";
+import AdminDashboard from "./pages/AdminDashboard";
 import { ToastProvider } from "./utils/toast-utils";
 
 const queryClient = new QueryClient();
@@ -24,6 +26,8 @@ const App = () => (
             <Route path="/about" element={<About />} />
             <Route path="/certificate/:id" element={<CertificateDetail />} />
             <Route path="/project/:id" element={<ProjectDetail />} />
+            <Route path="/admin/auth" element={<AdminAuth />} />
+            <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
         </BrowserRouter>
       </ToastProvider>
