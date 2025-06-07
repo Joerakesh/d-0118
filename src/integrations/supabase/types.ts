@@ -32,6 +32,8 @@ export type Database = {
       }
       certificates: {
         Row: {
+          completion_date: string | null
+          course_hours: number | null
           created_at: string
           credential_id: string
           date: string
@@ -39,12 +41,17 @@ export type Database = {
           id: string
           image: string
           issuer: string
+          personal_note: string | null
           skills: string[]
           status: string | null
           title: string
           updated_at: string
+          valid_until: string | null
+          verify_link: string | null
         }
         Insert: {
+          completion_date?: string | null
+          course_hours?: number | null
           created_at?: string
           credential_id: string
           date: string
@@ -52,12 +59,17 @@ export type Database = {
           id?: string
           image: string
           issuer: string
+          personal_note?: string | null
           skills: string[]
           status?: string | null
           title: string
           updated_at?: string
+          valid_until?: string | null
+          verify_link?: string | null
         }
         Update: {
+          completion_date?: string | null
+          course_hours?: number | null
           created_at?: string
           credential_id?: string
           date?: string
@@ -65,46 +77,73 @@ export type Database = {
           id?: string
           image?: string
           issuer?: string
+          personal_note?: string | null
           skills?: string[]
           status?: string | null
           title?: string
           updated_at?: string
+          valid_until?: string | null
+          verify_link?: string | null
         }
         Relationships: []
       }
       projects: {
         Row: {
+          challenges: string | null
           created_at: string
           description: string
+          duration: string | null
           featured: boolean | null
           id: string
           image: string
+          key_features: string[] | null
+          learnings: string | null
           live_link: string | null
           repo_link: string | null
+          role: string | null
+          solutions: string | null
+          story: string | null
+          team: string | null
           tech: string[]
           title: string
           updated_at: string
         }
         Insert: {
+          challenges?: string | null
           created_at?: string
           description: string
+          duration?: string | null
           featured?: boolean | null
           id?: string
           image: string
+          key_features?: string[] | null
+          learnings?: string | null
           live_link?: string | null
           repo_link?: string | null
+          role?: string | null
+          solutions?: string | null
+          story?: string | null
+          team?: string | null
           tech: string[]
           title: string
           updated_at?: string
         }
         Update: {
+          challenges?: string | null
           created_at?: string
           description?: string
+          duration?: string | null
           featured?: boolean | null
           id?: string
           image?: string
+          key_features?: string[] | null
+          learnings?: string | null
           live_link?: string | null
           repo_link?: string | null
+          role?: string | null
+          solutions?: string | null
+          story?: string | null
+          team?: string | null
           tech?: string[]
           title?: string
           updated_at?: string

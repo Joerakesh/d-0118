@@ -9,6 +9,11 @@ import {
   ExternalLink,
   Download,
   Share2,
+  Clock,
+  CalendarDays,
+  Shield,
+  BookOpen,
+  Heart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,6 +30,11 @@ interface Certificate {
   description: string;
   credential_id: string;
   status: string;
+  completion_date?: string;
+  valid_until?: string;
+  course_hours?: number;
+  verify_link?: string;
+  personal_note?: string;
 }
 
 const CertificateDetail = () => {
@@ -149,6 +159,19 @@ const CertificateDetail = () => {
     }
   };
 
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return null;
+    try {
+      return new Date(dateString).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    } catch {
+      return dateString;
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-dark flex items-center justify-center px-4">
@@ -249,37 +272,102 @@ const CertificateDetail = () => {
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                   <div>
-                    <p className="text-white/60 text-sm">Status</p>
+                    <div className="flex items-center gap-2 text-white/60 text-sm mb-1">
+                      <Shield className="w-4 h-4" />
+                      Status
+                    </div>
                     <p className="text-white font-medium text-sm md:text-base">
                       {certificate.status}
                     </p>
                   </div>
                   <div>
-                    <p className="text-white/60 text-sm">Issue Date</p>
+                    <div className="flex items-center gap-2 text-white/60 text-sm mb-1">
+                      <Calendar className="w-4 h-4" />
+                      Issue Date
+                    </div>
                     <p className="text-white font-medium text-sm md:text-base">
                       {certificate.date}
                     </p>
                   </div>
                 </div>
+
+                {(certificate.completion_date || certificate.valid_until || certificate.course_hours) && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+                    {certificate.completion_date && (
+                      <div>
+                        <div className="flex items-center gap-2 text-white/60 text-sm mb-1">
+                          <CheckCircle className="w-4 h-4" />
+                          Completion Date
+                        </div>
+                        <p className="text-white font-medium text-sm md:text-base">
+                          {formatDate(certificate.completion_date)}
+                        </p>
+                      </div>
+                    )}
+                    {certificate.valid_until && (
+                      <div>
+                        <div className="flex items-center gap-2 text-white/60 text-sm mb-1">
+                          <CalendarDays className="w-4 h-4" />
+                          Valid Until
+                        </div>
+                        <p className="text-white font-medium text-sm md:text-base">
+                          {formatDate(certificate.valid_until)}
+                        </p>
+                      </div>
+                    )}
+                    {certificate.course_hours && (
+                      <div className="sm:col-span-2">
+                        <div className="flex items-center gap-2 text-white/60 text-sm mb-1">
+                          <Clock className="w-4 h-4" />
+                          Course Hours
+                        </div>
+                        <p className="text-white font-medium text-sm md:text-base">
+                          {certificate.course_hours} hours
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 <div>
                   <p className="text-white/60 text-sm">Credential ID</p>
                   <p className="text-white font-medium text-sm md:text-base break-all">
                     {certificate.credential_id}
                   </p>
                 </div>
-                <Button
-                  variant="outline"
-                  className="w-full border-primary/20 text-primary hover:bg-primary/10"
-                >
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  Verify Certificate
-                </Button>
+
+                {certificate.verify_link ? (
+                  <a
+                    href={certificate.verify_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block"
+                  >
+                    <Button
+                      variant="outline"
+                      className="w-full border-primary/20 text-primary hover:bg-primary/10"
+                    >
+                      <ExternalLink className="w-4 h-4 mr-2" />
+                      Verify Certificate
+                    </Button>
+                  </a>
+                ) : (
+                  <Button
+                    variant="outline"
+                    className="w-full border-primary/20 text-primary hover:bg-primary/10"
+                    disabled
+                  >
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    Verify Certificate
+                  </Button>
+                )}
               </CardContent>
             </Card>
 
             <Card className="bg-dark-light border-primary/20">
               <CardHeader className="pb-3 md:pb-6">
-                <CardTitle className="text-white text-lg md:text-xl">
+                <CardTitle className="text-white flex items-center gap-2 text-lg md:text-xl">
+                  <BookOpen className="w-5 h-5 text-primary" />
                   Description
                 </CardTitle>
               </CardHeader>
@@ -309,6 +397,22 @@ const CertificateDetail = () => {
                 </div>
               </CardContent>
             </Card>
+
+            {certificate.personal_note && (
+              <Card className="bg-dark-light border-primary/20">
+                <CardHeader className="pb-3 md:pb-6">
+                  <CardTitle className="text-white flex items-center gap-2 text-lg md:text-xl">
+                    <Heart className="w-5 h-5 text-red-400" />
+                    Personal Note
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-white/80 text-sm md:text-base leading-relaxed">
+                    {certificate.personal_note}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
       </div>

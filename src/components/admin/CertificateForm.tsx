@@ -18,6 +18,11 @@ interface Certificate {
   description: string;
   credential_id: string;
   status: string;
+  completion_date?: string;
+  valid_until?: string;
+  course_hours?: number;
+  verify_link?: string;
+  personal_note?: string;
 }
 
 interface CertificateFormProps {
@@ -35,6 +40,11 @@ const CertificateForm = ({ certificate, onSuccess }: CertificateFormProps) => {
     description: certificate?.description || "",
     credential_id: certificate?.credential_id || "",
     status: certificate?.status || "Completed",
+    completion_date: certificate?.completion_date || "",
+    valid_until: certificate?.valid_until || "",
+    course_hours: certificate?.course_hours?.toString() || "",
+    verify_link: certificate?.verify_link || "",
+    personal_note: certificate?.personal_note || "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -58,11 +68,15 @@ const CertificateForm = ({ certificate, onSuccess }: CertificateFormProps) => {
         description: formData.description,
         credential_id: formData.credential_id,
         status: formData.status,
+        completion_date: formData.completion_date || null,
+        valid_until: formData.valid_until || null,
+        course_hours: formData.course_hours ? parseInt(formData.course_hours) : null,
+        verify_link: formData.verify_link || null,
+        personal_note: formData.personal_note || null,
         updated_at: new Date().toISOString(),
       };
 
       if (certificate) {
-        // Update existing certificate
         const { error } = await supabase
           .from("certificates")
           .update(certificateData)
@@ -75,7 +89,6 @@ const CertificateForm = ({ certificate, onSuccess }: CertificateFormProps) => {
           description: "Certificate updated successfully",
         });
       } else {
-        // Create new certificate
         const { error } = await supabase
           .from("certificates")
           .insert([certificateData]);
@@ -108,109 +121,188 @@ const CertificateForm = ({ certificate, onSuccess }: CertificateFormProps) => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Basic Information */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Basic Information</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="title">Title *</Label>
+                <Input
+                  id="title"
+                  value={formData.title}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="issuer">Issuer *</Label>
+                <Input
+                  id="issuer"
+                  value={formData.issuer}
+                  onChange={(e) =>
+                    setFormData({ ...formData, issuer: e.target.value })
+                  }
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="date">Issue Date *</Label>
+                <Input
+                  id="date"
+                  value={formData.date}
+                  onChange={(e) =>
+                    setFormData({ ...formData, date: e.target.value })
+                  }
+                  required
+                  placeholder="2024"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="image">Image URL *</Label>
+                <Input
+                  id="image"
+                  value={formData.image}
+                  onChange={(e) =>
+                    setFormData({ ...formData, image: e.target.value })
+                  }
+                  required
+                  placeholder="/Certifications/certificate-image.jpeg"
+                />
+              </div>
+            </div>
+
             <div className="space-y-2">
-              <Label htmlFor="title">Title *</Label>
-              <Input
-                id="title"
-                value={formData.title}
+              <Label htmlFor="description">Description *</Label>
+              <Textarea
+                id="description"
+                value={formData.description}
                 onChange={(e) =>
-                  setFormData({ ...formData, title: e.target.value })
+                  setFormData({ ...formData, description: e.target.value })
                 }
                 required
+                rows={3}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="issuer">Issuer *</Label>
+              <Label htmlFor="skills">Skills * (comma-separated)</Label>
               <Input
-                id="issuer"
-                value={formData.issuer}
+                id="skills"
+                value={formData.skills}
                 onChange={(e) =>
-                  setFormData({ ...formData, issuer: e.target.value })
+                  setFormData({ ...formData, skills: e.target.value })
                 }
                 required
+                placeholder="Web Development, React, JavaScript"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="date">Date *</Label>
-              <Input
-                id="date"
-                value={formData.date}
-                onChange={(e) =>
-                  setFormData({ ...formData, date: e.target.value })
-                }
-                required
-                placeholder="2024"
-              />
+          {/* Certificate Details */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Certificate Details</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="credential_id">Credential ID *</Label>
+                <Input
+                  id="credential_id"
+                  value={formData.credential_id}
+                  onChange={(e) =>
+                    setFormData({ ...formData, credential_id: e.target.value })
+                  }
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="status">Status</Label>
+                <Input
+                  id="status"
+                  value={formData.status}
+                  onChange={(e) =>
+                    setFormData({ ...formData, status: e.target.value })
+                  }
+                  placeholder="Completed"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="completion_date">Completion Date</Label>
+                <Input
+                  id="completion_date"
+                  type="date"
+                  value={formData.completion_date}
+                  onChange={(e) =>
+                    setFormData({ ...formData, completion_date: e.target.value })
+                  }
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="valid_until">Valid Until</Label>
+                <Input
+                  id="valid_until"
+                  type="date"
+                  value={formData.valid_until}
+                  onChange={(e) =>
+                    setFormData({ ...formData, valid_until: e.target.value })
+                  }
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="course_hours">Course Hours</Label>
+                <Input
+                  id="course_hours"
+                  type="number"
+                  value={formData.course_hours}
+                  onChange={(e) =>
+                    setFormData({ ...formData, course_hours: e.target.value })
+                  }
+                  placeholder="24"
+                />
+              </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="image">Image URL *</Label>
+              <Label htmlFor="verify_link">Verification Link</Label>
               <Input
-                id="image"
-                value={formData.image}
+                id="verify_link"
+                value={formData.verify_link}
                 onChange={(e) =>
-                  setFormData({ ...formData, image: e.target.value })
+                  setFormData({ ...formData, verify_link: e.target.value })
                 }
-                required
-                placeholder="/Certifications/certificate-image.jpeg"
+                placeholder="https://www.linkedin.com/learning/certificates/..."
               />
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="description">Description *</Label>
-            <Textarea
-              id="description"
-              value={formData.description}
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
-              required
-              rows={3}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="skills">Skills * (comma-separated)</Label>
-            <Input
-              id="skills"
-              value={formData.skills}
-              onChange={(e) =>
-                setFormData({ ...formData, skills: e.target.value })
-              }
-              required
-              placeholder="Web Development, React, JavaScript"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Personal Note */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Personal Reflection</h3>
+            
             <div className="space-y-2">
-              <Label htmlFor="credential_id">Credential ID *</Label>
-              <Input
-                id="credential_id"
-                value={formData.credential_id}
+              <Label htmlFor="personal_note">Personal Note</Label>
+              <Textarea
+                id="personal_note"
+                value={formData.personal_note}
                 onChange={(e) =>
-                  setFormData({ ...formData, credential_id: e.target.value })
+                  setFormData({ ...formData, personal_note: e.target.value })
                 }
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
-              <Input
-                id="status"
-                value={formData.status}
-                onChange={(e) =>
-                  setFormData({ ...formData, status: e.target.value })
-                }
-                placeholder="Completed"
+                rows={3}
+                placeholder="What did you learn from this course? How has it impacted your work?"
               />
             </div>
           </div>

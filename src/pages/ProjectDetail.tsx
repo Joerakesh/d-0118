@@ -10,10 +10,18 @@ import {
   Users,
   Target,
   Lightbulb,
+  Clock,
+  UserCheck,
+  Zap,
+  BookOpen,
+  AlertTriangle,
+  CheckCircle,
+  GraduationCap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
+import { getTechIcon } from "@/utils/techIcons";
 
 interface Project {
   id: string;
@@ -24,6 +32,14 @@ interface Project {
   repo_link?: string;
   image: string;
   featured: boolean;
+  duration?: string;
+  role?: string;
+  team?: string;
+  key_features?: string[];
+  story?: string;
+  challenges?: string;
+  solutions?: string;
+  learnings?: string;
 }
 
 const ProjectDetail = () => {
@@ -175,6 +191,7 @@ const ProjectDetail = () => {
 
           {/* Project Details */}
           <div className="space-y-4 md:space-y-6">
+            {/* Project Overview */}
             <Card className="bg-dark-light border-primary/20">
               <CardHeader className="pb-3 md:pb-6">
                 <CardTitle className="text-white flex items-center gap-2 text-lg md:text-xl">
@@ -183,6 +200,41 @@ const ProjectDetail = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+                  {project.duration && (
+                    <div>
+                      <div className="flex items-center gap-2 text-white/60 text-sm mb-1">
+                        <Clock className="w-4 h-4" />
+                        Duration
+                      </div>
+                      <p className="text-white font-medium text-sm md:text-base">
+                        {project.duration}
+                      </p>
+                    </div>
+                  )}
+                  {project.role && (
+                    <div>
+                      <div className="flex items-center gap-2 text-white/60 text-sm mb-1">
+                        <UserCheck className="w-4 h-4" />
+                        Role
+                      </div>
+                      <p className="text-white font-medium text-sm md:text-base">
+                        {project.role}
+                      </p>
+                    </div>
+                  )}
+                  {project.team && (
+                    <div>
+                      <div className="flex items-center gap-2 text-white/60 text-sm mb-1">
+                        <Users className="w-4 h-4" />
+                        Team
+                      </div>
+                      <p className="text-white font-medium text-sm md:text-base">
+                        {project.team}
+                      </p>
+                    </div>
+                  )}
+                </div>
                 <div>
                   <p className="text-white/80 text-sm md:text-base leading-relaxed">
                     {project.description}
@@ -191,6 +243,7 @@ const ProjectDetail = () => {
               </CardContent>
             </Card>
 
+            {/* Technologies Used */}
             <Card className="bg-dark-light border-primary/20">
               <CardHeader className="pb-3 md:pb-6">
                 <CardTitle className="text-white text-lg md:text-xl">
@@ -198,19 +251,50 @@ const ProjectDetail = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-3">
                   {project.tech.map((tech) => (
-                    <span
+                    <div
                       key={tech}
-                      className="bg-primary/20 text-primary px-2 md:px-3 py-1 rounded-full text-xs md:text-sm"
+                      className="flex items-center gap-2 bg-primary/20 text-primary px-3 py-2 rounded-full text-xs md:text-sm"
                     >
+                      <img
+                        src={getTechIcon(tech)}
+                        alt={tech}
+                        className="w-4 h-4"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                      />
                       {tech}
-                    </span>
+                    </div>
                   ))}
                 </div>
               </CardContent>
             </Card>
 
+            {/* Key Features */}
+            {project.key_features && project.key_features.length > 0 && (
+              <Card className="bg-dark-light border-primary/20">
+                <CardHeader className="pb-3 md:pb-6">
+                  <CardTitle className="text-white flex items-center gap-2 text-lg md:text-xl">
+                    <Zap className="w-5 h-5 text-primary" />
+                    Key Features
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    {project.key_features.map((feature, index) => (
+                      <li key={index} className="flex items-start gap-2 text-white/80 text-sm md:text-base">
+                        <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Project Status */}
             <Card className="bg-dark-light border-primary/20">
               <CardHeader className="pb-3 md:pb-6">
                 <CardTitle className="text-white text-lg md:text-xl">
@@ -231,6 +315,81 @@ const ProjectDetail = () => {
             </Card>
           </div>
         </div>
+
+        {/* Additional Sections */}
+        {(project.story || project.challenges || project.solutions || project.learnings) && (
+          <div className="mt-12 space-y-6">
+            {/* The Story Behind the Project */}
+            {project.story && (
+              <Card className="bg-dark-light border-primary/20">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2 text-lg md:text-xl">
+                    <BookOpen className="w-5 h-5 text-primary" />
+                    The Story Behind the Project
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-white/80 text-sm md:text-base leading-relaxed">
+                    {project.story}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+
+            <div className="grid lg:grid-cols-2 gap-6">
+              {/* Challenges Faced */}
+              {project.challenges && (
+                <Card className="bg-dark-light border-primary/20">
+                  <CardHeader>
+                    <CardTitle className="text-white flex items-center gap-2 text-lg md:text-xl">
+                      <AlertTriangle className="w-5 h-5 text-yellow-400" />
+                      Challenges Faced
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-white/80 text-sm md:text-base leading-relaxed">
+                      {project.challenges}
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Solutions Implemented */}
+              {project.solutions && (
+                <Card className="bg-dark-light border-primary/20">
+                  <CardHeader>
+                    <CardTitle className="text-white flex items-center gap-2 text-lg md:text-xl">
+                      <Lightbulb className="w-5 h-5 text-blue-400" />
+                      Solutions Implemented
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-white/80 text-sm md:text-base leading-relaxed">
+                      {project.solutions}
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+
+            {/* What I Learned */}
+            {project.learnings && (
+              <Card className="bg-dark-light border-primary/20">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2 text-lg md:text-xl">
+                    <GraduationCap className="w-5 h-5 text-green-400" />
+                    What I Learned
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-white/80 text-sm md:text-base leading-relaxed">
+                    {project.learnings}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
