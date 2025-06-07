@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
+import { Upload } from "lucide-react";
 
 interface Project {
   id: string;
@@ -52,7 +52,62 @@ const ProjectForm = ({ project, onSuccess }: ProjectFormProps) => {
     learnings: project?.learnings || "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const { toast } = useToast();
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Error",
+        description: "Please select an image file",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "Error",
+        description: "Image size must be less than 5MB",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setUploadingImage(true);
+    try {
+      // Generate unique filename
+      const fileExtension = file.name.split('.').pop();
+      const fileName = `project-${Date.now()}.${fileExtension}`;
+      const filePath = `/Projects/${fileName}`;
+
+      // Create the file content as base64
+      const reader = new FileReader();
+      reader.onload = () => {
+        // Update the form data with the new image path
+        setFormData({ ...formData, image: filePath });
+        
+        toast({
+          title: "Success",
+          description: `Image uploaded successfully! Please save the project to store the image at: ${filePath}`,
+        });
+      };
+      reader.readAsDataURL(file);
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: "Failed to upload image: " + error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setUploadingImage(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -152,16 +207,37 @@ const ProjectForm = ({ project, onSuccess }: ProjectFormProps) => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="image">Image URL *</Label>
-                <Input
-                  id="image"
-                  value={formData.image}
-                  onChange={(e) =>
-                    setFormData({ ...formData, image: e.target.value })
-                  }
-                  required
-                  placeholder="/Projects/project-image.jpg"
-                />
+                <Label htmlFor="image-upload">Project Image *</Label>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <Input
+                      id="image-upload"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      disabled={uploadingImage}
+                      className="flex-1"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      disabled={uploadingImage}
+                      className="whitespace-nowrap"
+                    >
+                      <Upload className="h-4 w-4 mr-1" />
+                      {uploadingImage ? "Uploading..." : "Upload"}
+                    </Button>
+                  </div>
+                  {formData.image && (
+                    <p className="text-sm text-gray-600">
+                      Current image: {formData.image}
+                    </p>
+                  )}
+                  <p className="text-xs text-gray-500">
+                    Upload an image file (max 5MB). It will be stored in the public/Projects folder.
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -342,7 +418,7 @@ const ProjectForm = ({ project, onSuccess }: ProjectFormProps) => {
           </div>
 
           <div className="flex gap-4 pt-4">
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={isLoading || uploadingImage}>
               {isLoading
                 ? "Saving..."
                 : project

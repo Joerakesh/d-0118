@@ -13,7 +13,10 @@ interface Message {
   sender: "user" | "bot";
   timestamp: Date;
   rating?: "up" | "down";
-  showEducationButton?: boolean;
+  navigationButton?: {
+    text: string;
+    sectionId: string;
+  };
 }
 
 const Chatbot = () => {
@@ -41,77 +44,105 @@ const Chatbot = () => {
     scrollToBottom();
   }, [messages]);
 
-  const scrollToEducation = () => {
-    const educationSection = document.getElementById('education');
-    if (educationSection) {
-      educationSection.scrollIntoView({ behavior: 'smooth' });
+  const scrollToSection = (sectionId: string) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
       setIsOpen(false); // Close chatbot when navigating
     }
   };
 
-  const getBotResponse = (userMessage: string): { text: string; showEducationButton?: boolean } => {
+  const getBotResponse = (userMessage: string): { text: string; navigationButton?: { text: string; sectionId: string } } => {
     const message = userMessage.toLowerCase();
+    
     if (message.includes("skill") || message.includes("technology") || message.includes("tech")) {
       return {
-        text: "Joe specializes in full-stack development! 💻 His main skills include:\n• React & TypeScript - Advanced level\n• Node.js & MongoDB - Experienced\n• Docker & Git - Proficient\n• Modern web development tools\n• Responsive design & UI/UX\n\nCheck out the Skills section for a complete overview with detailed progress bars!"
+        text: "Joe specializes in full-stack development! 💻 His main skills include:\n• React & TypeScript - Advanced level\n• Node.js & MongoDB - Experienced\n• Docker & Git - Proficient\n• Modern web development tools\n• Responsive design & UI/UX\n\nCheck out the Skills section for a complete overview with detailed progress bars!",
+        navigationButton: { text: "Go to Skills", sectionId: "skills" }
       };
     }
+    
     if (message.includes("project") || message.includes("work") || message.includes("portfolio")) {
       return {
-        text: "Joe has worked on some amazing projects! 🚀 Including:\n• AI Interview System - Advanced AI-powered interview platform\n• Movie Applications - React-based movie discovery apps\n• Web Development Projects - Modern responsive websites\n• Full-stack applications with database integration\n\nVisit the Projects section to see detailed case studies with live demos and GitHub links!"
+        text: "Joe has worked on some amazing projects! 🚀 Including:\n• AI Interview System - Advanced AI-powered interview platform\n• Movie Applications - React-based movie discovery apps\n• Web Development Projects - Modern responsive websites\n• Full-stack applications with database integration\n\nVisit the Projects section to see detailed case studies with live demos and GitHub links!",
+        navigationButton: { text: "Go to Projects", sectionId: "projects" }
       };
     }
+    
     if (message.includes("education") || message.includes("study") || message.includes("college") || message.includes("school")) {
       return {
         text: "Joe's educational journey includes:\n\n🎓 **Bachelor of Computer Applications** (2023-2026)\n📍 St. Joseph's College, Trichy\n📊 Current CGPA: 8.5\n🔬 Specialized in Advanced Web Technologies and Programming Languages\n\n🎓 **Higher Secondary (XII) - Computer Science** (2021-2023)\n📍 Adaikala Annai Higher Secondary School, Viriyur\n📊 Grade: 75%\n💻 Focused on Computer Science fundamentals, programming basics, and mathematics\n\n🎓 **Secondary (X) - SSLC** (2020-2021)\n📍 Government High School, Palayanur\n📊 All Pass\n📚 Strong foundation in Science, Mathematics, and English\n\nClick below to view the detailed education timeline!",
-        showEducationButton: true
+        navigationButton: { text: "Go to Education", sectionId: "education" }
       };
     }
+    
     if (message.includes("contact") || message.includes("reach") || message.includes("email") || message.includes("hire")) {
       return {
-        text: "Ready to connect with Joe? 📬 Multiple ways to reach out:\n• Fill out the contact form on this website\n• Connect on LinkedIn and GitHub\n• Download his comprehensive resume\n• Email directly through the contact section\n\nJoe is actively looking for opportunities and responds quickly to messages!"
+        text: "Ready to connect with Joe? 📬 Multiple ways to reach out:\n• Fill out the contact form on this website\n• Connect on LinkedIn and GitHub\n• Download his comprehensive resume\n• Email directly through the contact section\n\nJoe is actively looking for opportunities and responds quickly to messages!",
+        navigationButton: { text: "Go to Contact", sectionId: "contact" }
       };
     }
-    if (message.includes("experience") || message.includes("background") || message.includes("intern")) {
+    
+    if (message.includes("about") || message.includes("who") || message.includes("background") || message.includes("bio")) {
       return {
-        text: "Joe brings valuable experience! 💪\n• Web Development Intern at Edubridge India (2022)\n• 1+ years of passionate full-stack development\n• Built multiple production applications\n• Strong expertise in React ecosystem\n• Proven track record with modern web technologies\n• Always eager to learn and adapt to new challenges"
+        text: "Joe Rakesh A is a passionate Full Stack Developer! 🌟\n• 3rd year BCA student at St. Joseph's College, Trichy\n• 1+ years of hands-on development experience\n• Specialized in React, TypeScript, and modern web technologies\n• Built multiple production applications\n• Always eager to learn and take on new challenges\n\nLearn more about his journey and passion for technology!",
+        navigationButton: { text: "Go to About", sectionId: "about" }
       };
     }
+    
     if (message.includes("certificate") || message.includes("certification")) {
       return {
-        text: "Joe has earned several professional certifications! 🏆\n• ChatGPT for Web Developers\n• GitHub Professional Certificate\n• Microsoft Career Essentials\n• Various web development certifications\n\nCheck out the Certifications section to see all his verified credentials!"
+        text: "Joe has earned several professional certifications! 🏆\n• ChatGPT for Web Developers\n• GitHub Professional Certificate\n• Microsoft Career Essentials\n• Various web development certifications\n\nCheck out the Certifications section to see all his verified credentials!",
+        navigationButton: { text: "Go to Certifications", sectionId: "certifications" }
       };
     }
+    
     if (message.includes("achievement") || message.includes("award")) {
       return {
-        text: "Joe has accomplished great things! 🌟\n• Multiple successful project deployments\n• Strong academic performance\n• Professional certifications completed\n• Growing portfolio of web applications\n\nVisit the Achievements section for detailed accomplishments!"
+        text: "Joe has accomplished great things! 🌟\n• Multiple successful project deployments\n• Strong academic performance\n• Professional certifications completed\n• Growing portfolio of web applications\n\nVisit the Achievements section for detailed accomplishments!",
+        navigationButton: { text: "Go to Achievements", sectionId: "achievements" }
       };
     }
+    
+    if (message.includes("experience") || message.includes("intern")) {
+      return {
+        text: "Joe brings valuable experience! 💪\n• Web Development Intern at Edubridge India (2022)\n• 1+ years of passionate full-stack development\n• Built multiple production applications\n• Strong expertise in React ecosystem\n• Proven track record with modern web technologies\n• Always eager to learn and adapt to new challenges",
+        navigationButton: { text: "Go to About", sectionId: "about" }
+      };
+    }
+    
     if (message.includes("hello") || message.includes("hi") || message.includes("hey") || message.includes("good")) {
       return {
         text: "Hello there! 😊 Great to meet you! I'm here to help you discover everything about Joe Rakesh A. Whether you're interested in his technical skills, exciting projects, educational background, or professional experience - just ask away! Feel free to use the quick questions below or ask anything specific."
       };
     }
+    
     if (message.includes("thank") || message.includes("thanks")) {
       return {
         text: "You're absolutely welcome! 🌟 Is there anything else you'd like to explore about Joe's portfolio? I'm here to help and provide detailed information about any aspect of his work or background!"
       };
     }
+    
     if (message.includes("resume") || message.includes("cv")) {
       return {
         text: "You can download Joe's comprehensive resume directly from this website! 📄 Look for the download button in the hero section. It includes all his skills, projects, education, and experience in a professional format."
       };
     }
+    
     if (message.includes("location") || message.includes("where")) {
       return {
-        text: "Joe is based in Tamil Nadu, India 🇮🇳 and is open to both local and remote opportunities worldwide! He's flexible with time zones and has experience working with international teams."
+        text: "Joe is based in Tamil Nadu, India 🇮🇳 and is open to both local and remote opportunities worldwide! He's flexible with time zones and has experience working with international teams.",
+        navigationButton: { text: "Go to Contact", sectionId: "contact" }
       };
     }
+    
     if (message.includes("github") || message.includes("code") || message.includes("repository")) {
       return {
-        text: "Check out Joe's GitHub profile to see his code! 💻 You'll find:\n• Open source projects\n• Code samples and repositories\n• Contribution history\n• Active development work\n\nLinks are available in the contact section and project details!"
+        text: "Check out Joe's GitHub profile to see his code! 💻 You'll find:\n• Open source projects\n• Code samples and repositories\n• Contribution history\n• Active development work\n\nLinks are available in the contact section and project details!",
+        navigationButton: { text: "Go to Contact", sectionId: "contact" }
       };
     }
+    
     return {
       text: "That's a great question! 🤔 I'd love to help you learn more about Joe. You can explore:\n• His technical skills and expertise levels\n• Exciting projects with live demos\n• Educational background and certifications\n• Professional experience and achievements\n• Contact information and resume\n\nWhat interests you most? Feel free to ask specific questions!"
     };
@@ -140,7 +171,7 @@ const Chatbot = () => {
         text: response.text,
         sender: "bot",
         timestamp: new Date(),
-        showEducationButton: response.showEducationButton
+        navigationButton: response.navigationButton
       };
       setMessages(prev => [...prev, botResponse]);
       setIsTyping(false);
@@ -306,15 +337,15 @@ const Chatbot = () => {
                         >
                           {message.text}
                           
-                          {/* Education button for education-related responses */}
-                          {message.showEducationButton && (
+                          {/* Navigation button for relevant responses */}
+                          {message.navigationButton && (
                             <Button
-                              onClick={scrollToEducation}
+                              onClick={() => scrollToSection(message.navigationButton!.sectionId)}
                               size="sm"
                               className="mt-3 bg-blue-600 hover:bg-blue-700 text-white text-xs flex items-center gap-1"
                             >
                               <ExternalLink className="h-3 w-3" />
-                              Go to Education
+                              {message.navigationButton.text}
                             </Button>
                           )}
                           
