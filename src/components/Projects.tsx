@@ -49,6 +49,19 @@ const Projects = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  // Helper function to get the correct image path
+  const getImagePath = (imagePath: string) => {
+    // If the path starts with /Projects/, return as is
+    if (imagePath.startsWith('/Projects/')) {
+      return imagePath;
+    }
+    // If it doesn't start with /, add it
+    if (!imagePath.startsWith('/')) {
+      return `/${imagePath}`;
+    }
+    return imagePath;
+  };
+
   if (isLoading) {
     return (
       <section id="projects" className="py-20 px-4 bg-dark-light">
@@ -77,17 +90,24 @@ const Projects = () => {
           {projectsList.map((project, index) => (
             <div
               key={project.id}
-              className="bg-dark rounded-xl overflow-hidden border border-primary/10 transition-all hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1"
+              className="bg-dark rounded-xl overflow-hidden border border-primary/10 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-2 hover:border-primary/30 group"
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="h-48 overflow-hidden">
+              <div className="h-48 overflow-hidden relative">
                 <img
-                  src={project.image}
+                  src={getImagePath(project.image)}
                   alt={project.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  onError={(e) => {
+                    console.error('Image failed to load:', project.image);
+                    const target = e.target as HTMLImageElement;
+                    target.src = '/placeholder.svg';
+                  }}
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-dark via-transparent to-transparent opacity-0 group-hover:opacity-70 transition-opacity duration-300" />
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-2">
+                <h3 className="text-xl font-bold text-white mb-2 transition-colors duration-300 group-hover:text-primary">
                   {project.title}
                 </h3>
                 <p className="text-white/70 mb-4 line-clamp-2">
@@ -97,7 +117,7 @@ const Projects = () => {
                   {project.tech.map((tech, idx) => (
                     <span
                       key={idx}
-                      className="px-3 py-1 bg-primary/10 text-primary text-xs rounded-full"
+                      className="px-3 py-1 bg-primary/10 text-primary text-xs rounded-full transition-all duration-300 hover:bg-primary/20 hover:scale-105"
                     >
                       {tech}
                     </span>
@@ -109,10 +129,11 @@ const Projects = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1"
+                    aria-label={`View live demo of ${project.title}`}
                   >
                     <Button
                       size="sm"
-                      className="w-full bg-primary hover:bg-primary/90"
+                      className="w-full bg-primary hover:bg-primary/90 transition-all duration-300 hover:scale-105"
                     >
                       <ExternalLink className="w-4 h-4 mr-2" /> Live Demo
                     </Button>
@@ -122,11 +143,12 @@ const Projects = () => {
                       href={project.repo_link}
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label={`View source code of ${project.title}`}
                     >
                       <Button
                         size="sm"
                         variant="outline"
-                        className="border-primary/20 text-primary hover:bg-primary/10"
+                        className="border-primary/20 text-primary hover:bg-primary/10 transition-all duration-300 hover:scale-105"
                       >
                         <Github className="w-4 h-4 mr-2" /> Code
                       </Button>
@@ -136,11 +158,12 @@ const Projects = () => {
                     to={`/project/${project.id}`}
                     onClick={handleProjectClick}
                     className="flex-1"
+                    aria-label={`View details of ${project.title}`}
                   >
                     <Button
                       size="sm"
                       variant="outline"
-                      className="w-full border-primary/20 text-primary hover:bg-primary/10"
+                      className="w-full border-primary/20 text-primary hover:bg-primary/10 transition-all duration-300 hover:scale-105"
                     >
                       View Details
                     </Button>
@@ -150,6 +173,13 @@ const Projects = () => {
             </div>
           ))}
         </div>
+
+        {projectsList.length === 0 && (
+          <div className="text-center py-12">
+            <Folder className="w-16 h-16 text-primary/50 mx-auto mb-4" />
+            <p className="text-white/70 text-lg">No featured projects available</p>
+          </div>
+        )}
       </div>
     </section>
   );

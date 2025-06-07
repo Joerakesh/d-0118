@@ -53,6 +53,19 @@ const Certifications = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  // Helper function to get the correct image path
+  const getImagePath = (imagePath: string) => {
+    // If the path starts with /Certifications/, return as is
+    if (imagePath.startsWith('/Certifications/')) {
+      return imagePath;
+    }
+    // If it doesn't start with /, add it
+    if (!imagePath.startsWith('/')) {
+      return `/${imagePath}`;
+    }
+    return imagePath;
+  };
+
   if (isLoading) {
     return (
       <section id="certifications" className="py-20 px-4 bg-dark">
@@ -84,23 +97,39 @@ const Certifications = () => {
                 <Link
                   to={`/certificate/${cert.id}`}
                   onClick={handleCertificateClick}
-                  className="group block bg-dark-light rounded-xl overflow-hidden border border-primary/10 hover:border-primary/30 transition-all duration-300 card-hover"
+                  className="group block bg-dark-light rounded-xl overflow-hidden border border-primary/10 hover:border-primary/30 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                  aria-label={`View certificate details for ${cert.title}`}
                 >
                   <div className="relative overflow-hidden">
                     <img
-                      src={cert.image}
-                      alt={cert.title}
-                      className="w-full h-48 group-hover:scale-105 transition-transform duration-500"
+                      src={getImagePath(cert.image)}
+                      alt={`${cert.title} certificate`}
+                      className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                      onError={(e) => {
+                        console.error('Certificate image failed to load:', cert.image);
+                        const target = e.target as HTMLImageElement;
+                        target.src = '/placeholder.svg';
+                      }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-dark-light/80 via-transparent to-transparent" />
+                    <div className="absolute top-4 right-4">
+                      <div className="flex items-center gap-1 bg-green-500/20 backdrop-blur-sm rounded-full px-2 py-1">
+                        <CheckCircle className="w-3 h-3 text-green-400" />
+                        <span className="text-xs text-green-400 font-medium">
+                          {cert.status}
+                        </span>
+                      </div>
+                    </div>
                     <div className="absolute bottom-4 left-4 right-4">
                       <div className="flex items-center gap-2 text-white/80 text-sm mb-1">
                         <Calendar className="w-4 h-4" />
                         {cert.date}
                       </div>
-                      <h3 className="font-semibold text-white line-clamp-2">
+                      <h3 className="font-semibold text-white line-clamp-2 group-hover:text-primary transition-colors duration-300">
                         {cert.title}
                       </h3>
+                      <p className="text-primary text-sm font-medium">{cert.issuer}</p>
                     </div>
                   </div>
                 </Link>
@@ -149,6 +178,13 @@ const Certifications = () => {
             </HoverCard>
           ))}
         </div>
+
+        {certificationsData.length === 0 && (
+          <div className="text-center py-12">
+            <Award className="w-16 h-16 text-primary/50 mx-auto mb-4" />
+            <p className="text-white/70 text-lg">No certifications available</p>
+          </p>
+        )}
       </div>
     </section>
   );

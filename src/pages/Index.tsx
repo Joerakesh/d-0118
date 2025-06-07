@@ -11,11 +11,14 @@ import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
 import Chatbot from "@/components/Chatbot";
 import ScrollToTop from "@/components/ScrollToTop";
+import ScrollIndicator from "@/components/ScrollIndicator";
+import QuickNav from "@/components/QuickNav";
 import { Toaster } from "@/components/ui/toaster";
 
 const Index = () => {
   return (
     <main className="min-h-screen">
+      <ScrollIndicator />
       <Navbar />
       <Hero />
       <AboutMe />
@@ -28,6 +31,7 @@ const Index = () => {
       <ContactForm />
       <Chatbot />
       <ScrollToTop />
+      <QuickNav />
       <Toaster />
     </main>
   );
