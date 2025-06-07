@@ -183,7 +183,7 @@ const Certifications = () => {
           <div className="text-center py-12">
             <Award className="w-16 h-16 text-primary/50 mx-auto mb-4" />
             <p className="text-white/70 text-lg">No certifications available</p>
-          </p>
+          </div>
         )}
       </div>
     </section>
