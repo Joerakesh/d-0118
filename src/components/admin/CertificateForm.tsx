@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Upload } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import ImageUpload from "./ImageUpload";
 
 interface Certificate {
   id: string;
@@ -48,62 +49,7 @@ const CertificateForm = ({ certificate, onSuccess }: CertificateFormProps) => {
     personal_note: certificate?.personal_note || "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [uploadingImage, setUploadingImage] = useState(false);
   const { toast } = useToast();
-
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      toast({
-        title: "Error",
-        description: "Please select an image file",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      toast({
-        title: "Error",
-        description: "Image size must be less than 5MB",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setUploadingImage(true);
-    try {
-      // Generate unique filename
-      const fileExtension = file.name.split('.').pop();
-      const fileName = `certificate-${Date.now()}.${fileExtension}`;
-      const filePath = `/Certifications/${fileName}`;
-
-      // Create the file content as base64
-      const reader = new FileReader();
-      reader.onload = () => {
-        // Update the form data with the new image path
-        setFormData({ ...formData, image: filePath });
-        
-        toast({
-          title: "Success",
-          description: `Image uploaded successfully! Please save the certificate to store the image at: ${filePath}`,
-        });
-      };
-      reader.readAsDataURL(file);
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: "Failed to upload image: " + error.message,
-        variant: "destructive",
-      });
-    } finally {
-      setUploadingImage(false);
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -172,8 +118,13 @@ const CertificateForm = ({ certificate, onSuccess }: CertificateFormProps) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>
+        <CardTitle className="flex items-center justify-between">
           {certificate ? "Edit Certificate" : "Add New Certificate"}
+          {formData.status && (
+            <Badge variant={formData.status === "Completed" ? "default" : "secondary"}>
+              {formData.status}
+            </Badge>
+          )}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -192,6 +143,7 @@ const CertificateForm = ({ certificate, onSuccess }: CertificateFormProps) => {
                     setFormData({ ...formData, title: e.target.value })
                   }
                   required
+                  placeholder="Certificate title"
                 />
               </div>
 
@@ -204,6 +156,7 @@ const CertificateForm = ({ certificate, onSuccess }: CertificateFormProps) => {
                     setFormData({ ...formData, issuer: e.target.value })
                   }
                   required
+                  placeholder="Organization or institution"
                 />
               </div>
             </div>
@@ -223,37 +176,13 @@ const CertificateForm = ({ certificate, onSuccess }: CertificateFormProps) => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="image-upload">Certificate Image *</Label>
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2">
-                    <Input
-                      id="image-upload"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      disabled={uploadingImage}
-                      className="flex-1"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      disabled={uploadingImage}
-                      className="whitespace-nowrap"
-                    >
-                      <Upload className="h-4 w-4 mr-1" />
-                      {uploadingImage ? "Uploading..." : "Upload"}
-                    </Button>
-                  </div>
-                  {formData.image && (
-                    <p className="text-sm text-gray-600">
-                      Current image: {formData.image}
-                    </p>
-                  )}
-                  <p className="text-xs text-gray-500">
-                    Upload an image file (max 5MB). It will be stored in the public/Certifications folder.
-                  </p>
-                </div>
+                <ImageUpload
+                  value={formData.image}
+                  onChange={(value) => setFormData({ ...formData, image: value })}
+                  folder="Certifications"
+                  label="Certificate Image"
+                  required
+                />
               </div>
             </div>
 
@@ -267,6 +196,7 @@ const CertificateForm = ({ certificate, onSuccess }: CertificateFormProps) => {
                 }
                 required
                 rows={3}
+                placeholder="Describe what this certificate represents"
               />
             </div>
 
@@ -298,6 +228,7 @@ const CertificateForm = ({ certificate, onSuccess }: CertificateFormProps) => {
                     setFormData({ ...formData, credential_id: e.target.value })
                   }
                   required
+                  placeholder="Certificate ID or credential number"
                 />
               </div>
 
@@ -385,7 +316,7 @@ const CertificateForm = ({ certificate, onSuccess }: CertificateFormProps) => {
           </div>
 
           <div className="flex gap-4 pt-4">
-            <Button type="submit" disabled={isLoading || uploadingImage}>
+            <Button type="submit" disabled={isLoading}>
               {isLoading
                 ? "Saving..."
                 : certificate

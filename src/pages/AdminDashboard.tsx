@@ -4,10 +4,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogOut, Plus, FolderOpen, Award } from "lucide-react";
+import { LogOut, Plus, FolderOpen, Award, BarChart3 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ProjectsManager from "@/components/admin/ProjectsManager";
 import CertificatesManager from "@/components/admin/CertificatesManager";
+import AdminStats from "@/components/admin/AdminStats";
 
 const AdminDashboard = () => {
   const [user, setUser] = useState(null);
@@ -79,12 +80,12 @@ const AdminDashboard = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+              <h1 className="text-2xl font-bold">Portfolio Admin</h1>
               <p className="text-muted-foreground">Manage your portfolio content</p>
             </div>
             <div className="flex items-center gap-4">
               <Button variant="outline" onClick={() => window.open("/", "_blank")}>
-                View Site
+                View Portfolio
               </Button>
               <Button variant="outline" onClick={handleSignOut}>
                 <LogOut className="w-4 h-4 mr-2" />
@@ -96,8 +97,12 @@ const AdminDashboard = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8">
-        <Tabs defaultValue="projects" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2">
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="overview" className="flex items-center gap-2">
+              <BarChart3 className="w-4 h-4" />
+              Overview
+            </TabsTrigger>
             <TabsTrigger value="projects" className="flex items-center gap-2">
               <FolderOpen className="w-4 h-4" />
               Projects
@@ -107,6 +112,58 @@ const AdminDashboard = () => {
               Certificates
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="overview" className="space-y-6">
+            <AdminStats />
+            
+            <div className="grid gap-6 md:grid-cols-2">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FolderOpen className="w-5 h-5" />
+                    Quick Actions
+                  </CardTitle>
+                  <CardDescription>
+                    Common tasks and shortcuts
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <Button className="w-full justify-start" onClick={() => {
+                    const tabs = document.querySelector('[role="tablist"]');
+                    const projectTab = tabs?.querySelector('[value="projects"]') as HTMLElement;
+                    projectTab?.click();
+                  }}>
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add New Project
+                  </Button>
+                  <Button variant="outline" className="w-full justify-start" onClick={() => {
+                    const tabs = document.querySelector('[role="tablist"]');
+                    const certTab = tabs?.querySelector('[value="certificates"]') as HTMLElement;
+                    certTab?.click();
+                  }}>
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add New Certificate
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Tips & Guidelines</CardTitle>
+                  <CardDescription>
+                    Best practices for your portfolio
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2 text-sm">
+                  <p>• Use high-quality images (max 5MB)</p>
+                  <p>• Write clear, concise descriptions</p>
+                  <p>• Include relevant technologies and skills</p>
+                  <p>• Add links to live demos and repositories</p>
+                  <p>• Feature your best projects on the homepage</p>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
 
           <TabsContent value="projects">
             <ProjectsManager />
