@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Upload, X, Image } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ImageUploadProps {
   value: string;
@@ -49,8 +50,22 @@ const ImageUpload = ({ value, onChange, folder, label, required = false, disable
       // Generate unique filename
       const fileExtension = file.name.split('.').pop();
       const fileName = `${folder.toLowerCase()}-${Date.now()}.${fileExtension}`;
-      const filePath = `/${folder}/${fileName}`;
+      const filePath = `${folder}/${fileName}`;
 
+      // Upload file to Supabase Storage
+      const { error: uploadError } = await supabase.storage
+        .from('portfolio-images')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data } = supabase.storage
+        .from('portfolio-images')
+        .getPublicUrl(filePath);
+
+      const publicUrl = data.publicUrl;
+      
       // Create preview
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -59,17 +74,17 @@ const ImageUpload = ({ value, onChange, folder, label, required = false, disable
       };
       reader.readAsDataURL(file);
 
-      // Update the form data with the new image path
-      onChange(filePath);
+      // Update the form data with the new image URL
+      onChange(publicUrl);
       
       toast({
         title: "Success",
-        description: `Image prepared for upload! Save the form to complete the process.`,
+        description: "Image uploaded successfully!",
       });
     } catch (error: any) {
       toast({
         title: "Error",
-        description: "Failed to process image: " + error.message,
+        description: "Failed to upload image: " + error.message,
         variant: "destructive",
       });
     } finally {
@@ -77,7 +92,23 @@ const ImageUpload = ({ value, onChange, folder, label, required = false, disable
     }
   };
 
-  const handleRemove = () => {
+  const handleRemove = async () => {
+    if (value && value.includes('portfolio-images')) {
+      try {
+        // Extract file path from URL
+        const url = new URL(value);
+        const filePath = url.pathname.split('/storage/v1/object/public/portfolio-images/')[1];
+        
+        if (filePath) {
+          await supabase.storage
+            .from('portfolio-images')
+            .remove([filePath]);
+        }
+      } catch (error) {
+        console.error('Error removing file:', error);
+      }
+    }
+    
     setPreview("");
     onChange("");
   };
@@ -129,14 +160,14 @@ const ImageUpload = ({ value, onChange, folder, label, required = false, disable
             className="whitespace-nowrap"
           >
             <Upload className="h-4 w-4 mr-1" />
-            {uploading ? "Processing..." : "Select"}
+            {uploading ? "Uploading..." : "Select"}
           </Button>
         </div>
         
         {value && !preview && (
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Image className="h-4 w-4" />
-            <span>Current: {value}</span>
+            <span>Current: {value.split('/').pop()}</span>
           </div>
         )}
         

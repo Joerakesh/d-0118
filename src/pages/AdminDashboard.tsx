@@ -1,14 +1,14 @@
-
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogOut, Plus, FolderOpen, Award, BarChart3 } from "lucide-react";
+import { LogOut, Plus, FolderOpen, Award, BarChart3, Palette, Sparkles, Zap, TrendingUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ProjectsManager from "@/components/admin/ProjectsManager";
 import CertificatesManager from "@/components/admin/CertificatesManager";
 import AdminStats from "@/components/admin/AdminStats";
+import PortfolioAnalytics from "@/components/admin/PortfolioAnalytics";
 
 const AdminDashboard = () => {
   const [user, setUser] = useState(null);
@@ -61,10 +61,13 @@ const AdminDashboard = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-muted-foreground">Loading admin dashboard...</p>
+          <div className="relative">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-emerald-400 mx-auto"></div>
+            <div className="absolute inset-0 rounded-full h-32 w-32 border-t-2 border-purple-400 animate-spin mx-auto" style={{ animationDirection: 'reverse', animationDuration: '3s' }}></div>
+          </div>
+          <p className="mt-6 text-emerald-300 font-medium">Loading admin dashboard...</p>
         </div>
       </div>
     );
@@ -75,19 +78,35 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b bg-card">
-        <div className="container mx-auto px-4 py-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <header className="border-b border-purple-500/20 bg-black/20 backdrop-blur-xl">
+        <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold">Portfolio Admin</h1>
-              <p className="text-muted-foreground">Manage your portfolio content</p>
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-gradient-to-r from-emerald-400 to-purple-500 rounded-xl flex items-center justify-center">
+                <Sparkles className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-purple-400 bg-clip-text text-transparent">
+                  Portfolio Studio
+                </h1>
+                <p className="text-emerald-300/80">Manage your creative portfolio</p>
+              </div>
             </div>
             <div className="flex items-center gap-4">
-              <Button variant="outline" onClick={() => window.open("/", "_blank")}>
+              <Button 
+                variant="outline" 
+                onClick={() => window.open("/", "_blank")}
+                className="border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/10 hover:border-emerald-400"
+              >
+                <Zap className="w-4 h-4 mr-2" />
                 View Portfolio
               </Button>
-              <Button variant="outline" onClick={handleSignOut}>
+              <Button 
+                variant="outline" 
+                onClick={handleSignOut}
+                className="border-purple-500/30 text-purple-300 hover:bg-purple-500/10 hover:border-purple-400"
+              >
                 <LogOut className="w-4 h-4 mr-2" />
                 Sign Out
               </Button>
@@ -97,64 +116,91 @@ const AdminDashboard = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8">
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="overview" className="flex items-center gap-2">
+        <Tabs defaultValue="overview" className="space-y-8">
+          <TabsList className="grid w-full grid-cols-4 bg-black/20 border border-purple-500/20 backdrop-blur-sm">
+            <TabsTrigger 
+              value="overview" 
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500/20 data-[state=active]:to-purple-500/20 data-[state=active]:text-white"
+            >
               <BarChart3 className="w-4 h-4" />
               Overview
             </TabsTrigger>
-            <TabsTrigger value="projects" className="flex items-center gap-2">
+            <TabsTrigger 
+              value="analytics" 
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500/20 data-[state=active]:to-purple-500/20 data-[state=active]:text-white"
+            >
+              <TrendingUp className="w-4 h-4" />
+              Analytics
+            </TabsTrigger>
+            <TabsTrigger 
+              value="projects" 
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500/20 data-[state=active]:to-purple-500/20 data-[state=active]:text-white"
+            >
               <FolderOpen className="w-4 h-4" />
               Projects
             </TabsTrigger>
-            <TabsTrigger value="certificates" className="flex items-center gap-2">
+            <TabsTrigger 
+              value="certificates" 
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500/20 data-[state=active]:to-purple-500/20 data-[state=active]:text-white"
+            >
               <Award className="w-4 h-4" />
               Certificates
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview" className="space-y-6">
+          <TabsContent value="overview" className="space-y-8">
             <AdminStats />
             
-            <div className="grid gap-6 md:grid-cols-2">
-              <Card>
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              <Card className="bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 border-emerald-500/20 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <FolderOpen className="w-5 h-5" />
+                  <CardTitle className="flex items-center gap-2 text-emerald-300">
+                    <Plus className="w-5 h-5" />
                     Quick Actions
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-emerald-200/70">
                     Common tasks and shortcuts
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-2">
-                  <Button className="w-full justify-start" onClick={() => {
-                    const tabs = document.querySelector('[role="tablist"]');
-                    const projectTab = tabs?.querySelector('[value="projects"]') as HTMLElement;
-                    projectTab?.click();
-                  }}>
+                <CardContent className="space-y-3">
+                  <Button 
+                    className="w-full justify-start bg-emerald-500/20 text-emerald-200 border-emerald-500/30 hover:bg-emerald-500/30" 
+                    variant="outline"
+                    onClick={() => {
+                      const tabs = document.querySelector('[role="tablist"]');
+                      const projectTab = tabs?.querySelector('[value="projects"]') as HTMLElement;
+                      projectTab?.click();
+                    }}
+                  >
                     <Plus className="w-4 h-4 mr-2" />
                     Add New Project
                   </Button>
-                  <Button variant="outline" className="w-full justify-start" onClick={() => {
-                    const tabs = document.querySelector('[role="tablist"]');
-                    const certTab = tabs?.querySelector('[value="certificates"]') as HTMLElement;
-                    certTab?.click();
-                  }}>
-                    <Plus className="w-4 h-4 mr-2" />
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start bg-purple-500/20 text-purple-200 border-purple-500/30 hover:bg-purple-500/30"
+                    onClick={() => {
+                      const tabs = document.querySelector('[role="tablist"]');
+                      const certTab = tabs?.querySelector('[value="certificates"]') as HTMLElement;
+                      certTab?.click();
+                    }}
+                  >
+                    <Award className="w-4 h-4 mr-2" />
                     Add New Certificate
                   </Button>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="bg-gradient-to-br from-purple-500/10 to-purple-600/5 border-purple-500/20 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle>Tips & Guidelines</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="flex items-center gap-2 text-purple-300">
+                    <Palette className="w-5 h-5" />
+                    Design Tips
+                  </CardTitle>
+                  <CardDescription className="text-purple-200/70">
                     Best practices for your portfolio
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-2 text-sm">
+                <CardContent className="space-y-2 text-sm text-purple-200/80">
                   <p>• Use high-quality images (max 5MB)</p>
                   <p>• Write clear, concise descriptions</p>
                   <p>• Include relevant technologies and skills</p>
@@ -162,7 +208,58 @@ const AdminDashboard = () => {
                   <p>• Feature your best projects on the homepage</p>
                 </CardContent>
               </Card>
+
+              <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-blue-300">
+                    <Sparkles className="w-5 h-5" />
+                    Pro Features
+                  </CardTitle>
+                  <CardDescription className="text-blue-200/70">
+                    Advanced portfolio management
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                    <p className="text-blue-200 text-sm font-medium">Image Storage</p>
+                    <p className="text-blue-200/70 text-xs">Images are stored securely in cloud storage</p>
+                  </div>
+                  <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                    <p className="text-emerald-200 text-sm font-medium">Real-time Updates</p>
+                    <p className="text-emerald-200/70 text-xs">Changes reflect instantly on your portfolio</p>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
+
+            <Card className="bg-gradient-to-r from-slate-800/50 to-slate-900/50 border-slate-600/20 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-slate-200">Recent Activity</CardTitle>
+                <CardDescription className="text-slate-400">
+                  Track your portfolio updates and management activities
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                    <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                    <p className="text-emerald-200 text-sm">Image storage system is now active</p>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-purple-500/10 border border-purple-500/20">
+                    <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                    <p className="text-purple-200 text-sm">Admin dashboard enhanced with new features</p>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                    <p className="text-blue-200 text-sm">Portfolio management system ready</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="analytics" className="space-y-8">
+            <PortfolioAnalytics />
           </TabsContent>
 
           <TabsContent value="projects">
