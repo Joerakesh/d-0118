@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Upload, X, Image } from "lucide-react";
+import { Upload, X, Image, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -96,8 +96,10 @@ const ImageUpload = ({ value, onChange, folder, label, required = false, disable
     if (value && value.includes('portfolio-images')) {
       try {
         // Extract file path from URL
-        const url = new URL(value);
-        const filePath = url.pathname.split('/storage/v1/object/public/portfolio-images/')[1];
+        const urlParts = value.split('/');
+        const fileName = urlParts[urlParts.length - 1];
+        const folderName = urlParts[urlParts.length - 2];
+        const filePath = `${folderName}/${fileName}`;
         
         if (filePath) {
           await supabase.storage
@@ -113,67 +115,84 @@ const ImageUpload = ({ value, onChange, folder, label, required = false, disable
     onChange("");
   };
 
+  // Display the actual uploaded image if available
+  const displayImage = value || preview;
+
   return (
-    <div className="space-y-2">
-      <Label htmlFor={`image-upload-${folder}`}>
+    <div className="space-y-4">
+      <Label htmlFor={`image-upload-${folder}`} className="text-slate-200 font-semibold">
         {label} {required && "*"}
       </Label>
       
       <div className="space-y-4">
-        {preview && (
+        {displayImage && (
           <div className="relative w-full max-w-xs">
-            <img
-              src={preview}
-              alt="Preview"
-              className="w-full h-32 object-cover rounded-lg border"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = '/placeholder.svg';
-              }}
-            />
+            <div className="relative overflow-hidden rounded-xl border-2 border-slate-600/30 bg-slate-800/50 backdrop-blur-sm">
+              <img
+                src={displayImage}
+                alt="Uploaded preview"
+                className="w-full h-40 object-cover transition-transform hover:scale-105"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = '/placeholder.svg';
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+              {value && (
+                <div className="absolute top-2 left-2 bg-emerald-500/90 text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                  <CheckCircle className="w-3 h-3" />
+                  Uploaded
+                </div>
+              )}
+            </div>
             <Button
               type="button"
               variant="destructive"
               size="sm"
-              className="absolute top-2 right-2 h-6 w-6 p-0"
+              className="absolute top-2 right-2 h-8 w-8 p-0 bg-red-500/90 hover:bg-red-600 backdrop-blur-sm"
               onClick={handleRemove}
             >
-              <X className="h-3 w-3" />
+              <X className="h-4 w-4" />
             </Button>
           </div>
         )}
         
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <Input
             id={`image-upload-${folder}`}
             type="file"
             accept="image/*"
             onChange={handleImageUpload}
             disabled={uploading || disabled}
-            className="flex-1"
+            className="flex-1 bg-slate-800/50 border-slate-600/30 text-slate-200 file:bg-slate-700 file:text-slate-200 file:border-slate-600/30 hover:bg-slate-700/50 transition-colors"
           />
           <Button
             type="button"
             variant="outline"
             size="sm"
             disabled={uploading || disabled}
-            className="whitespace-nowrap"
+            className="whitespace-nowrap bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-400/30 text-cyan-100 hover:from-cyan-500/30 hover:to-blue-500/30 transition-all font-semibold"
           >
-            <Upload className="h-4 w-4 mr-1" />
-            {uploading ? "Uploading..." : "Select"}
+            <Upload className="h-4 w-4 mr-2" />
+            {uploading ? "Uploading..." : "Select Image"}
           </Button>
         </div>
         
         {value && !preview && (
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Image className="h-4 w-4" />
-            <span>Current: {value.split('/').pop()}</span>
+          <div className="flex items-center gap-2 text-sm text-slate-300 bg-slate-800/30 p-3 rounded-lg border border-slate-600/30">
+            <Image className="h-4 w-4 text-emerald-400" />
+            <span className="font-medium">Current: {value.split('/').pop()}</span>
           </div>
         )}
         
-        <p className="text-xs text-muted-foreground">
-          Upload an image file (max 5MB). Supported formats: JPEG, PNG, WebP, GIF.
-        </p>
+        <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/30 p-3 rounded-lg border border-slate-600/20">
+          <p className="text-xs text-slate-300/90 font-medium">
+            📸 Upload high-quality images (max 5MB) • Supported: JPEG, PNG, WebP, GIF
+          </p>
+          <p className="text-xs text-slate-400/80 mt-1">
+            Images are securely stored and optimized for your portfolio
+          </p>
+        </div>
       </div>
     </div>
   );
