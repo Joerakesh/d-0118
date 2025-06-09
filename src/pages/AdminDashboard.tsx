@@ -1,15 +1,17 @@
-
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogOut, Plus, FolderOpen, Award, BarChart3, Palette, Sparkles, Zap, TrendingUp, Activity, Settings, Bell } from "lucide-react";
+import { LogOut, Plus, FolderOpen, Award, BarChart3, Palette, Sparkles, Zap, TrendingUp, Activity, Settings, Bell, FileText, Database, Image, Shield } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ProjectsManager from "@/components/admin/ProjectsManager";
 import CertificatesManager from "@/components/admin/CertificatesManager";
 import AdminStats from "@/components/admin/AdminStats";
 import PortfolioAnalytics from "@/components/admin/PortfolioAnalytics";
+import ContentManager from "@/components/admin/ContentManager";
+import BackupManager from "@/components/admin/BackupManager";
+import MediaLibrary from "@/components/admin/MediaLibrary";
 
 const AdminDashboard = () => {
   const [user, setUser] = useState(null);
@@ -126,34 +128,55 @@ const AdminDashboard = () => {
 
       <main className="container mx-auto px-6 py-8">
         <Tabs defaultValue="overview" className="space-y-8">
-          <TabsList className="grid w-full grid-cols-4 bg-slate-900/60 border border-slate-700/50 backdrop-blur-md shadow-xl rounded-xl">
+          <TabsList className="grid w-full grid-cols-7 bg-slate-900/60 border border-slate-700/50 backdrop-blur-md shadow-xl rounded-xl">
             <TabsTrigger 
               value="overview" 
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-500/20 data-[state=active]:to-purple-500/20 data-[state=active]:text-white font-semibold transition-all"
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-500/20 data-[state=active]:to-purple-500/20 data-[state=active]:text-white font-semibold transition-all text-xs"
             >
               <BarChart3 className="w-4 h-4" />
               Dashboard
             </TabsTrigger>
             <TabsTrigger 
               value="analytics" 
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500/20 data-[state=active]:to-blue-500/20 data-[state=active]:text-white font-semibold transition-all"
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500/20 data-[state=active]:to-blue-500/20 data-[state=active]:text-white font-semibold transition-all text-xs"
             >
               <TrendingUp className="w-4 h-4" />
               Analytics
             </TabsTrigger>
             <TabsTrigger 
               value="projects" 
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500/20 data-[state=active]:to-pink-500/20 data-[state=active]:text-white font-semibold transition-all"
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500/20 data-[state=active]:to-pink-500/20 data-[state=active]:text-white font-semibold transition-all text-xs"
             >
               <FolderOpen className="w-4 h-4" />
               Projects
             </TabsTrigger>
             <TabsTrigger 
               value="certificates" 
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500/20 data-[state=active]:to-orange-500/20 data-[state=active]:text-white font-semibold transition-all"
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500/20 data-[state=active]:to-orange-500/20 data-[state=active]:text-white font-semibold transition-all text-xs"
             >
               <Award className="w-4 h-4" />
               Certificates
+            </TabsTrigger>
+            <TabsTrigger 
+              value="content" 
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500/20 data-[state=active]:to-violet-500/20 data-[state=active]:text-white font-semibold transition-all text-xs"
+            >
+              <FileText className="w-4 h-4" />
+              Content
+            </TabsTrigger>
+            <TabsTrigger 
+              value="media" 
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500/20 data-[state=active]:to-rose-500/20 data-[state=active]:text-white font-semibold transition-all text-xs"
+            >
+              <Image className="w-4 h-4" />
+              Media
+            </TabsTrigger>
+            <TabsTrigger 
+              value="backup" 
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-teal-500/20 data-[state=active]:to-green-500/20 data-[state=active]:text-white font-semibold transition-all text-xs"
+            >
+              <Shield className="w-4 h-4" />
+              Backup
             </TabsTrigger>
           </TabsList>
 
@@ -286,6 +309,18 @@ const AdminDashboard = () => {
 
           <TabsContent value="certificates">
             <CertificatesManager />
+          </TabsContent>
+
+          <TabsContent value="content">
+            <ContentManager />
+          </TabsContent>
+
+          <TabsContent value="media">
+            <MediaLibrary />
+          </TabsContent>
+
+          <TabsContent value="backup">
+            <BackupManager />
           </TabsContent>
         </Tabs>
       </main>

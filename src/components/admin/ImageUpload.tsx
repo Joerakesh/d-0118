@@ -115,19 +115,19 @@ const ImageUpload = ({ value, onChange, folder, label, required = false, disable
     onChange("");
   };
 
-  // Display the actual uploaded image if available
+  // Display the actual uploaded image if available, fallback to preview
   const displayImage = value || preview;
 
   return (
     <div className="space-y-4">
-      <Label htmlFor={`image-upload-${folder}`} className="text-slate-200 font-semibold">
-        {label} {required && "*"}
+      <Label htmlFor={`image-upload-${folder}`} className="text-white font-semibold text-lg">
+        {label} {required && <span className="text-red-400">*</span>}
       </Label>
       
       <div className="space-y-4">
         {displayImage && (
           <div className="relative w-full max-w-xs">
-            <div className="relative overflow-hidden rounded-xl border-2 border-slate-600/30 bg-slate-800/50 backdrop-blur-sm">
+            <div className="relative overflow-hidden rounded-xl border-2 border-cyan-400/30 bg-slate-800/50 backdrop-blur-sm shadow-lg hover:shadow-cyan-500/20 transition-all duration-300">
               <img
                 src={displayImage}
                 alt="Uploaded preview"
@@ -164,7 +164,7 @@ const ImageUpload = ({ value, onChange, folder, label, required = false, disable
             accept="image/*"
             onChange={handleImageUpload}
             disabled={uploading || disabled}
-            className="flex-1 bg-slate-800/50 border-slate-600/30 text-slate-200 file:bg-slate-700 file:text-slate-200 file:border-slate-600/30 hover:bg-slate-700/50 transition-colors"
+            className="flex-1 bg-slate-800/50 border-cyan-400/30 text-white file:bg-slate-700 file:text-white file:border-cyan-400/30 hover:bg-slate-700/50 transition-colors"
           />
           <Button
             type="button"
@@ -179,17 +179,17 @@ const ImageUpload = ({ value, onChange, folder, label, required = false, disable
         </div>
         
         {value && !preview && (
-          <div className="flex items-center gap-2 text-sm text-slate-300 bg-slate-800/30 p-3 rounded-lg border border-slate-600/30">
+          <div className="flex items-center gap-2 text-sm text-cyan-200 bg-slate-800/30 p-3 rounded-lg border border-cyan-400/30">
             <Image className="h-4 w-4 text-emerald-400" />
-            <span className="font-medium">Current: {value.split('/').pop()}</span>
+            <span className="font-medium text-white">Current: {value.split('/').pop()}</span>
           </div>
         )}
         
-        <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/30 p-3 rounded-lg border border-slate-600/20">
-          <p className="text-xs text-slate-300/90 font-medium">
+        <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/30 p-3 rounded-lg border border-cyan-400/20">
+          <p className="text-xs text-cyan-200 font-medium">
             📸 Upload high-quality images (max 5MB) • Supported: JPEG, PNG, WebP, GIF
           </p>
-          <p className="text-xs text-slate-400/80 mt-1">
+          <p className="text-xs text-slate-300 mt-1">
             Images are securely stored and optimized for your portfolio
           </p>
         </div>
