@@ -24,8 +24,10 @@ import {
 interface MediaFile {
   name: string;
   id: string;
-  size: number;
-  created_at: string;
+  size?: number;
+  created_at?: string;
+  updated_at?: string;
+  last_accessed_at?: string;
   metadata?: any;
 }
 
@@ -52,7 +54,18 @@ const MediaLibrary = () => {
 
       if (error) throw error;
 
-      setFiles(data || []);
+      // Transform the Supabase FileObject to our MediaFile interface
+      const transformedFiles: MediaFile[] = (data || []).map(file => ({
+        name: file.name,
+        id: file.id || file.name,
+        size: file.metadata?.size || 0,
+        created_at: file.created_at,
+        updated_at: file.updated_at,
+        last_accessed_at: file.last_accessed_at,
+        metadata: file.metadata,
+      }));
+
+      setFiles(transformedFiles);
     } catch (error) {
       console.error("Error loading files:", error);
       toast({
@@ -257,7 +270,9 @@ const MediaLibrary = () => {
                   />
                   <div className="flex-1">
                     <p className="text-white font-medium">{file.name}</p>
-                    <p className="text-purple-200/70 text-sm">{formatFileSize(file.size || 0)} • {new Date(file.created_at).toLocaleDateString()}</p>
+                    <p className="text-purple-200/70 text-sm">
+                      {formatFileSize(file.size || 0)} • {file.created_at ? new Date(file.created_at).toLocaleDateString() : 'Unknown date'}
+                    </p>
                   </div>
                   <div className="flex gap-2">
                     <Button size="sm" variant="outline" className="border-purple-400/30 text-purple-200">
