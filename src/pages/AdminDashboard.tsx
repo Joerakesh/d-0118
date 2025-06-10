@@ -1,19 +1,17 @@
+
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
-import { LogOut, Plus, FolderOpen, Award, BarChart3, Palette, Sparkles, Zap, TrendingUp, Activity, Settings, Bell, FileText, Database, Image, Shield, Sun, Moon } from "lucide-react";
+import { LogOut, Plus, FolderOpen, Award, BarChart3, Settings, Sun, Moon, User, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useTheme } from "@/components/ThemeProvider";
 import ProjectsManager from "@/components/admin/ProjectsManager";
 import CertificatesManager from "@/components/admin/CertificatesManager";
 import AdminStats from "@/components/admin/AdminStats";
 import PortfolioAnalytics from "@/components/admin/PortfolioAnalytics";
-import ContentManager from "@/components/admin/ContentManager";
-import BackupManager from "@/components/admin/BackupManager";
-import MediaLibrary from "@/components/admin/MediaLibrary";
 
 const AdminDashboard = () => {
   const [user, setUser] = useState(null);
@@ -69,12 +67,8 @@ const AdminDashboard = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto"></div>
-            <div className="absolute inset-0 rounded-full h-32 w-32 border-t-2 border-primary/50 animate-spin mx-auto" style={{ animationDirection: 'reverse', animationDuration: '3s' }}></div>
-          </div>
-          <p className="mt-6 text-foreground font-bold text-lg">Loading Portfolio Studio...</p>
-          <p className="text-muted-foreground text-sm mt-2">Preparing your creative workspace</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-foreground font-medium">Loading Admin Dashboard...</p>
         </div>
       </div>
     );
@@ -86,21 +80,21 @@ const AdminDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b bg-card/50 backdrop-blur-xl sticky top-0 z-50">
+      <header className="border-b bg-card sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-primary to-primary/70 rounded-xl flex items-center justify-center shadow-lg">
-                <Sparkles className="w-6 h-6 text-white" />
+              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                <User className="w-5 h-5 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-foreground">
-                  Portfolio Studio
+                <h1 className="text-2xl font-bold text-foreground">
+                  Portfolio Admin
                 </h1>
-                <p className="text-muted-foreground font-medium">Creative Portfolio Management</p>
+                <p className="text-muted-foreground text-sm">Manage your portfolio content</p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <div className="flex items-center space-x-2">
                 <Sun className="h-4 w-4 text-foreground" />
                 <Switch
@@ -110,24 +104,17 @@ const AdminDashboard = () => {
                 <Moon className="h-4 w-4 text-foreground" />
               </div>
               <Button 
-                variant="ghost" 
-                size="sm"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                <Bell className="w-4 h-4" />
-              </Button>
-              <Button 
                 variant="outline" 
                 onClick={() => window.open("/", "_blank")}
-                className="font-semibold transition-all"
+                className="text-foreground border-border hover:bg-accent"
               >
-                <Zap className="w-4 h-4 mr-2" />
+                <Eye className="w-4 h-4 mr-2" />
                 View Portfolio
               </Button>
               <Button 
                 variant="outline" 
                 onClick={handleSignOut}
-                className="font-semibold transition-all"
+                className="text-foreground border-border hover:bg-accent"
               >
                 <LogOut className="w-4 h-4 mr-2" />
                 Sign Out
@@ -138,78 +125,57 @@ const AdminDashboard = () => {
       </header>
 
       <main className="container mx-auto px-6 py-8">
-        <Tabs defaultValue="overview" className="space-y-8">
-          <TabsList className="grid w-full grid-cols-7 bg-card border shadow-xl rounded-xl">
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4 bg-muted">
             <TabsTrigger 
               value="overview" 
-              className="flex items-center gap-2 data-[state=active]:bg-primary/10 data-[state=active]:text-primary font-semibold transition-all text-xs"
+              className="data-[state=active]:bg-background data-[state=active]:text-foreground text-muted-foreground"
             >
-              <BarChart3 className="w-4 h-4" />
-              Dashboard
-            </TabsTrigger>
-            <TabsTrigger 
-              value="analytics" 
-              className="flex items-center gap-2 data-[state=active]:bg-primary/10 data-[state=active]:text-primary font-semibold transition-all text-xs"
-            >
-              <TrendingUp className="w-4 h-4" />
-              Analytics
+              <BarChart3 className="w-4 h-4 mr-2" />
+              Overview
             </TabsTrigger>
             <TabsTrigger 
               value="projects" 
-              className="flex items-center gap-2 data-[state=active]:bg-primary/10 data-[state=active]:text-primary font-semibold transition-all text-xs"
+              className="data-[state=active]:bg-background data-[state=active]:text-foreground text-muted-foreground"
             >
-              <FolderOpen className="w-4 h-4" />
+              <FolderOpen className="w-4 h-4 mr-2" />
               Projects
             </TabsTrigger>
             <TabsTrigger 
               value="certificates" 
-              className="flex items-center gap-2 data-[state=active]:bg-primary/10 data-[state=active]:text-primary font-semibold transition-all text-xs"
+              className="data-[state=active]:bg-background data-[state=active]:text-foreground text-muted-foreground"
             >
-              <Award className="w-4 h-4" />
+              <Award className="w-4 h-4 mr-2" />
               Certificates
             </TabsTrigger>
             <TabsTrigger 
-              value="content" 
-              className="flex items-center gap-2 data-[state=active]:bg-primary/10 data-[state=active]:text-primary font-semibold transition-all text-xs"
+              value="analytics" 
+              className="data-[state=active]:bg-background data-[state=active]:text-foreground text-muted-foreground"
             >
-              <FileText className="w-4 h-4" />
-              Content
-            </TabsTrigger>
-            <TabsTrigger 
-              value="media" 
-              className="flex items-center gap-2 data-[state=active]:bg-primary/10 data-[state=active]:text-primary font-semibold transition-all text-xs"
-            >
-              <Image className="w-4 h-4" />
-              Media
-            </TabsTrigger>
-            <TabsTrigger 
-              value="backup" 
-              className="flex items-center gap-2 data-[state=active]:bg-primary/10 data-[state=active]:text-primary font-semibold transition-all text-xs"
-            >
-              <Shield className="w-4 h-4" />
-              Backup
+              <Settings className="w-4 h-4 mr-2" />
+              Analytics
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview" className="space-y-8">
-            <div className="grid gap-6 lg:grid-cols-4">
-              <div className="lg:col-span-3">
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid gap-6 lg:grid-cols-3">
+              <div className="lg:col-span-2">
                 <AdminStats />
               </div>
-              <div className="space-y-6">
-                <Card className="bg-card border shadow-xl">
+              <div className="space-y-4">
+                <Card className="bg-card border">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-foreground font-bold">
+                    <CardTitle className="flex items-center gap-2 text-foreground">
                       <Plus className="w-5 h-5" />
                       Quick Actions
                     </CardTitle>
-                    <CardDescription className="text-muted-foreground font-medium">
-                      Manage your portfolio content
+                    <CardDescription className="text-muted-foreground">
+                      Manage your content
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <Button 
-                      className="w-full justify-start font-semibold transition-all" 
+                      className="w-full justify-start" 
                       variant="outline"
                       onClick={() => {
                         const tabs = document.querySelector('[role="tablist"]');
@@ -218,11 +184,11 @@ const AdminDashboard = () => {
                       }}
                     >
                       <Plus className="w-4 h-4 mr-2" />
-                      New Project
+                      Add New Project
                     </Button>
                     <Button 
                       variant="outline" 
-                      className="w-full justify-start font-semibold transition-all"
+                      className="w-full justify-start"
                       onClick={() => {
                         const tabs = document.querySelector('[role="tablist"]');
                         const certTab = tabs?.querySelector('[value="certificates"]') as HTMLElement;
@@ -230,88 +196,81 @@ const AdminDashboard = () => {
                       }}
                     >
                       <Award className="w-4 h-4 mr-2" />
-                      New Certificate
+                      Add Certificate
                     </Button>
                     <Button 
                       variant="outline" 
-                      className="w-full justify-start font-semibold transition-all"
+                      className="w-full justify-start"
                       onClick={() => {
                         const tabs = document.querySelector('[role="tablist"]');
                         const analyticsTab = tabs?.querySelector('[value="analytics"]') as HTMLElement;
                         analyticsTab?.click();
                       }}
                     >
-                      <Activity className="w-4 h-4 mr-2" />
+                      <BarChart3 className="w-4 h-4 mr-2" />
                       View Analytics
                     </Button>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-card border shadow-xl">
+                <Card className="bg-card border">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-foreground font-bold">
-                      <Palette className="w-5 h-5" />
-                      Pro Tips
-                    </CardTitle>
-                    <CardDescription className="text-muted-foreground font-medium">
-                      Best practices for your portfolio
+                    <CardTitle className="text-foreground">Portfolio Tips</CardTitle>
+                    <CardDescription className="text-muted-foreground">
+                      Best practices for success
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-3 text-sm text-foreground font-medium">
-                    <div className="p-3 rounded-lg bg-primary/10 border border-primary/20">
-                      <p className="font-semibold text-foreground">🎨 Visual Excellence</p>
-                      <p className="text-muted-foreground text-xs mt-1">Use high-quality images and consistent styling</p>
+                  <CardContent className="space-y-3 text-sm">
+                    <div className="p-3 rounded-lg bg-muted/50">
+                      <p className="font-medium text-foreground">🎨 Visual Impact</p>
+                      <p className="text-muted-foreground text-xs mt-1">Use high-quality project images</p>
                     </div>
-                    <div className="p-3 rounded-lg bg-primary/10 border border-primary/20">
-                      <p className="font-semibold text-foreground">🚀 Performance</p>
-                      <p className="text-muted-foreground text-xs mt-1">Add live demos and GitHub links</p>
+                    <div className="p-3 rounded-lg bg-muted/50">
+                      <p className="font-medium text-foreground">🚀 Live Demos</p>
+                      <p className="text-muted-foreground text-xs mt-1">Include working project links</p>
                     </div>
-                    <div className="p-3 rounded-lg bg-primary/10 border border-primary/20">
-                      <p className="font-semibold text-foreground">📝 Content Quality</p>
-                      <p className="text-muted-foreground text-xs mt-1">Write clear, engaging project descriptions</p>
+                    <div className="p-3 rounded-lg bg-muted/50">
+                      <p className="font-medium text-foreground">📝 Clear Descriptions</p>
+                      <p className="text-muted-foreground text-xs mt-1">Write engaging project stories</p>
                     </div>
                   </CardContent>
                 </Card>
               </div>
             </div>
 
-            <Card className="bg-card border shadow-xl">
+            <Card className="bg-card border">
               <CardHeader>
-                <CardTitle className="text-foreground font-bold text-lg">System Status</CardTitle>
-                <CardDescription className="text-muted-foreground font-medium">
-                  Current system health and recent updates
+                <CardTitle className="text-foreground">Portfolio Status</CardTitle>
+                <CardDescription className="text-muted-foreground">
+                  Current portfolio health and metrics
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4 md:grid-cols-3">
-                  <div className="flex items-center gap-3 p-4 rounded-lg bg-primary/10 border border-primary/20">
-                    <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                  <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50">
+                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                     <div>
-                      <p className="text-foreground font-semibold text-sm">Storage Active</p>
-                      <p className="text-muted-foreground text-xs">Image uploads working perfectly</p>
+                      <p className="text-foreground font-medium text-sm">Content Active</p>
+                      <p className="text-muted-foreground text-xs">All systems operational</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-4 rounded-lg bg-primary/10 border border-primary/20">
-                    <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
+                  <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50">
+                    <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
                     <div>
-                      <p className="text-foreground font-semibold text-sm">Analytics Ready</p>
-                      <p className="text-muted-foreground text-xs">Real-time data processing</p>
+                      <p className="text-foreground font-medium text-sm">Analytics Ready</p>
+                      <p className="text-muted-foreground text-xs">Data tracking enabled</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-4 rounded-lg bg-primary/10 border border-primary/20">
-                    <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse"></div>
+                  <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50">
+                    <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
                     <div>
-                      <p className="text-foreground font-semibold text-sm">Database Synced</p>
-                      <p className="text-muted-foreground text-xs">All content up to date</p>
+                      <p className="text-foreground font-medium text-sm">SEO Optimized</p>
+                      <p className="text-muted-foreground text-xs">Search engine ready</p>
                     </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
-
-          <TabsContent value="analytics" className="space-y-8">
-            <PortfolioAnalytics />
           </TabsContent>
 
           <TabsContent value="projects">
@@ -322,16 +281,8 @@ const AdminDashboard = () => {
             <CertificatesManager />
           </TabsContent>
 
-          <TabsContent value="content">
-            <ContentManager />
-          </TabsContent>
-
-          <TabsContent value="media">
-            <MediaLibrary />
-          </TabsContent>
-
-          <TabsContent value="backup">
-            <BackupManager />
+          <TabsContent value="analytics">
+            <PortfolioAnalytics />
           </TabsContent>
         </Tabs>
       </main>
