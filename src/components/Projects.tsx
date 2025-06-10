@@ -71,16 +71,32 @@ const Projects = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Helper function to get the correct image path
+  // Helper function to get the correct image path - check if it's from Supabase storage or local
   const getImagePath = (imagePath: string) => {
-    // If the path starts with /Projects/, return as is
+    // If it's already a full URL (from Supabase storage), return as is
+    if (imagePath.startsWith('http')) {
+      return imagePath;
+    }
+    
+    // If it contains 'portfolio-images', it's likely a Supabase storage reference
+    if (imagePath.includes('portfolio-images')) {
+      const fileName = imagePath.split('/').pop();
+      const { data } = supabase.storage
+        .from('portfolio-images')
+        .getPublicUrl(fileName || imagePath);
+      return data.publicUrl;
+    }
+    
+    // If the path starts with /Projects/, return as is (local files)
     if (imagePath.startsWith('/Projects/')) {
       return imagePath;
     }
+    
     // If it doesn't start with /, add it
     if (!imagePath.startsWith('/')) {
       return `/${imagePath}`;
     }
+    
     return imagePath;
   };
 
