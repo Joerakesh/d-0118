@@ -52,8 +52,8 @@ const SkillsManager = () => {
       if (error) throw error;
       setSkills(data || []);
     } catch (error: any) {
-      console.log("Skills table not found, creating initial skills from projects");
-      // If skills table doesn't exist, we'll work with the existing projects data
+      console.log("Error fetching skills:", error.message);
+      // If skills table doesn't exist or there's an error, just set empty array
       setSkills([]);
     } finally {
       setIsLoading(false);
@@ -87,8 +87,9 @@ const SkillsManager = () => {
       fetchSkills();
     } catch (error: any) {
       toast({
-        title: "Info",
-        description: "Skills management will be available after database setup",
+        title: "Error",
+        description: "Failed to add skill: " + error.message,
+        variant: "destructive",
       });
     }
   };

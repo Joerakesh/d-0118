@@ -42,7 +42,7 @@ const ProjectsManager = () => {
       const { data, error } = await supabase
         .from("projects")
         .select("*")
-        .order("order_position", { ascending: true, nullsLast: true })
+        .order("order_position", { ascending: true, nullsFirst: false })
         .order("created_at", { ascending: false });
 
       if (error) throw error;
@@ -112,7 +112,7 @@ const ProjectsManager = () => {
     try {
       const { error } = await supabase
         .from("projects")
-        .update({ order_position: newPosition })
+        .update({ order_position: newPosition } as any)
         .eq("id", projectId);
 
       if (error) throw error;
@@ -347,7 +347,6 @@ const ProjectsManager = () => {
                   <Switch
                     checked={project.featured}
                     onCheckedChange={() => handleToggleFeatured(project.id, project.featured)}
-                    size="sm"
                   />
                 </div>
               </div>
