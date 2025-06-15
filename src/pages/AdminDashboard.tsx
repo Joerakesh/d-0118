@@ -1,10 +1,11 @@
+
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
-import { LogOut, Plus, FolderOpen, Award, BarChart3, Settings, Sun, Moon, User, Eye, TrendingUp } from "lucide-react";
+import { LogOut, Plus, FolderOpen, Award, BarChart3, Settings, Sun, Moon, User, Eye, TrendingUp, FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useTheme } from "@/components/ThemeProvider";
 import ProjectsManager from "@/components/admin/ProjectsManager";
@@ -12,6 +13,7 @@ import CertificatesManager from "@/components/admin/CertificatesManager";
 import AdminStats from "@/components/admin/AdminStats";
 import PortfolioAnalytics from "@/components/admin/PortfolioAnalytics";
 import SkillsManager from "@/components/admin/SkillsManager";
+import ContentManager from "@/components/admin/ContentManager";
 
 const AdminDashboard = () => {
   const [user, setUser] = useState(null);
@@ -126,7 +128,7 @@ const AdminDashboard = () => {
 
       <main className="container mx-auto px-6 py-8">
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 bg-muted">
+          <TabsList className="grid w-full grid-cols-6 bg-muted">
             <TabsTrigger 
               value="overview" 
               className="data-[state=active]:bg-background data-[state=active]:text-foreground text-muted-foreground"
@@ -147,6 +149,13 @@ const AdminDashboard = () => {
             >
               <Settings className="w-4 h-4 mr-2" />
               Skills
+            </TabsTrigger>
+            <TabsTrigger 
+              value="content" 
+              className="data-[state=active]:bg-background data-[state=active]:text-foreground text-muted-foreground"
+            >
+              <FileText className="w-4 h-4 mr-2" />
+              Content
             </TabsTrigger>
             <TabsTrigger 
               value="certificates" 
@@ -286,6 +295,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="skills">
             <SkillsManager />
+          </TabsContent>
+
+          <TabsContent value="content">
+            <ContentManager />
           </TabsContent>
 
           <TabsContent value="certificates">

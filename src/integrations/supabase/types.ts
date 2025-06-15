@@ -87,6 +87,30 @@ export type Database = {
         }
         Relationships: []
       }
+      content_sections: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          section_name: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          section_name: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          section_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       projects: {
         Row: {
           challenges: string | null
@@ -157,21 +181,27 @@ export type Database = {
         Row: {
           category: string
           created_at: string
+          description: string | null
           id: string
+          image_url: string | null
           name: string
           proficiency: number
         }
         Insert: {
           category: string
           created_at?: string
+          description?: string | null
           id?: string
+          image_url?: string | null
           name: string
           proficiency?: number
         }
         Update: {
           category?: string
           created_at?: string
+          description?: string | null
           id?: string
+          image_url?: string | null
           name?: string
           proficiency?: number
         }

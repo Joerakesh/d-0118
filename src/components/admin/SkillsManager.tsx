@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus, Trash2, Code, Database, Palette, Globe } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Plus, Trash2, Code, Database, Palette, Globe, Save } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -21,7 +22,9 @@ interface Skill {
 
 const SkillsManager = () => {
   const [skills, setSkills] = useState<Skill[]>([]);
+  const [skillsDescription, setSkillsDescription] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [isSavingDescription, setIsSavingDescription] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [newSkill, setNewSkill] = useState({
     name: "",
@@ -33,12 +36,14 @@ const SkillsManager = () => {
   const categories = [
     { value: "frontend", label: "Frontend", icon: Code, color: "bg-blue-500" },
     { value: "backend", label: "Backend", icon: Database, color: "bg-green-500" },
-    { value: "design", label: "Design", icon: Palette, color: "bg-purple-500" },
+    { value: "database", label: "Database", icon: Database, color: "bg-purple-500" },
+    { value: "design", label: "Design", icon: Palette, color: "bg-pink-500" },
     { value: "tools", label: "Tools", icon: Globe, color: "bg-orange-500" }
   ];
 
   useEffect(() => {
     fetchSkills();
+    fetchSkillsDescription();
   }, []);
 
   const fetchSkills = async () => {
@@ -53,10 +58,24 @@ const SkillsManager = () => {
       setSkills(data || []);
     } catch (error: any) {
       console.log("Error fetching skills:", error.message);
-      // If skills table doesn't exist or there's an error, just set empty array
       setSkills([]);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fetchSkillsDescription = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("content_sections")
+        .select("*")
+        .eq("section_name", "skills_description")
+        .single();
+
+      if (error && error.code !== 'PGRST116') throw error;
+      setSkillsDescription(data?.content || "");
+    } catch (error: any) {
+      console.log("Error fetching skills description:", error.message);
     }
   };
 
@@ -118,6 +137,34 @@ const SkillsManager = () => {
     }
   };
 
+  const handleSaveDescription = async () => {
+    setIsSavingDescription(true);
+    try {
+      const { error } = await supabase
+        .from("content_sections")
+        .upsert({
+          section_name: "skills_description",
+          content: skillsDescription,
+          updated_at: new Date().toISOString()
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Skills description updated successfully",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: "Failed to update description: " + error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsSavingDescription(false);
+    }
+  };
+
   const getCategoryIcon = (category: string) => {
     const cat = categories.find(c => c.value === category);
     return cat ? cat.icon : Code;
@@ -141,6 +188,32 @@ const SkillsManager = () => {
           Add Skill
         </Button>
       </div>
+
+      {/* Skills Description Management */}
+      <Card className="bg-card border">
+        <CardHeader>
+          <CardTitle className="text-foreground">Skills Section Description</CardTitle>
+          <CardDescription>
+            Manage the introductory paragraph that appears at the top of the skills section
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <Label htmlFor="skillsDescription" className="text-foreground">Description</Label>
+            <Textarea
+              id="skillsDescription"
+              value={skillsDescription}
+              onChange={(e) => setSkillsDescription(e.target.value)}
+              placeholder="Enter a description for your skills section..."
+              rows={4}
+            />
+          </div>
+          <Button onClick={handleSaveDescription} disabled={isSavingDescription}>
+            <Save className="w-4 h-4 mr-2" />
+            {isSavingDescription ? "Saving..." : "Save Description"}
+          </Button>
+        </CardContent>
+      </Card>
 
       {/* Skills Overview */}
       <div className="grid gap-4 md:grid-cols-4">
