@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -17,6 +16,7 @@ interface Skill {
   name: string;
   category: string;
   proficiency: number;
+  description?: string;
   created_at: string;
 }
 
@@ -29,7 +29,8 @@ const SkillsManager = () => {
   const [newSkill, setNewSkill] = useState({
     name: "",
     category: "frontend",
-    proficiency: 80
+    proficiency: 80,
+    description: ""
   });
   const { toast } = useToast();
 
@@ -101,7 +102,7 @@ const SkillsManager = () => {
         description: "Skill added successfully",
       });
 
-      setNewSkill({ name: "", category: "frontend", proficiency: 80 });
+      setNewSkill({ name: "", category: "frontend", proficiency: 80, description: "" });
       setShowForm(false);
       fetchSkills();
     } catch (error: any) {
@@ -215,35 +216,6 @@ const SkillsManager = () => {
         </CardContent>
       </Card>
 
-      {/* Skills Overview */}
-      <div className="grid gap-4 md:grid-cols-4">
-        {categories.map((category) => {
-          const categorySkills = skills.filter(s => s.category === category.value);
-          const avgProficiency = categorySkills.length > 0 
-            ? Math.round(categorySkills.reduce((sum, skill) => sum + skill.proficiency, 0) / categorySkills.length)
-            : 0;
-          
-          const Icon = category.icon;
-          
-          return (
-            <Card key={category.value} className="bg-card border">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-2">
-                  <div className={`p-2 rounded-lg ${category.color}`}>
-                    <Icon className="w-4 h-4 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-lg font-bold text-foreground">{categorySkills.length}</p>
-                    <p className="text-xs text-muted-foreground">{category.label}</p>
-                    <p className="text-xs text-muted-foreground">Avg: {avgProficiency}%</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
-
       {/* Add Skill Form */}
       {showForm && (
         <Card className="bg-card border">
@@ -284,6 +256,16 @@ const SkillsManager = () => {
                 min={10}
                 step={5}
                 className="mt-2"
+              />
+            </div>
+            <div>
+              <Label htmlFor="skillDescription" className="text-foreground">Description (Optional)</Label>
+              <Textarea
+                id="skillDescription"
+                value={newSkill.description}
+                onChange={(e) => setNewSkill({ ...newSkill, description: e.target.value })}
+                placeholder="Describe your experience with this technology..."
+                rows={3}
               />
             </div>
             <div className="flex gap-2">
@@ -328,15 +310,12 @@ const SkillsManager = () => {
                             <Trash2 className="w-3 h-3" />
                           </Button>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <div className="flex-1 bg-background rounded-full h-2">
-                            <div 
-                              className={`h-2 rounded-full ${category.color}`}
-                              style={{ width: `${skill.proficiency}%` }}
-                            />
-                          </div>
-                          <span className="text-xs text-muted-foreground">{skill.proficiency}%</span>
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-xs text-muted-foreground">{skill.proficiency}% proficiency</span>
                         </div>
+                        {skill.description && (
+                          <p className="text-xs text-muted-foreground line-clamp-2">{skill.description}</p>
+                        )}
                       </div>
                     </div>
                   ))}

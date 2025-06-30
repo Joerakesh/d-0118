@@ -1,7 +1,7 @@
-
 import { useState, useEffect } from "react";
 import { Code, Layers, Server, Database, Palette, Globe } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { Link } from "react-router-dom";
 
 interface Skill {
   id: string;
@@ -108,6 +108,22 @@ const Skills = () => {
     return iconMappings[tech] || `https://via.placeholder.com/64/6366f1/ffffff?text=${techName.charAt(0).toUpperCase()}`;
   };
 
+  const getProficiencyLabel = (proficiency: number) => {
+    if (proficiency >= 90) return "Expert";
+    if (proficiency >= 75) return "Advanced";
+    if (proficiency >= 60) return "Intermediate";
+    if (proficiency >= 40) return "Beginner";
+    return "Learning";
+  };
+
+  const getProficiencyColor = (proficiency: number) => {
+    if (proficiency >= 90) return "text-green-400 bg-green-400/20";
+    if (proficiency >= 75) return "text-blue-400 bg-blue-400/20";
+    if (proficiency >= 60) return "text-yellow-400 bg-yellow-400/20";
+    if (proficiency >= 40) return "text-orange-400 bg-orange-400/20";
+    return "text-red-400 bg-red-400/20";
+  };
+
   const groupedSkills = skills.reduce((acc, skill) => {
     if (!acc[skill.category]) {
       acc[skill.category] = [];
@@ -133,9 +149,17 @@ const Skills = () => {
   return (
     <section id="skills" className="py-20 px-4 bg-dark-light">
       <div className="container mx-auto">
-        <div className="flex items-center gap-2 mb-12">
-          <Code className="w-5 h-5 text-primary" />
-          <h2 className="text-3xl font-bold text-white">Skills & Experience</h2>
+        <div className="flex items-center justify-between mb-12">
+          <div className="flex items-center gap-2">
+            <Code className="w-5 h-5 text-primary" />
+            <h2 className="text-3xl font-bold text-white">Skills & Experience</h2>
+          </div>
+          <Link 
+            to="/skills" 
+            className="px-4 py-2 bg-primary/10 hover:bg-primary/20 border border-primary/30 rounded-lg text-primary hover:text-primary/80 transition-all duration-300"
+          >
+            View All Skills
+          </Link>
         </div>
 
         {skillsDescription && (
@@ -148,7 +172,7 @@ const Skills = () => {
 
         {Object.keys(groupedSkills).length > 0 ? (
           <div className="space-y-12">
-            {Object.entries(groupedSkills).map(([category, categorySkills]) => {
+            {Object.entries(groupedSkills).slice(0, 3).map(([category, categorySkills]) => {
               const Icon = categoryIcons[category as keyof typeof categoryIcons] || Code;
               const colorClasses = categoryColors[category as keyof typeof categoryColors] || categoryColors.tools;
 
@@ -164,7 +188,7 @@ const Skills = () => {
                   </div>
 
                   <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    {categorySkills.map((skill) => (
+                    {categorySkills.slice(0, 6).map((skill) => (
                       <div
                         key={skill.id}
                         className={`p-4 rounded-xl border backdrop-blur-md bg-gradient-to-br ${colorClasses} transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1 group`}
@@ -186,14 +210,8 @@ const Skills = () => {
                               {skill.name}
                             </h4>
                             <div className="mt-2">
-                              <div className="w-full bg-white/10 rounded-full h-1.5">
-                                <div 
-                                  className="bg-primary h-1.5 rounded-full transition-all duration-500 group-hover:bg-primary/80"
-                                  style={{ width: `${skill.proficiency}%` }}
-                                />
-                              </div>
-                              <span className="text-xs text-white/60 mt-1 block">
-                                {skill.proficiency}%
+                              <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${getProficiencyColor(skill.proficiency)}`}>
+                                {getProficiencyLabel(skill.proficiency)}
                               </span>
                             </div>
                           </div>

@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Index from "./pages/Index";
 import About from "./pages/About";
+import Skills from "./pages/Skills";
 import CertificateDetail from "./pages/CertificateDetail";
 import ProjectDetail from "./pages/ProjectDetail";
 import AdminAuth from "./pages/AdminAuth";
@@ -26,6 +27,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
+              <Route path="/skills" element={<Skills />} />
               <Route path="/certificate/:id" element={<CertificateDetail />} />
               <Route path="/project/:id" element={<ProjectDetail />} />
               <Route path="/admin/auth" element={<AdminAuth />} />
