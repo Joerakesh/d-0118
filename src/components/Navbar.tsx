@@ -223,6 +223,15 @@ const Navbar = () => {
                 </a>
               </li>
             ))}
+            <li>
+              <Link
+                to="/blog"
+                className="text-foreground/80 hover:text-primary transition-all duration-300 hover:scale-105 relative group text-sm xl:text-base"
+              >
+                Blog
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+            </li>
           </ul>
         </nav>
 
@@ -410,6 +419,25 @@ const Navbar = () => {
                     </a>
                   </li>
                 ))}
+                <li
+                  className={cn(
+                    "transform transition-all duration-300",
+                    isOpen
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-4 opacity-0"
+                  )}
+                  style={{
+                    transitionDelay: isOpen ? `${7 * 75}ms` : "0ms",
+                  }}
+                >
+                  <Link
+                    to="/blog"
+                    className="text-foreground/80 hover:text-primary transition-colors block py-2 text-lg font-medium"
+                    onClick={handleNavClick}
+                  >
+                    Blog
+                  </Link>
+                </li>
               </ul>
             </nav>
 

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
-import { LogOut, Plus, FolderOpen, Award, BarChart3, Settings, Sun, Moon, User, Eye, TrendingUp, FileText } from "lucide-react";
+import { LogOut, Plus, FolderOpen, Award, BarChart3, Settings, Sun, Moon, User, Eye, TrendingUp, FileText, BookOpen } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useTheme } from "@/components/ThemeProvider";
 import ProjectsManager from "@/components/admin/ProjectsManager";
@@ -14,6 +14,7 @@ import AdminStats from "@/components/admin/AdminStats";
 import PortfolioAnalytics from "@/components/admin/PortfolioAnalytics";
 import SkillsManager from "@/components/admin/SkillsManager";
 import ContentManager from "@/components/admin/ContentManager";
+import BlogsManager from "@/components/admin/BlogsManager";
 
 const AdminDashboard = () => {
   const [user, setUser] = useState(null);
@@ -128,7 +129,7 @@ const AdminDashboard = () => {
 
       <main className="container mx-auto px-6 py-8">
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 bg-muted">
+          <TabsList className="grid w-full grid-cols-7 bg-muted">
             <TabsTrigger 
               value="overview" 
               className="data-[state=active]:bg-background data-[state=active]:text-foreground text-muted-foreground"
@@ -163,6 +164,13 @@ const AdminDashboard = () => {
             >
               <Award className="w-4 h-4 mr-2" />
               Certificates
+            </TabsTrigger>
+            <TabsTrigger 
+              value="blog" 
+              className="data-[state=active]:bg-background data-[state=active]:text-foreground text-muted-foreground"
+            >
+              <BookOpen className="w-4 h-4 mr-2" />
+              Blog
             </TabsTrigger>
             <TabsTrigger 
               value="analytics" 
@@ -303,6 +311,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="certificates">
             <CertificatesManager />
+          </TabsContent>
+
+          <TabsContent value="blog">
+            <BlogsManager />
           </TabsContent>
 
           <TabsContent value="analytics">
